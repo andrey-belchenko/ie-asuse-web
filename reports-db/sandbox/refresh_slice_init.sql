@@ -1,5 +1,10 @@
 
-delete from report_stg.refresh_slice
+delete from report_stg.refresh_slice;
+
+-- полное обновление
+insert into report_stg.refresh_slice (договор_id, дата_c, дата_по,дата_архивации)
+select kod_dog , '1900-01-01'::date, '3000-01-01'::date, '2018-12-31'::date from kr_dogovor;
+
 
 select * from report_stg.refresh_slice
 
@@ -15,8 +20,7 @@ select kod_dog , '2022-10-01'::date, '2022-10-31'::date from kr_dogovor where de
 
 
 
-insert into report_stg.refresh_slice (договор_id, дата_c, дата_по,дата_архивации)
-select kod_dog , '1900-01-01'::date, '3000-01-01'::date, '2018-12-31'::date from kr_dogovor;
+
 
 
 ANALYZE report_stg.refresh_slice;
