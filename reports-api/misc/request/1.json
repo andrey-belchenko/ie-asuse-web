@@ -1,0 +1,12 @@
+{
+  "groupSummary": [
+    { "selector": "revenue", "summaryType": "sum" },
+    { "selector": "expenses", "summaryType": "sum" }
+  ],
+  "totalSummary": [],
+  "group": [
+    { "selector": "product_type", "isExpanded": false },
+    { "selector": "date", "groupInterval": "year", "isExpanded": false }
+  ],
+  "filter": [["company", "=", "Company E"]]
+}

@@ -1,0 +1,1 @@
+select * from report_dm.msr_фин_сальдо_по_дог_вид_реал where договор_id =199  and вид_реал_id=2 order by акт_с

@@ -1,0 +1,32 @@
+<root>
+    <folder name="sf" title="Отчеты по счетам-фактурам" security-id="12209">
+        <usereport project="asuse2" report="32170" title="Отчет по исправленным счетам-фактурам" />
+    </folder>
+    <folder title="Отчет по авансовым платежам" security-id="12209" name="rep_avans">
+        <usereport project="asuse2" report="54148" form="54148" title="Отчет по Авансовым платежам" />
+    </folder>
+    <folder name="ur_journals" title="Журналы.Арбитраж" security-id="16003">
+        <folder name="ur_journals-fold3" title="Банкротство и ликвидация">
+            <usereport project="asuse2" report="ur_journal_mat_ba"
+                title="Журнал документов для суда (б)" />
+        </folder>
+        <folder name="ur_journals-fold2" title="Исполнительное производство">
+            <usereport project="asuse2" report="ur_journal_kazn"
+                title="Журнал документов в казначейство" />
+            <usereport project="asuse2" report="ur_journal_ssp" title="Журнал документов для ССП" />
+            <usereport project="asuse2" report="ur_journal_inkasso"
+                title="Журнал документов на инкассо" />
+        </folder>
+        <folder name="ur_journals-fold1" title="Претензионно-исковая работа">
+            <usereport project="asuse2" report="ur_journal_mat"
+                title="Журнал документов для суда (п)" />
+            <usereport project="asuse2" report="ur_journal_sogl"
+                title="Журнал дополнительных документов" />
+            <usereport project="asuse2" report="ur_journal_isp" title="Журнал исполнительных листов" />
+            <usereport project="asuse2" report="ur_journal_pretenz" title="Журнал претензий" />
+        </folder>
+        <usereport project="asuse2" report="arbitrage_journal"
+            title="Судебное и исполнительное производство" />
+    </folder>
+</root>
+  

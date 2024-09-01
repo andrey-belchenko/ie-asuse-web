@@ -1,0 +1,164 @@
+<navigator name="nav10" comment="ТатЭнергосбыт" timestamp="13.07.2024 21:33:18"
+    file="sql.builder.templates\sql.builder\projects\common\special\navigators.xml" elid="412"
+    ord="412" leaf="0" lvl="2" pelid="">
+    <folder name="bu" title="Отчеты по безучетному потреблению">
+        <usereport project="asuse2" report="10653-svodn" title="Акты неучетного потребления" />
+        <usereport project="asuse2" report="10653(52)" title="Акты неучтенного потребления(старый)"
+            visible="0" />
+        <usereport project="asuse2" report="33260"
+            title="Отчет №13 Начисление потребителей с разбивкой по НДС" />
+        <usereport project="asuse2" report="10653(39)-new"
+            title="Приложение № 12. Отчет по непризнанным актам неучтенного потребления электроэнергии" />
+        <usereport project="asuse2" report="10653(45)-new"
+            title="Приложение № 14. Разбивка  объема безучетного потребления  по месяцам периода безучетного потребления" />
+        <usereport project="asuse2" report="10653(45)"
+            title="Приложение № 14. Разбивка  объема безучетного потребления  по месяцам периода безучетного потребления"
+            visible="0" />
+        <usereport project="asuse2" report="10653(37)-new"
+            title="Приложение № 5. Задолженность по актам неучтенного потребления электроэнергии" />
+        <usereport project="asuse2" report="10653(37)"
+            title="Приложение № 5. Задолженность по актам неучтенного потребления электроэнергии"
+            visible="0" />
+        <usereport project="asuse2" report="10653(40)-new"
+            title="Приложение № 6. Начисление   абонированных юридических потребителей с разбивкой на составляющие цены" />
+        <usereport project="asuse2" report="10653(40)"
+            title="Приложение № 6. Начисление   абонированных юридических потребителей с разбивкой на составляющие цены (старый)"
+            visible="0" />
+        <usereport project="asuse2" report="10653(38)-new"
+            title="Приложение № 7. Сводный отчет по филиалам по актам неучтенного потребления электроэнергии" />
+        <usereport project="asuse2" report="10653(38)"
+            title="Приложение № 7. Сводный отчет по филиалам по актам неучтенного потребления электроэнергии"
+            visible="0" />
+        <usereport project="asuse2" report="29783"
+            title="Сводный отчет по актам безучетного потребления" />
+    </folder>
+    <folder name="oborot" title="Оборотная ведомость" security-id="12209">
+        <usereport project="asuse2" report="26938"
+            title="Оборотная ведомость по полученным задаткам" />
+        <usereport project="asuse2" report="55752" title="Оборотная ведомость за энергию" />
+    </folder>
+    <folder name="opl" title="Отчеты по оплатам" security-id="12209">
+        <usereport project="asuse2" report="26730"
+            title="План-факторный анализ поступления денежных средств в разрезе абонентов по дням" />
+        <usereport project="asuse2" report="25316-dog" title="Поступление наличных денежных средств" />
+        <usereport project="asuse2" report="25316"
+            title="Поступление наличных денежных средств(детализация)" />
+        <usereport project="asuse2" report="52917"
+            title="Распределение оплат по потребителям, входящим в реестры ГК" />
+    </folder>
+    <folder name="dolg" title="Отчеты по задолженности" security-id="12209">
+        <usereport report="44212" title="Справка о задолженности за электрическую энергию за период"
+            project="44212" />
+        <usereport project="asuse2" report="24599" title="Задолженность ИКУ в разрезе ОКО" />
+        <usereport project="asuse2" report="36526"
+            title="Отчет о потребителях, производящих своевременную оплату" />
+        <usereport project="asuse2" report="31135"
+            title="Перечень ИКУ в разрезе флиалов, просроченная задолженность которых превысила потребление за период" />
+        <usereport project="asuse2" report="24557"
+            title="Просроченная задолженности РСО, ИКУ по периодам возникновения" />
+        <usereport project="asuse2" report="32464-new"
+            title="Просроченная задолженность потребителей по периодам возникновения" />
+        <usereport project="asuse2" report="32464-ext-new"
+            title="Просроч. задолж. потр. по пер. возникн. с уч. ГП и пени взыск. по реш. суда" />
+        <usereport project="50308" report="50308" title=" Справка об отсутствии задолженности" />
+        <usereport project="54262" report="54262"
+            title="Информация о задолженности по ОДН на первое число месяца и на текущую дату по периодам в разрезе ОКО" />
+        <usereport project="asuse2" report="55973"
+            title="Отчет по договорам купли-продажи электрической энергии для целей компенсации потерь" />
+        <usereport report="70896"
+            title="Информация по мораторной задолженности по состоянию на отчетную дату"
+            project="asuse2" />
+        <usereport report="71512"
+            title="Реализация электроэнергии по группам потребителей (Макет будущего отчета)"
+            project="asuse2" />
+    </folder>
+    <folder name="sf" title="Отчеты по счетам-фактурам" security-id="12209">
+        <usereport project="asuse2" report="32170" title="Отчет по исправленным счетам-фактурам" />
+    </folder>
+    <folder title="Отчет по авансовым платежам" security-id="12209" name="rep_avans">
+        <usereport project="asuse2" report="54148" form="54148" title="Отчет по Авансовым платежам" />
+    </folder>
+    <folder name="ur_reports" title="Отчёты.Арбитраж" security-id="12209">
+        <usereport project="asuse2" report="26943-gp" title="Оборотная ведомость по ГП" />
+        <usereport project="asuse2" report="26943-peny" title="Оборотная ведомость по процентам" />
+        <usereport project="asuse2" report="36257"
+            title="Отчет по ГПЗ, ДПД, мировым соглашениям,  соглашениям о порядке погашения задолженности" />
+        <usereport project="48773" report="48773"
+            title="Отчет по потребителям - должникам с информацией по судебной работе и исполнительному производству по пеням и госпошлине" />
+        <usereport project="asuse2" report="36257-test3"
+            title="Отчет по ГПЗ, ДПД, мировым соглашениям,  соглашениям о порядке погашения задолженности"
+            visible="0" />
+        <useform project="asuse2" form="ur_folders_g_plat_all" title="Платежи ГП из КИСУ «Парус»" />
+        <usereport project="48773" report="50060"
+            title="Журнал поступивших в ПИО материалов для взыскания в судебном порядке" />
+        <usereport project="48773" report="50060_test"
+            title="Журнал поступивших в ПИО материалов для взыскания в судебном порядке" visible="0" />
+        <usereport project="asuse2" report="64627"
+            title="Журнал регистрации исходящих заявлений о вынесении СП и исков по юридическим лицам" />
+        <usereport project="asuse2" report="64630"
+            title="Журнал регистрации исполнительных документов по юридическим лицам" />
+        <usereport project="52834" report="52834"
+            title="Отчёт по исполнительному производству по юридическим лицам" />
+        <usereport project="54503" report="54503"
+            title="Отчет по судебной работе по юридическим лицам" />
+        <usereport project="asuse2" report="64524"
+            title="Уменьшение задолженности по исполнительному производству" />
+        <usereport project="asuse2" report="64525"
+            title="Увеличение задолженности по исполнительному производству" />
+        <usereport project="asuse2" report="64526"
+            title="Динамика задолженности по исполнительному производству" />
+        <usereport project="asuse2" report="65211"
+            title="Уменьшение мораторной задолженности по потребителям-банкротам" />
+        <usereport project="asuse2" report="65210"
+            title="Динамика мораторной задолженности по потребителям-банкротам" />
+        <usereport project="asuse2" report="65704" title="Чек-лист по делу о банкротстве" />
+        <usereport project="asuse2" report="65703" title="Отчёт по должникам-банкротам" />
+        <usereport report="64629" title="Справка о задолженности и судебной работе по потребителю"
+            project="64629" />
+    </folder>
+    <folder name="ur_journals" title="Журналы.Арбитраж" security-id="16003">
+        <folder name="ur_journals-fold3" title="Банкротство и ликвидация">
+            <usereport project="asuse2" report="ur_journal_mat_ba"
+                title="Журнал документов для суда (б)" />
+        </folder>
+        <folder name="ur_journals-fold2" title="Исполнительное производство">
+            <usereport project="asuse2" report="ur_journal_kazn"
+                title="Журнал документов в казначейство" />
+            <usereport project="asuse2" report="ur_journal_ssp" title="Журнал документов для ССП" />
+            <usereport project="asuse2" report="ur_journal_inkasso"
+                title="Журнал документов на инкассо" />
+        </folder>
+        <folder name="ur_journals-fold1" title="Претензионно-исковая работа">
+            <usereport project="asuse2" report="ur_journal_mat"
+                title="Журнал документов для суда (п)" />
+            <usereport project="asuse2" report="ur_journal_sogl"
+                title="Журнал дополнительных документов" />
+            <usereport project="asuse2" report="ur_journal_isp" title="Журнал исполнительных листов" />
+            <usereport project="asuse2" report="ur_journal_pretenz" title="Журнал претензий" />
+        </folder>
+        <usereport project="asuse2" report="arbitrage_journal"
+            title="Судебное и исполнительное производство" />
+    </folder>
+    <folder name="269" title="Отчёт по приказу №269/прТЭ" security-id="2051">
+        <usereport project="asuse2" report="29677" title="Количество договоров и точек учета" />
+    </folder>
+    <folder title="Анализ расчета уведомлений" name="uved">
+        <usereport project="asuse2" report="37989_anl_rep" title="Анализ расчета уведомлений" />
+        <useform project="asuse2" form="vr_nastr_uved2" title="Настройка расчета уведомлений" />
+    </folder>
+    <usereport project="asuse2" report="26658" title="Задолженность на дату" visible="0" />
+    <usereport project="asuse2" report="44047" title="Справка инвентаризации по кредиторам"
+        visible="0" />
+    <!--<usereport
+    project="asuse2" report="sr_facvip_intervals" title="Счёт-фактуры по дате" visible="0" />
+        <usereport project="asuse2" report="test_big_data" title="Тестирование печати большого количества
+    данных" visible="0" />
+        <usereport project="asuse2" report="test-for-dxdashboard" title="test-for-dxdashboard" visible="0"
+    />
+        <usereport project="asuse2" report="test_merge_remove" title="Тестирование удаления колонок"
+    visible="0" />
+        <usereport project="asuse2" report="test_pivot" title="Тестирование размазывания колонок"
+    visible="0" />
+        <usereport project="asuse2" report="test-conditions" title="Тест" visible="0" />-->
+</navigator>
+  

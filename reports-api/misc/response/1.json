@@ -1,0 +1,101 @@
+{
+  "data": [
+    {
+      "key": "Product 1",
+      "items": [
+        {
+          "count": 1886,
+          "key": 2023,
+          "items": null,
+          "summary": [93723000, 47271000]
+        },
+        {
+          "count": 2256,
+          "key": 2024,
+          "items": null,
+          "summary": [112967000, 56101000]
+        }
+      ],
+      "count": 2,
+      "summary": [206690000, 103372000]
+    },
+    {
+      "key": "Product 2",
+      "items": [
+        {
+          "count": 1782,
+          "key": 2023,
+          "items": null,
+          "summary": [89808000, 45194500]
+        },
+        {
+          "count": 2229,
+          "key": 2024,
+          "items": null,
+          "summary": [112112000, 57253500]
+        }
+      ],
+      "count": 2,
+      "summary": [201920000, 102448000]
+    },
+    {
+      "key": "Product 3",
+      "items": [
+        {
+          "count": 1853,
+          "key": 2023,
+          "items": null,
+          "summary": [92541000, 46630000]
+        },
+        {
+          "count": 2253,
+          "key": 2024,
+          "items": null,
+          "summary": [113241000, 56643000]
+        }
+      ],
+      "count": 2,
+      "summary": [205782000, 103273000]
+    },
+    {
+      "key": "Product 4",
+      "items": [
+        {
+          "count": 1830,
+          "key": 2023,
+          "items": null,
+          "summary": [92781000, 46802000]
+        },
+        {
+          "count": 2282,
+          "key": 2024,
+          "items": null,
+          "summary": [114290000, 57819500]
+        }
+      ],
+      "count": 2,
+      "summary": [207071000, 104621500]
+    },
+    {
+      "key": "Product 5",
+      "items": [
+        {
+          "count": 1815,
+          "key": 2023,
+          "items": null,
+          "summary": [90170000, 45803000]
+        },
+        {
+          "count": 2282,
+          "key": 2024,
+          "items": null,
+          "summary": [113045000, 57610500]
+        }
+      ],
+      "summary": [203215000, 103413500],
+      "count": 2
+    }
+  ],
+  "totalCount": 20468,
+  "summary": []
+}

@@ -1,0 +1,35 @@
+{
+  "cSpell.language": "en,ru",
+  "SQL-Formatter-VSCode.dialect": "postgresql",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "local pg",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "1"
+    },
+    {
+      "previewLimit": 50,
+      "server": "asuse-ai-dev.infoenergo.loc",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "asuse-ai-dev",
+      "database": "asuse",
+      "username": "asuse",
+      "password": "kl0pik"
+    }
+  ],
+  "cSpell.words": [
+    "plpgsql",
+    "детал",
+    "кред",
+    "начисл",
+    "перепл",
+    "погаш",
+    "поступ"
+  ]
+}
