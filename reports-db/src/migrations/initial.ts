@@ -1,5 +1,5 @@
 import { QueryInterface } from 'sequelize';
-import test_view from '../declaration/obj/test_view';
+import test_view from '../ddl/obj/test_view';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

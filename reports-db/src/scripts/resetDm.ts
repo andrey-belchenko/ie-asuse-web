@@ -1,4 +1,4 @@
-import report_dm from "../declaration/report_dm";
+import report_dm from "../ddl/report_dm";
 import { resetObjects } from "../utils/management";
 
 const run = async () => {
