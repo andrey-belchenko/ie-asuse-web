@@ -73,9 +73,9 @@ export class DbObject {
   private getDefaultSqlPath(filePath: string) {
     let parsed = path.parse(filePath);
     let pathArray = parsed.dir.split(path.sep);
-    let folderIndex = pathArray.indexOf("obj");
+    let folderIndex = pathArray.indexOf("src");
     if (folderIndex > -1) {
-      pathArray[folderIndex] = "ddl";
+      pathArray.splice(folderIndex, 1);
     }
     let newDir = pathArray.join(path.sep);
     let newExt = ".sql";
@@ -91,7 +91,7 @@ export class DbObject {
   getObjectFullName(): string {
     let parsed = path.parse(this.fileName);
     let pathArray = parsed.dir.split(path.sep);
-    let folderIndex = pathArray.indexOf("obj");
+    let folderIndex = pathArray.indexOf("ddl");
     let schemaName = pathArray[folderIndex + 1];
     let objectName = path.basename(this.fileName, path.extname(this.fileName));
     if (objectName != "index") {
