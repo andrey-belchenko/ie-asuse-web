@@ -1,4 +1,5 @@
-CREATE OR REPLACE PROCEDURE report_dm.fill_msr_фин_сальдо_по_дог_вид_реал () LANGUAGE plpgsql AS $$ BEGIN -- Удаляются все записи с периодом позже начала затронутого периода
+CREATE OR REPLACE PROCEDURE report_dm.fill_msr_фин_сальдо_по_дог_вид_реал () LANGUAGE plpgsql AS $$ BEGIN --
+ -- Удаляются все записи с периодом позже начала затронутого периода
 DELETE FROM report_dm.msr_фин_сальдо_по_дог_вид_реал a USING report_stg.refresh_slice rs
 WHERE rs.договор_id = a.договор_id
     AND a.акт_с >= rs.дата_c;
@@ -24,7 +25,8 @@ INSERT INTO report_dm.msr_фин_сальдо_по_дог_вид_реал (
             a.вид_реал_id,
             a.долг_деб обор_деб,
             a.долг_кред обор_кред,
-            a.долг обор
+            a.долг обор,
+            a.долг_деб_просроч обор_деб_просроч
         from report_dm.msr_фин_сальдо_по_дог_вид_реал a
             JOIN prd ON prd.договор_id = a.договор_id
             AND prd.дата BETWEEN a.акт_с AND a.акт_по
@@ -36,7 +38,8 @@ INSERT INTO report_dm.msr_фин_сальдо_по_дог_вид_реал (
             a.вид_реал_id,
             sum(a.обор_деб) обор_деб,
             sum(a.обор_кред) обор_кред,
-            coalesce(sum(a.обор_деб), 0) - coalesce(sum(a.обор_кред), 0) обор
+            coalesce(sum(a.обор_деб), 0) - coalesce(sum(a.обор_кред), 0) обор,
+            sum(a.обор_деб_просроч) обор_деб_просроч
         from report_dm.msr_фин_обор a
             JOIN prd ON prd.договор_id = a.договор_id
             AND a.дата > prd.дата
@@ -83,6 +86,11 @@ INSERT INTO report_dm.msr_фин_сальдо_по_дог_вид_реал (
                 a.вид_реал_id
                 ORDER BY a.дата
             ) as долг,
+            SUM(a.обор_деб_просроч) OVER (
+                PARTITION BY a.договор_id,
+                a.вид_реал_id
+                ORDER BY a.дата
+            ) as долг_деб_просроч,
             a.*
         from x2 a
     )
@@ -93,7 +101,8 @@ select prd.refresh_slice_id,
     a.акт_по,
     a.долг,
     a.долг_деб,
-    a.долг_кред
+    a.долг_кред,
+    a.долг_деб_просроч
 from x3 a --исключаются записи с оборотами до начала затронутого периода которые были добавлены в начале oold
     JOIN prd ON prd.договор_id = a.договор_id
     AND a.дата > prd.дата;

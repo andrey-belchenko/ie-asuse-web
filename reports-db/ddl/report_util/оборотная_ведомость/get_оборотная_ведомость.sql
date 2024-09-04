@@ -8,13 +8,15 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
 	договор_номер varchar ,
 	долг_деб_нач numeric ,
 	долг_кред_нач numeric ,
+	долг_просроч_нач numeric,
 	начисл numeric ,
 	погаш_оплатой numeric ,
 	погаш_из_кред numeric ,
 	опл_кред_перепл numeric ,
 	опл_кред_аванс numeric ,
 	долг_деб_кон numeric ,
-	долг_кред_кон numeric 
+	долг_кред_кон numeric ,
+	долг_просроч_кон numeric
     ) LANGUAGE plpgsql AS $$ BEGIN 
     
     
@@ -68,7 +70,8 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
     sn as (
         select a.договор_id,
             a.долг_деб as долг_деб_нач,
-            a.долг_кред as долг_кред_нач
+            a.долг_кред as долг_кред_нач,
+            a.долг_деб_просроч as долг_просроч_нач
         from report_dm.msr_фин_сальдо_по_дог_вид_реал a -- ФИЛЬТРАЦИЯ (отличается фильтр по дате - на начало)
             join p on p.дата_с between a.акт_с and a.акт_по
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
@@ -79,7 +82,8 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
     sk as (
         select a.договор_id,
             a.долг_деб as долг_деб_кон,
-            a.долг_кред as долг_кред_кон
+            a.долг_кред as долг_кред_кон,
+            a.долг_деб_просроч as долг_просроч_кон
         from report_dm.msr_фин_сальдо_по_дог_вид_реал a -- ФИЛЬТРАЦИЯ (отличается фильтр по дате - на конец)
             join p on p.дата_по between a.акт_с and a.акт_по
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
@@ -91,61 +95,71 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
         select a.договор_id,
             null::numeric долг_деб_нач,
             null::numeric долг_кред_нач,
+            null::numeric долг_просроч_нач,
             a.начисл,
             null::numeric погаш_оплатой,
             null::numeric погаш_из_кред,
             null::numeric опл_кред_перепл,
             null::numeric опл_кред_аванс,
             null::numeric долг_деб_кон,
-            null::numeric долг_кред_кон
+            null::numeric долг_кред_кон,
+             null::numeric долг_просроч_кон
         from n a
         UNION ALL
         select a.договор_id,
             null долг_деб_нач,
             null долг_кред_нач,
+            null долг_просроч_нач,
             null начисл,
             a.погаш_оплатой,
             a.погаш_из_кред,
             null опл_кред_перепл,
             null опл_кред_аванс,
             null долг_деб_кон,
-            null долг_кред_кон
+            null долг_кред_кон,
+             null долг_просроч_кон
         from op a
         UNION ALL
         select a.договор_id,
             null долг_деб_нач,
             null долг_кред_нач,
+            null долг_просроч_нач,
             null начисл,
             null погаш_оплатой,
             null погаш_из_кред,
             a.опл_кред_перепл,
             a.опл_кред_аванс,
             null долг_деб_кон,
-            null долг_кред_кон
+            null долг_кред_кон,
+             null долг_просроч_кон
         from ok a
         UNION ALL
         select a.договор_id,
             a.долг_деб_нач,
             a.долг_кред_нач,
+            a.долг_просроч_нач,
             null начисл,
             null погаш_оплатой,
             null погаш_из_кред,
             null опл_кред_перепл,
             null опл_кред_аванс,
             null долг_деб_кон,
-            null долг_кред_кон
+            null долг_кред_кон,
+             null долг_просроч_кон
         from sn a
         UNION ALL
         select a.договор_id,
             null долг_деб_нач,
             null долг_кред_нач,
+            null долг_просроч_нач,
             null начисл,
             null погаш_оплатой,
             null погаш_из_кред,
             null опл_кред_перепл,
             null опл_кред_аванс,
             a.долг_деб_кон,
-            a.долг_кред_кон
+            a.долг_кред_кон,
+            a.долг_просроч_кон
         from sk a
     ),
     -- 3. ГРУППИРОВКА И ВЫРАЖЕНИЯ С АРИФМЕТИЧЕСКИМИ ОПЕРАЦИЯМИ ПРИ НЕОБХОДИМОСТИ

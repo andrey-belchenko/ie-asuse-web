@@ -19,6 +19,11 @@ import dim_отделение from "../ddl/report_dm/views/dim_отделени�
 import stg_functions from "../ddl/report_stg/functions";
 import msr_фин_обор_просроч from "../ddl/report_dm/tables/msr_фин_обор_просроч";
 import fill_msr_фин_обор_просроч from "../ddl/report_dm/procedures/fill_msr_фин_обор_просроч";
+import msr_фин_обор from "../ddl/report_dm/tables/msr_фин_обор";
+import fill_msr_фин_обор from "../ddl/report_dm/procedures/fill_msr_фин_обор";
+import msr_фин_сальдо_по_дог_вид_реал from "../ddl/report_dm/tables/msr_фин_сальдо_по_дог_вид_реал";
+import fill_msr_фин_сальдо_по_дог_вид_реал from "../ddl/report_dm/procedures/fill_msr_фин_сальдо_по_дог_вид_реал";
+import оборотная_ведомость from "../ddl/report_util/оборотная_ведомость";
 
 declaration;
 const run = async () => {
@@ -38,8 +43,13 @@ const run = async () => {
     // ...report_util
     // dim_отделение
     // ...stg_functions,
-    msr_фин_обор_просроч,
-    fill_msr_фин_обор_просроч,
+    // msr_фин_обор_просроч,
+    // fill_msr_фин_обор_просроч,
+    // msr_фин_обор,
+    // fill_msr_фин_обор,
+    // msr_фин_сальдо_по_дог_вид_реал,
+    // fill_msr_фин_сальдо_по_дог_вид_реал
+    ...оборотная_ведомость
   ]);
   console.log("done");
 };

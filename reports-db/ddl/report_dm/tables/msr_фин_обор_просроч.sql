@@ -13,3 +13,9 @@ CREATE TABLE report_dm.msr_фин_обор_просроч (
     отмена_опл numeric NULL,
     обор numeric NULL
 );
+
+CREATE INDEX i_msr_фин_обор_просроч_договор_id ON report_dm.msr_фин_обор_просроч USING btree(договор_id);
+CREATE INDEX i_msr_фин_обор_просроч_дата ON report_dm.msr_фин_обор_просроч USING btree(дата);
+CREATE INDEX i_msr_фин_обор_просроч_effect_date ON report_dm.msr_фин_обор_просроч USING btree(effect_date);
+CREATE INDEX i_msr_фин_обор_просроч_договор_id_дата ON report_dm.msr_фин_обор_просроч USING btree(договор_id, дата);
+CREATE INDEX i_msr_фин_обор_просроч_договор_id_effect_date ON report_dm.msr_фин_обор_просроч USING btree(договор_id, effect_date);
