@@ -16,6 +16,7 @@ import fill_фин_начисл from "../ddl/report_stg/procedures/fill_фин_�
 import get_лицевая_карта from "../ddl/report_util/лицевая_карта/get_лицевая_карта";
 import report_util from "../ddl/report_util";
 import dim_отделение from "../ddl/report_dm/views/dim_отделение";
+import stg_functions from "../ddl/report_stg/functions";
 
 declaration;
 const run = async () => {
@@ -32,8 +33,9 @@ const run = async () => {
     // fill_фин_начисл,
     // fill_фин_опл
     // get_лицевая_карта
-    ...report_util
+    // ...report_util
     // dim_отделение
+    ...stg_functions,
   ]);
   console.log("done");
 };
