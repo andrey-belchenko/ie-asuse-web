@@ -17,6 +17,8 @@ import get_лицевая_карта from "../ddl/report_util/лицевая_к�
 import report_util from "../ddl/report_util";
 import dim_отделение from "../ddl/report_dm/views/dim_отделение";
 import stg_functions from "../ddl/report_stg/functions";
+import msr_фин_обор_просроч from "../ddl/report_dm/tables/msr_фин_обор_просроч";
+import fill_msr_фин_обор_просроч from "../ddl/report_dm/procedures/fill_msr_фин_обор_просроч";
 
 declaration;
 const run = async () => {
@@ -35,7 +37,9 @@ const run = async () => {
     // get_лицевая_карта
     // ...report_util
     // dim_отделение
-    ...stg_functions,
+    // ...stg_functions,
+    msr_фин_обор_просроч,
+    fill_msr_фин_обор_просроч,
   ]);
   console.log("done");
 };
