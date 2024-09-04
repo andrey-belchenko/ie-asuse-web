@@ -1,7 +1,9 @@
 import * as mongoDB from 'mongodb';
 require('babel-polyfill');
 const query = require('devextreme-query-mongodb');
-const mongoDbUrl = 'mongodb://root:dpt-dev@dpt.dpt-dev.oastu.lan:27017';
+// const mongoDbUrl = 'mongodb://root:dpt-dev@dpt.dpt-dev.oastu.lan:27017';
+const mongoDbUrl = 'mongodb://127.0.0.1:27017/';
+
 console.log(`mongoDbUrl: ${mongoDbUrl}`);
 
 export function replaceDateStrings(obj: any) {
@@ -40,7 +42,7 @@ export async function execQuery(req: any): Promise<any> {
     // console.log(JSON.stringify({ loadOptions: req.pipeline }));
     results = await query(collection, loadOptions);
     console.log('Response');
-    console.log(JSON.stringify(results));
+    // console.log(JSON.stringify(results));
   });
   return results;
 }
@@ -64,7 +66,7 @@ export async function putDataToTemp(data: any[], tableName): Promise<void> {
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db('bav_test_report');
     const collection = db.collection(tableName);
-    collection.deleteMany();
+    await collection.deleteMany();
     await collection.insertMany(data);
   });
 }

@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
         select a.договор_id,
             a.начисл
         from report_dm.msr_фин_начисл a -- ФИЛЬТРАЦИЯ (одинаковая для всех фактов по ОБОРОТАМ)
-            join p on a.дата between p.дата_с and p.дата_по
+            join p on a.дата > p.дата_с and a.дата<=p.дата_по
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
             join p_отд o on d.отделение_id = o.отделение_id
         where a.вид_реал_id = 2
@@ -50,7 +50,7 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
             a.погаш_оплатой,
             a.погаш_из_кред
         from report_dm.msr_фин_опл_погаш a -- ФИЛЬТРАЦИЯ (одинаковая для всех фактов по ОБОРОТАМ)
-            join p on a.дата between p.дата_с and p.дата_по
+            join p on a.дата > p.дата_с and a.дата<=p.дата_по
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
             join p_отд o on d.отделение_id = o.отделение_id
         where a.вид_реал_id = 2
@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
             a.опл_кред_перепл,
             a.опл_кред_аванс
         from report_dm.msr_фин_опл_кредит a -- ФИЛЬТРАЦИЯ (одинаковая для всех фактов по ОБОРОТАМ)
-            join p on a.дата between p.дата_с and p.дата_по
+            join p on a.дата > p.дата_с and a.дата<=p.дата_по
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
             join p_отд o on d.отделение_id = o.отделение_id
         where a.вид_реал_id = 2
@@ -167,13 +167,15 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
         select a.договор_id,
             sum(a.долг_деб_нач) долг_деб_нач,
             sum(a.долг_кред_нач) долг_кред_нач,
+            sum(a.долг_просроч_нач) долг_просроч_нач,
             sum(a.начисл) начисл,
             sum(a.погаш_оплатой) погаш_оплатой,
             sum(a.погаш_из_кред) погаш_из_кред,
             sum(a.опл_кред_перепл) опл_кред_перепл,
             sum(a.опл_кред_аванс) опл_кред_аванс,
             sum(a.долг_деб_кон) долг_деб_кон,
-            sum(a.долг_кред_кон) долг_кред_кон
+            sum(a.долг_кред_кон) долг_кред_кон,
+            sum(a.долг_просроч_кон) долг_просроч_кон
         from x a
         group by a.договор_id
     ),
@@ -184,13 +186,15 @@ CREATE OR REPLACE FUNCTION report_util.get_оборотная_ведомость
             d.номер договор_номер,
             a.долг_деб_нач,
             a.долг_кред_нач,
+            a.долг_просроч_нач,
             a.начисл,
             a.погаш_оплатой,
             a.погаш_из_кред,
             a.опл_кред_перепл,
             a.опл_кред_аванс,
             a.долг_деб_кон,
-            a.долг_кред_кон
+            a.долг_кред_кон,
+            a.долг_просроч_кон
         from x1 a
             left join report_dm.dim_договор d on d.договор_id = a.договор_id
             left join report_dm.dim_отделение o on d.отделение_id = o.отделение_id

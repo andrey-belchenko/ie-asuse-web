@@ -1,4 +1,3 @@
-
 import { DateEditor } from "../../types/editors/DateEditor";
 import { Field } from "../../types/Field";
 import { Form } from "../../types/Form";
@@ -48,6 +47,7 @@ export default new RegularReport({
         caption: "Долг на начало",
         columns: [
           { caption: "Дебет", dataField: "долг_деб_нач" },
+          { caption: "Просрочено", dataField: "долг_просроч_нач" },
           { caption: "Кредит", dataField: "долг_кред_нач" },
         ],
       },
@@ -65,53 +65,11 @@ export default new RegularReport({
         caption: "Долг на конец",
         columns: [
           { caption: "Дебет", dataField: "долг_деб_кон" },
+          { caption: "Просрочено", dataField: "долг_просроч_кон" },
           { caption: "Кредит", dataField: "долг_кред_кон" },
         ],
       },
     ],
-
-    // totalItems: [
-    //   {
-    //     column: "отделение_наименование",
-    //     summaryType: "count",
-    //   },
-    //   {
-    //     column: "долг_деб_нач",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "долг_кред_нач",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "начисл",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "погаш_оплатой",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "погаш_из_кред",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "опл_кред_аванс",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "опл_кред_перепл",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "долг_деб_кон",
-    //     summaryType: "sum",
-    //   },
-    //   {
-    //     column: "долг_кред_кон",
-    //     summaryType: "sum",
-    //   },
-    // ],
     summary: {
       totalItems: [
         {
@@ -120,6 +78,7 @@ export default new RegularReport({
         },
         ...[
           "долг_деб_нач",
+          "долг_просроч_нач",
           "долг_кред_нач",
           "начисл",
           "погаш_оплатой",
@@ -127,6 +86,7 @@ export default new RegularReport({
           "опл_кред_аванс",
           "опл_кред_перепл",
           "долг_деб_кон",
+          "долг_просроч_кон",
           "долг_кред_кон",
         ].map((it) => ({
           column: it,

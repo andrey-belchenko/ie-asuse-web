@@ -11,7 +11,8 @@ INSERT INTO report_dm.msr_фин_сальдо_по_дог_вид_реал (
         акт_по,
         долг,
         долг_деб,
-        долг_кред
+        долг_кред,
+        долг_деб_просроч
     ) with prd as (
         select договор_id,
             refresh_slice_id,
