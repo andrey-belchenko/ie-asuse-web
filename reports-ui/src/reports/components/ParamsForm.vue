@@ -5,7 +5,7 @@
             <component :is="getEditorComponent(fieldConfig.editor)" :configuration="fieldConfig.editor"
                 v-model="values[fieldConfig.name]" />
         </div>
-        <!-- {{ JSON.stringify(values) }} -->
+        {{ JSON.stringify(values) }}
     </div>
 </template>
 
@@ -25,6 +25,7 @@ const values = reactive<any>(getDefaultValues(props.formConfig));
 const emit = defineEmits(['update:values']);
 
 watchEffect(() => {
+    // debugger
     emit('update:values', { ...values });
 });
 

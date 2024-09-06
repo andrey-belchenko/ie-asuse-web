@@ -41,9 +41,6 @@ export const execFunction = async (functionName: string, params: any) => {
     for (let name in params) {
       i++;
       let value = params[name];
-      if (value instanceof Date) {
-        value = value.toISOString().split('T')[0];
-      }
       paramsStr += q + name + ' => ' + '$' + i;
       q = ', ';
       paramsArray.push(value);

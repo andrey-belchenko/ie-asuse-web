@@ -15,7 +15,7 @@ export default new RegularReport({
         label: "Дата с",
         name: "date1",
         editor: new DateEditor({}),
-        defaultValue: () => new Date(2022, 2, 1),
+        defaultValue: () => new Date(2022, 1, 28),
       }),
       new Field({
         label: "Дата по",
@@ -35,6 +35,10 @@ export default new RegularReport({
   }),
   view: new ReportTable({
     columns: [
+      {
+        caption: "Код договора",
+        dataField: "договор_id",
+      },
       {
         caption: "Отделение",
         dataField: "отделение_наименование",
