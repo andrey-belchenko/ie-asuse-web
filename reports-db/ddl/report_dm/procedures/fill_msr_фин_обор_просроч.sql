@@ -11,7 +11,7 @@ AS with x1 as (
         a.вид_реал_id,
         a.док_нач_id,
         a.начисл,
-        coalesce(fv.dat_zadol, d.dat_bzad, a.дата) dat_bzad,
+        report_stg.latest(coalesce(fv.dat_zadol, d.dat_bzad)::date, a.дата) dat_bzad,
         fv.dat_ezad
     from report_stg.фин_начисл a
         JOIN report_stg.refresh_slice rs ON rs.договор_id = a.договор_id
@@ -43,9 +43,8 @@ as with x1 as (
         a.опл_id,
         a.тип_опл_id,
         a.опл,
-        coalesce(
-            fv.dat_zadol,
-            d.dat_bzad,
+        report_stg.latest(
+            coalesce(fv.dat_zadol, d.dat_bzad)::date,
             report_stg.get_last_date_of_ym(fv.ym)
         ) dat_bzad,
         fv.dat_ezad
