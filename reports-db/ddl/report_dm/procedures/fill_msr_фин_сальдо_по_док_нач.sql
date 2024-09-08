@@ -6,8 +6,8 @@ WHERE rs.договор_id = a.договор_id
 INSERT INTO report_dm.msr_фин_сальдо_по_док_нач (
         refresh_slice_id,
         договор_id,
-        док_нач_id,
         вид_реал_id,
+        док_нач_id,
         акт_с,
         акт_по,
         долг_деб,
@@ -96,7 +96,9 @@ select prd.refresh_slice_id,
     a.долг_деб_просроч
 from x3 a --исключаются записи с оборотами до начала затронутого периода которые были добавлены в начале oold
     JOIN prd ON prd.договор_id = a.договор_id
-    AND a.дата > prd.дата;
+    AND a.дата > prd.дата
+where
+    coalesce(a.долг_деб,0)<>0 or coalesce(a.долг_деб_просроч,0)<>0;
 commit;
 END;
 $$;
