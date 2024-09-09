@@ -29,6 +29,8 @@ import msr_фин_сальдо_по_док_нач from "../ddl/report_dm/tables/
 import fill_msr_фин_сальдо_по_док_нач from "../ddl/report_dm/procedures/fill_msr_фин_сальдо_по_док_нач";
 import dim_договор from "../ddl/report_dm/views/dim_договор";
 import dim_гр_потр_нас from "../ddl/report_dm/views/dim_гр_потр_нас";
+import dim_участок from "../ddl/report_dm/views/dim_участок";
+import dim_абонент from "../ddl/report_dm/views/dim_абонент";
 
 declaration;
 const run = async () => {
@@ -46,7 +48,7 @@ const run = async () => {
     // fill_фин_опл
     // get_лицевая_карта
     // ...report_util
-    // dim_отделение
+    dim_отделение,
     // ...stg_functions,
     // msr_фин_обор_просроч,
     // latest,
@@ -57,9 +59,11 @@ const run = async () => {
     // fill_msr_фин_сальдо_по_дог_вид_реал,
     // msr_фин_сальдо_по_док_нач,
     // fill_msr_фин_сальдо_по_док_нач,
-    // ...оборотная_ведомость
+    ...оборотная_ведомость,
     dim_договор,
-    dim_гр_потр_нас
+    dim_гр_потр_нас,
+    dim_участок,
+    dim_абонент,
   ]);
   console.log("done");
 };

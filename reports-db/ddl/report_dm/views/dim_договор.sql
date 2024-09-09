@@ -11,6 +11,8 @@ group by a.objid
 select a.kod_dog договор_id,
     a.dep отделение_id,
     a.ndog номер,
-    gpn.kod_refcode as гр_потр_нас_id
+    a.kodp_uch участок_id,
+    a.kodp абонент_id,
+    gpn.kod_refcode гр_потр_нас_id
 from kr_dogovor a
     left join gr_potr_nas gpn on gpn.kod_dog = a.kod_dog;
