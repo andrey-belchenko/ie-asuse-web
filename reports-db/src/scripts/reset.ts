@@ -27,6 +27,8 @@ import оборотная_ведомость from "../ddl/report_util/оборо
 import latest from "../ddl/report_stg/functions/latest";
 import msr_фин_сальдо_по_док_нач from "../ddl/report_dm/tables/msr_фин_сальдо_по_док_нач";
 import fill_msr_фин_сальдо_по_док_нач from "../ddl/report_dm/procedures/fill_msr_фин_сальдо_по_док_нач";
+import dim_договор from "../ddl/report_dm/views/dim_договор";
+import dim_гр_потр_нас from "../ddl/report_dm/views/dim_гр_потр_нас";
 
 declaration;
 const run = async () => {
@@ -53,9 +55,11 @@ const run = async () => {
     // fill_msr_фин_обор,
     // msr_фин_сальдо_по_дог_вид_реал,
     // fill_msr_фин_сальдо_по_дог_вид_реал,
-    msr_фин_сальдо_по_док_нач,
-    fill_msr_фин_сальдо_по_док_нач,
+    // msr_фин_сальдо_по_док_нач,
+    // fill_msr_фин_сальдо_по_док_нач,
     // ...оборотная_ведомость
+    dim_договор,
+    dim_гр_потр_нас
   ]);
   console.log("done");
 };
