@@ -14,11 +14,13 @@ select rs.refresh_slice_id,
     o.ym AS период_id,
     coalesce(o.opl, 0) + coalesce(o.opls, 0) as опл,
     COALESCE(
-        clo.дата_закрытия,
-        clop.дата_закрытия,
-        cln.дата_закрытия,
+        case
+            when o.kod_type_opl in (1, 2) then clo.дата_закрытия
+            when o.kod_type_opl in (5, 6) then clop.дата_закрытия
+            else cln.дата_закрытия
+        end,
         '2100-01-01'::date
-    ) дата_закрытия,
+    )::date дата_закрытия,
     rs.дата_архивации
 from sr_opl o
     join report_stg.refresh_slice rs on rs.договор_id = o.kod_dog
@@ -37,8 +39,7 @@ INSERT INTO report_stg.фин_опл (
         дата,
         период_id,
         опл
-    ) with 
-    x as (
+    ) with x as (
         select a.*,
             case
                 when a.дата_закрытия <= a.дата_архивации then 1

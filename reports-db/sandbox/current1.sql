@@ -1,13 +1,17 @@
-CREATE OR REPLACE PROCEDURE report_dm.fill_all () LANGUAGE plpgsql AS $$ BEGIN 
-call report_dm.fill_dim_дата();
-call report_dm.fill_msr_фин_начисл();
 call report_dm.fill_msr_фин_опл_кредит();
 call report_dm.fill_msr_фин_опл_погаш();
 call report_dm.fill_msr_фин_обор_просроч ();
 call report_dm.fill_msr_фин_обор();
 call report_dm.fill_msr_фин_сальдо_по_дог_вид_реал();
 call report_dm.fill_msr_фин_сальдо_по_док_нач();
--- call report_dm.fill_msr_фин_сальдо_по_дог();
--- call report_dm.fill_msr_фин();
-END;
-$$;
+
+
+select * from report_dm.msr_фин_опл_погаш limit 1
+select * from report_dm.msr_фин_опл_погаш limit 1
+
+select * from report_dm.msr_фин_обор limit 1
+
+
+select * from report_dm.msr_фин_сальдо_по_док_нач limit 1
+
+

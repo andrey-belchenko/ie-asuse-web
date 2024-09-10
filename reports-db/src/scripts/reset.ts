@@ -32,6 +32,7 @@ import dim_гр_потр_нас from "../ddl/report_dm/views/dim_гр_потр_�
 import dim_участок from "../ddl/report_dm/views/dim_участок";
 import dim_абонент from "../ddl/report_dm/views/dim_абонент";
 import dim_док_нач from "../ddl/report_dm/views/dim_док_нач";
+import фин_опл from "../ddl/report_stg/tables/фин_опл";
 
 declaration;
 const run = async () => {
@@ -50,11 +51,11 @@ const run = async () => {
     // get_лицевая_карта
     // ...report_util
     // dim_отделение,
-    ...stg_functions,
+    // ...stg_functions,
     // msr_фин_обор_просроч,
     // latest,
     // fill_msr_фин_обор_просроч,
-    // msr_фин_обор,
+    msr_фин_обор,
     // fill_msr_фин_обор,
     // msr_фин_сальдо_по_дог_вид_реал,
     // fill_msr_фин_сальдо_по_дог_вид_реал,
@@ -65,7 +66,9 @@ const run = async () => {
     // dim_гр_потр_нас,
     // dim_участок,
     // dim_абонент,
-    dim_док_нач
+    // dim_док_нач
+    // фин_опл,
+    // fill_фин_опл
   ]);
   console.log("done");
 };
