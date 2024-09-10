@@ -1,4 +1,5 @@
 import { Schema } from "../../classes/Schema";
+import get_rep_24557 from "./get_rep_24557";
 import лицевая_карта from "./лицевая_карта";
 import оборотная_ведомость from "./оборотная_ведомость";
 
@@ -8,5 +9,6 @@ export default [
     createStatement: /*sql*/ `CREATE SCHEMA report_util`,
   }),
   ...лицевая_карта,
-  ...оборотная_ведомость
+  ...оборотная_ведомость,
+  get_rep_24557
 ];
