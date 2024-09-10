@@ -11,8 +11,8 @@ CREATE TABLE report_dm.msr_фин_обор (
 	обор_кред numeric NULL,
 	обор_деб_просроч numeric NULL
 );
--- CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id);
--- CREATE INDEX  ON report_dm.msr_фин_обор USING btree(дата);
--- CREATE INDEX  ON report_dm.msr_фин_обор USING btree(effect_date);
--- CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id, дата);
--- CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id, effect_date);
+CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id);
+CREATE INDEX  ON report_dm.msr_фин_обор USING btree(дата);
+CREATE INDEX  ON report_dm.msr_фин_обор USING btree(effect_date);
+CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id, дата);
+CREATE INDEX  ON report_dm.msr_фин_обор USING btree(договор_id, effect_date);
