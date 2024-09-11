@@ -3,7 +3,8 @@ DELETE FROM report_dm.dim_дата;
 INSERT INTO report_dm.dim_дата (
         дата,
         год,
-        месяц
+        месяц,
+        месяц_имя
     ) with x1 as (
         SELECT дата::date,
             EXTRACT(
@@ -22,7 +23,8 @@ INSERT INTO report_dm.dim_дата (
     )
 select дата,
     год,
-    месяц
+    месяц,
+    report_stg.get_month_name(месяц)
 from x1;
 commit;
 END;

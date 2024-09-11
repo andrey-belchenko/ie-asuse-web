@@ -4,43 +4,52 @@ CREATE OR REPLACE FUNCTION report_util.get_rep_24557(
         p_участок_id integer []
     ) RETURNS TABLE (
         договор_id int4,
-        range_id int4,
+        период_id int4,
         абонент_id int4,
         отделение_id int4,
         участок_id int4,
         гр_потр_нас_id numeric,
-        range_name text,
+        период_имя text,
         год int4,
         месяц int4,
-        договор_номер varchar,
-        абонент_имя varchar,
-        отделение_имя varchar,
-        участок_имя varchar,
+        месяц_имя text,
+        договор_номер text,
+        абонент_имя text,
+        отделение_имя text,
+        участок_имя text,
         ику_рсо_имя text,
-        гр_потр_нас_имя varchar,
+        гр_потр_нас_имя text,
         долг numeric
     ) LANGUAGE plpgsql AS $$ --
+
+
+
+    
     BEGIN
-    -- дата записывается в таблицу, для отладки запроса вне функции при необходимости
-    create temp table p_date on commit drop as
-select p_дата as дата;
+    -- параметры записываются в таблицу, это нужно для отладки запроса вне функции при необходимости
+    create temp table t_pars on commit drop as
+select p_дата дата,
+    p_отделение_id отделение_id,
+    p_участок_id участок_id;
 -- отделения по по фильтру
 create temp table t_otd on commit drop as
 select a.отделение_id,
     a.имя
 from report_dm.dim_отделение a
+    cross join t_pars
 where (
-        p_отделение_id IS NULL
-        OR a.отделение_id = ANY(p_отделение_id)
+        t_pars.отделение_id IS NULL
+        OR a.отделение_id = ANY(t_pars.отделение_id)
     );
 -- участки по по фильтру
 create temp table t_uch on commit drop as
 select a.участок_id,
     a.имя
 from report_dm.dim_участок a
+    cross join t_pars
 where (
-        p_участок_id IS NULL
-        OR a.участок_id = ANY(p_участок_id)
+        t_pars.участок_id IS NULL
+        OR a.участок_id = ANY(t_pars.участок_id)
     );
 -- договоры
 create temp table t_dog on commit drop as
@@ -72,7 +81,7 @@ from report_dm.msr_фин_сальдо_по_док_нач a
 where a.вид_реал_id = 2
     and (
         select дата
-        from p_date
+        from t_pars
     ) between a.акт_с and a.акт_по
 group by d.договор_id,
     n.дата_возник
@@ -87,7 +96,7 @@ dp as (
         (date_trunc('year', дата) - interval '2 years')::date point1,
         (date_trunc('year', дата) - interval '1 years')::date point2,
         date_trunc('year', дата)::date point3
-    from p_date
+    from t_pars
 ),
 dr as (
     select max(дата_возник) max_date,
@@ -149,7 +158,7 @@ x1 as (
 ),
 x2 as (
     select a.договор_id,
-        a.range_id,
+        a.range_id период_id,
         d.абонент_id,
         d.отделение_id,
         d.участок_id,
@@ -161,15 +170,16 @@ x2 as (
             when -2 then 'Просроченная задолженность позапрошлого года'
             when -1 then 'Просроченная задолженность прошлого года'
             when 0 then 'Просроченная задолженность текущего года'
-        end range_name,
+        end период_имя,
         dt.год,
         dt.месяц,
-        d.договор_номер,
-        d.абонент_имя,
-        d.отделение_имя,
-        d.участок_имя,
-        d.ику_рсо_имя,
-        d.гр_потр_нас_имя,
+        dt.месяц_имя::TEXT,
+        d.договор_номер::TEXT,
+        d.абонент_имя::TEXT,
+        d.отделение_имя::TEXT,
+        d.участок_имя::TEXT,
+        d.ику_рсо_имя::TEXT,
+        d.гр_потр_нас_имя::TEXT,
         a.долг
     from x1 a
         left join t_dog d on d.договор_id = a.договор_id

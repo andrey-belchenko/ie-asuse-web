@@ -4,6 +4,7 @@ import get_end_of_month from "./get_end_of_month";
 import get_last_date_of_ym from "./get_last_date_of_ym";
 import get_ym_from_date from "./get_ym_from_date";
 import max_date from "./max_date";
+import get_month_name from "./get_month_name";
 
 export default [
   get_last_date_of_ym,
@@ -11,5 +12,6 @@ export default [
   get_end_of_month,
   get_beg_of_month,
   max_date,
-  latest
+  latest,
+  get_month_name
 ];

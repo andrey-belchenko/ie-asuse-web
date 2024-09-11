@@ -34,6 +34,9 @@ import dim_абонент from "../ddl/report_dm/views/dim_абонент";
 import dim_док_нач from "../ddl/report_dm/views/dim_док_нач";
 import фин_опл from "../ddl/report_stg/tables/фин_опл";
 import get_rep_24557 from "../ddl/report_util/get_rep_24557";
+import dim_дата from "../ddl/report_dm/tables/dim_дата";
+import fill_dim_дата from "../ddl/report_dm/procedures/fill_dim_дата";
+import get_month_name from "../ddl/report_stg/functions/get_month_name";
 
 declaration;
 const run = async () => {
@@ -70,7 +73,11 @@ const run = async () => {
     // dim_док_нач
     // фин_опл,
     // fill_фин_опл
-    get_rep_24557
+    get_rep_24557,
+    // get_month_name,
+    // dim_дата,
+    // fill_dim_дата,
+    
   ]);
   console.log("done");
 };
