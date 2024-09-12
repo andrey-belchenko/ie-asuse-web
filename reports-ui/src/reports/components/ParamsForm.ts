@@ -19,11 +19,11 @@ export const getEditorComponent = (editor: Editor) => {
   }
 };
 
-export const getDefaultValues = (formConfig: Form) => {
+export const getDefaultValues = async (formConfig: Form) => {
   const newValues: any = {};
   for (let field of formConfig.fields) {
     if (field.defaultValue) {
-      newValues[field.name] = field.defaultValue();
+      newValues[field.name] = await field.defaultValue();
     }
   }
   return newValues;

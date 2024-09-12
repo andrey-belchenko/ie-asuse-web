@@ -1,5 +1,5 @@
 <template>
-    <DxDateBox v-model:value="fieldValue" type="date" />
+    <DxDateBox v-model:value="props.modelValue" type="date" />
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
@@ -12,11 +12,9 @@ const props = defineProps({
     }
 });
 
-const fieldValue = ref(props.modelValue);
-
 const emit = defineEmits(['update:modelValue']);
 
-watch(fieldValue, (newValue, oldValue) => {
+watch(() => props.modelValue, (newValue, oldValue) => {
     emit('update:modelValue', newValue);
 });
 

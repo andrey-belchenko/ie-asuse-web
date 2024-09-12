@@ -1,4 +1,4 @@
-import { instantiate } from "@/reports/types";
+import { instantiate, setMethodCallHandler } from "@/reports/types";
 import { Navigator } from "@/reports/types/Navigator";
 export interface ExecFunctionParams {
   tempTableName: string;
@@ -17,6 +17,8 @@ export const getNavigatorConfig = async () => {
   });
   const body = await response.json();
 
+  setMethodCallHandler(async () => new Date(2022, 2, 31));
+  
   return instantiate<Navigator>(body);
 };
 
