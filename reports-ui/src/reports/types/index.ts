@@ -35,7 +35,7 @@ function isArray(value) {
   return Array.isArray(value);
 }
 
-function instantiateValue(value) {
+function instantiateValue(value:any) :any{
   if (isObject(value)) {
     return instantiate(value);
   } else if (isArray(value)) {
@@ -50,7 +50,7 @@ function instantiateValue(value) {
 
 export function instantiate<T>(object: T): T {
   if (!object) {
-    return;
+    return undefined as T;
   }
   let obj = object as any;
 
@@ -71,7 +71,7 @@ export function instantiate<T>(object: T): T {
 
   const newObj = new registry[className](buffObj);
   for (let methodName of obj.methodNames) {
-    newObj[methodName] = () => true;
+    newObj[methodName] = () => undefined;
   }
   return newObj;
 }

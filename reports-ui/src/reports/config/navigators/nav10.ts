@@ -11,6 +11,7 @@ import { getGeneratorReports } from "../reports/externalReports";
 import rep_24557 from "../reports/rep_24557";
 
 export default new Navigator({
+  name:"nav10",
   items: [
     new Folder({
       title: "Отчеты по задолженности",

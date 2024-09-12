@@ -6,7 +6,7 @@
     </div>
 
 </template>
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { ref } from 'vue';
 import DxTreeView from 'devextreme-vue/tree-view'
 import { getTreeItems, type TreeItem } from './ReportList';
@@ -19,7 +19,9 @@ function selectItem({ itemData }: { itemData: TreeItem }) {
     emit('report-select', itemData.data);
 }
 
-</script>
+</script> -->
+
+<script src="./ReportList.ts"  lang="ts"></script>
 
 <style scoped>
 .main {
