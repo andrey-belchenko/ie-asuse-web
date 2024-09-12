@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { execQuery, putDataToTemp } from './mongo';
 import { execFunction, queryTable } from './pgsql';
@@ -10,6 +10,7 @@ import { Editor } from './reports/types/Editor';
 import { instantiate } from './reports/types';
 import { Folder } from './reports/types/Folder';
 import { RegularReport } from './reports/types/reports/RegularReport';
+import { ConfigItem, configItemDict } from './reports/types/ConfigItem';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -38,6 +39,15 @@ export class AppController {
     return { data: data };
   }
 
+  @Post('config-items/:configItemId/methods/:methodName/call')
+  async executeMethod(
+    @Param('configItemId') configItemId: string,
+    @Param('methodName') methodName: string,
+    @Body() request: any,
+  ): Promise<any> {
+    return { value: configItemDict[configItemId][methodName]() };
+  }
+
   @Get('test')
   async test(): Promise<any> {
     return { result: 'Ок' };
@@ -46,6 +56,11 @@ export class AppController {
   @Get('reports-config')
   async reportsConfig(): Promise<Navigator> {
     return nav10;
+  }
+
+  @Get('config-items/:id')
+  findOne(@Param('id') id: string): ConfigItem {
+    return configItemDict[id];
   }
 
   // @Get('reports-config')

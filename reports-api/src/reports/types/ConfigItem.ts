@@ -22,7 +22,10 @@ export class ConfigItem {
 
   private setIdsLevel(struct, path = '') {
     if (typeof struct === 'object' && !Array.isArray(struct)) {
-      struct.id = path;
+      if (struct instanceof ConfigItem) {
+        struct.id = path;
+        configItemDict[struct.id] = struct;
+      }
       for (let key in struct) {
         this.setIdsLevel(struct[key], `${path}.${key}`);
       }
@@ -33,3 +36,5 @@ export class ConfigItem {
     }
   }
 }
+
+export const configItemDict: { [key: string]: ConfigItem } = {};
