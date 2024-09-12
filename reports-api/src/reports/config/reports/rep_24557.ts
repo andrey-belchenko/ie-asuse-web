@@ -15,7 +15,7 @@ export default new RegularReport({
         label: "Дата",
         name: "date",
         editor: new DateEditor({}),
-        defaultValue: () => new Date(2022, 2, 31),
+        defaultValue: async () => new Date(2022, 2, 31),
       }),
       depSelect,
       uchastokSelect,

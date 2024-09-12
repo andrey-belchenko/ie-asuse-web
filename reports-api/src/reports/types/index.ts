@@ -1,11 +1,14 @@
-import { editors } from './editors';
-import { reports } from './reports';
-import { views } from './views';
-import { DataSource } from './DataSource';
-import { Field } from './Field';
-import { Folder } from './Folder';
-import { Form } from './Form';
-import { Navigator } from './Navigator';
+// TODO: переделать в виде класса
+
+import { editors } from "./editors";
+import { reports } from "./reports";
+import { views } from "./views";
+import { DataSource } from "./DataSource";
+import { Field } from "./Field";
+import { Folder } from "./Folder";
+import { Form } from "./Form";
+import { Navigator } from "./Navigator";
+import type { ConfigItem } from "./ConfigItem";
 
 function toDict(arr) {
   return arr.reduce((acc, curr) => {
@@ -28,14 +31,14 @@ const registry: Function[] = {
 };
 
 function isObject(value) {
-  return value && typeof value === 'object' && value.constructor === Object;
+  return value && typeof value === "object" && value.constructor === Object;
 }
 
 function isArray(value) {
   return Array.isArray(value);
 }
 
-function instantiateValue(value) {
+function instantiateValue(value: any): any {
   if (isObject(value)) {
     return instantiate(value);
   } else if (isArray(value)) {
@@ -50,7 +53,7 @@ function instantiateValue(value) {
 
 export function instantiate<T>(object: T): T {
   if (!object) {
-    return;
+    return undefined as T;
   }
   let obj = object as any;
 
@@ -71,7 +74,22 @@ export function instantiate<T>(object: T): T {
 
   const newObj = new registry[className](buffObj);
   for (let methodName of obj.methodNames) {
-    newObj[methodName] = () => true;
+    newObj[methodName] = async (params?: any) => {
+      return await methodCallHandler(newObj, methodName, params);
+    };
   }
   return newObj;
+}
+
+type MethodCallHandler = (
+  configItem: ConfigItem,
+  method: string,
+  params?: any
+) => Promise<any>;
+
+// let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);
+let methodCallHandler: MethodCallHandler = async () => undefined;
+
+export function setMethodCallHandler(func: MethodCallHandler) {
+  methodCallHandler = func;
 }

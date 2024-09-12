@@ -16,36 +16,51 @@ export const getNavigatorConfig = async () => {
     },
   });
   const body = await response.json();
+  setMethodCallHandler(async (configItem, method, params) => {
+    return await remoteMethodCall(configItem.id, method, params);
+  });
 
-  setMethodCallHandler(async () => new Date(2022, 2, 31));
-  
   return instantiate<Navigator>(body);
 };
 
-export const execFunction = async (params: ExecFunctionParams) => {
-  const response = await fetch(`${baseUrl}/call`, {
-    method: "POST",
-    body: JSON.stringify(params || {}),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-};
-
-export interface QueryTableParams {
-  tableName: string;
-}
-
-export const queryTable = async (params: QueryTableParams) => {
-  const response = await fetch(`${baseUrl}/query-table`, {
-    method: "POST",
-    body: JSON.stringify(params || {}),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
+const remoteMethodCall = async (
+  itemId: string,
+  methodName: string,
+  params: any
+) => {
+  const response = await fetch(
+    `${baseUrl}/config-items/${itemId}/methods/${methodName}/call`,
+    {
+      method: "POST",
+      body: JSON.stringify(params || {}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const body = await response.json();
-
-  return body["data"] as any[];
+  return replaceDateStrings(body).data;
 };
+
+function replaceDateStrings(obj: any) {
+  // Check if the input is an object
+  if (typeof obj === "object" && obj !== null) {
+    // Iterate over each key-value pair in the object
+    for (let key in obj) {
+      // Check if the value is a string
+      if (typeof obj[key] === "string") {
+        // Check if the string matches the date format
+        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(obj[key])) {
+          // Replace the string with a Date object
+          obj[key] = new Date(obj[key]);
+        }
+      }
+      // Check if the value is an object or an array
+      else if (typeof obj[key] === "object" && obj[key] !== null) {
+        // Recursively call the function for nested objects or arrays
+        replaceDateStrings(obj[key]);
+      }
+    }
+  }
+  return obj;
+}

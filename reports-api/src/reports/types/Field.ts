@@ -5,14 +5,14 @@ export interface FieldProps {
   label: string;
   name: string;
   editor: Editor;
-  defaultValue?: () => any;
+  defaultValue?: () => Promise<any>;
 }
 
 export class Field  extends ConfigItem {
   label: string;
   name: string;
   editor: Editor;
-  defaultValue?: () => any;
+  defaultValue?: () => Promise<any>;
   constructor(props: FieldProps) {
     super();
     this.label = props.label;

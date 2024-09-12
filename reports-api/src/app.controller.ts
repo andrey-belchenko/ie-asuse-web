@@ -45,7 +45,7 @@ export class AppController {
     @Param('methodName') methodName: string,
     @Body() request: any,
   ): Promise<any> {
-    return { value: configItemDict[configItemId][methodName]() };
+    return { data: await configItemDict[configItemId][methodName]() };
   }
 
   @Get('test')
