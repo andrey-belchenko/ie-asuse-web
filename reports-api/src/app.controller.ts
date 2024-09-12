@@ -47,6 +47,7 @@ export class AppController {
 
   @Get('reports-config')
   async reportsConfig(): Promise<Editor> {
-    return new DateEditor({});
+    const cls = DateEditor;
+    return new cls({});
   }
 }

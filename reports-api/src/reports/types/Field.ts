@@ -1,4 +1,5 @@
 import type { Editor } from "./Editor";
+import { ConfigItem } from './ConfigItem';
 
 export interface FieldProps {
   label: string;
@@ -7,12 +8,13 @@ export interface FieldProps {
   defaultValue?: () => any;
 }
 
-export class Field {
+export class Field  extends ConfigItem {
   label: string;
   name: string;
   editor: Editor;
   defaultValue?: () => any;
   constructor(props: FieldProps) {
+    super();
     this.label = props.label;
     this.editor = props.editor;
     this.name = props.name;
