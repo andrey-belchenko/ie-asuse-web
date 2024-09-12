@@ -1,15 +1,19 @@
-
 export class ConfigItem {
   constructor() {}
 
-  get className(): string {
-    return this.constructor.name;
-  }
+
 
   toJSON() {
+    const obj = this;
+    const methodNames = Object.getOwnPropertyNames(obj).filter(
+      function (property) {
+        return typeof obj[property] == 'function';
+      },
+    );
     return {
       ...this,
-      className: this.className
+      className: this.constructor.name,
+      methodNames: methodNames,
     };
   }
 }
