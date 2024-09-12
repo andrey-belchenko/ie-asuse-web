@@ -7,6 +7,7 @@ import { Navigator } from './reports/types/Navigator';
 import { Field } from './reports/types/Field';
 import { DateEditor } from './reports/types/editors/DateEditor';
 import { Editor } from './reports/types/Editor';
+import { registry } from './reports/types';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -46,8 +47,10 @@ export class AppController {
   // }
 
   @Get('reports-config')
-  async reportsConfig(): Promise<Editor> {
-    const cls = DateEditor;
-    return new cls({});
+  async reportsConfig(): Promise<any> {
+    // const cls = DateEditor;
+    // return new cls({});
+    let item = new DateEditor({})
+    return new registry[item.className](item.toJSON())
   }
 }
