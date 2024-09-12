@@ -8,6 +8,8 @@ import { Field } from './reports/types/Field';
 import { DateEditor } from './reports/types/editors/DateEditor';
 import { Editor } from './reports/types/Editor';
 import { instantiate } from './reports/types';
+import { Folder } from './reports/types/Folder';
+import { RegularReport } from './reports/types/reports/RegularReport';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -55,17 +57,30 @@ export class AppController {
   //   return instantiate(item.toJSON())
   // }
 
+  // @Get('reports-config')
+  // async reportsConfig(): Promise<any> {
+  //   let  item = new Field({
+  //     label: 'Дата',
+  //     name: 'date',
+  //     editor: new DateEditor({}),
+  //     defaultValue: () => new Date(2022, 2, 31),
+  //   })
+
+  //   const text = JSON.stringify(item);
+  //   item = JSON.parse(text)
+  //   return instantiate(item)
+  // }
+
   @Get('reports-config')
   async reportsConfig(): Promise<any> {
-    let  item = new Field({
-      label: 'Дата',
-      name: 'date',
-      editor: new DateEditor({}),
-      defaultValue: () => new Date(2022, 2, 31),
-    })
+    let item = nav10;
 
     const text = JSON.stringify(item);
-    item = JSON.parse(text)
-    return instantiate(item)
+    item = JSON.parse(text);
+
+    // return item;
+    item =  instantiate(item);
+    // return instantiate(item);
+    return {value: ((item.items[0] as Folder).items[0] as RegularReport).paramsForm.fields[0].defaultValue()}
   }
 }
