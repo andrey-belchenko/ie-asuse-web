@@ -1,7 +1,6 @@
 export class ConfigItem {
+  id?: string;
   constructor() {}
-
-
 
   toJSON() {
     const obj = this;
@@ -15,5 +14,22 @@ export class ConfigItem {
       className: this.constructor.name,
       methodNames: methodNames,
     };
+  }
+
+  setIds(rootId: string) {
+    this.setIdsLevel(this, rootId);
+  }
+
+  private setIdsLevel(struct, path = '') {
+    if (typeof struct === 'object' && !Array.isArray(struct)) {
+      struct.id = path;
+      for (let key in struct) {
+        this.setIdsLevel(struct[key], `${path}.${key}`);
+      }
+    } else if (Array.isArray(struct)) {
+      struct.forEach((item, index) => {
+        this.setIdsLevel(item, `${path}.${index}`);
+      });
+    }
   }
 }

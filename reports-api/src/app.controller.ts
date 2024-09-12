@@ -43,10 +43,10 @@ export class AppController {
     return { result: 'Ок' };
   }
 
-  // @Get('reports-config')
-  // async reportsConfig(): Promise<Navigator> {
-  //   return nav10;
-  // }
+  @Get('reports-config')
+  async reportsConfig(): Promise<Navigator> {
+    return nav10;
+  }
 
   // @Get('reports-config')
   // async reportsConfig(): Promise<any> {
@@ -71,16 +71,16 @@ export class AppController {
   //   return instantiate(item)
   // }
 
-  @Get('reports-config')
-  async reportsConfig(): Promise<any> {
-    let item = nav10;
+  // @Get('reports-config')
+  // async reportsConfig(): Promise<any> {
+  //   let item = nav10;
 
-    const text = JSON.stringify(item);
-    item = JSON.parse(text);
+  //   const text = JSON.stringify(item);
+  //   item = JSON.parse(text);
 
-    // return item;
-    item =  instantiate(item);
-    // return instantiate(item);
-    return {value: ((item.items[0] as Folder).items[0] as RegularReport).paramsForm.fields[0].defaultValue()}
-  }
+  //   // return item;
+  //   item =  instantiate(item);
+  //   // return instantiate(item);
+  //   return {value: ((item.items[0] as Folder).items[0] as RegularReport).paramsForm.fields[0].defaultValue()}
+  // }
 }
