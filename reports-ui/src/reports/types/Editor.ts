@@ -1,5 +1,9 @@
+import { ConfigItem } from './ConfigItem';
+
 export interface EditorProps {}
 
-export class Editor {
-  constructor(props: EditorProps) {}
+export class Editor extends ConfigItem {
+  constructor(props: EditorProps) {
+    super();
+  }
 }
