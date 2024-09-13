@@ -6,18 +6,18 @@ import { ref, watch } from 'vue';
 import DxTextBox from 'devextreme-vue/text-box';
 
 const props = defineProps({
-    modelValue: {
+    value: {
         type: String,
         required: false
     }
 });
 
-const fieldValue = ref(props.modelValue);
+const fieldValue = ref(props.value);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:value']);
 
 watch(fieldValue, (newValue, oldValue) => {
-    emit('update:modelValue', newValue);
+    emit('update:value', newValue);
 });
 
 </script>

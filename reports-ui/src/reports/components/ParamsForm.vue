@@ -3,7 +3,7 @@
         <div v-for="fieldConfig in formConfig.fields" :key="fieldConfig.name">
             <div class="label">{{ fieldConfig.label }}</div>
             <!-- <div class="label">{{ values[fieldConfig.name] }}</div> -->
-            <component :is="getEditorComponent(fieldConfig.editor)" :configuration="fieldConfig.editor"
+            <component :is="getEditorComponent(fieldConfig.editor)" :configuration="fieldConfig.editor" :formValues="values"
                 v-model="values[fieldConfig.name]" />
         </div>
         <!-- {{ JSON.stringify(values) }} -->

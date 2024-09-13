@@ -25,12 +25,13 @@ import { queryTable } from '@/api-client/pg';
 const props = defineProps({
     value: {
         type: Array,
-        required: false
     },
     configuration: {
         type: Object as () => SelectEditorConfig,
-        required: false
-    }
+    },
+    formValues: {
+        type: Object
+    },
 });
 
 const gridColumns = ref(props.configuration?.columns);
@@ -50,7 +51,7 @@ function makeDataSource(config: SelectEditorConfig) {
         loadMode: 'raw',
         key: config.keyField,
         load() {
-            
+
             if (config.listItems) {
                 return config.listItems()
             } else {
