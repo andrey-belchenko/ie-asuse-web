@@ -1,11 +1,12 @@
 import type { Editor } from "./Editor";
 import { ConfigItem } from './ConfigItem';
+import { Method } from "./Method";
 
 export interface FieldProps {
   label: string;
   name: string;
   editor: Editor;
-  defaultValue?: () => Promise<any>;
+  defaultValue?: Method;
 }
 
 export class Field  extends ConfigItem {

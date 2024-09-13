@@ -1,16 +1,17 @@
 import { Editor, type EditorProps } from '../Editor';
+import { Method } from '../Method';
 import { MethodParams } from '../MethodParams';
 
 export interface SelectEditorProps extends EditorProps {
   columns: string[];
-  listItems?: (params: MethodParams) => Promise<any[]>;
+  listItems?: Method;
   keyField: string;
   displayField: string;
 }
 
 export class SelectEditor extends Editor {
   columns: string[];
-  listItems?: (params: MethodParams) => Promise<any[]>;
+  listItems?: Method;
   keyField: string;
   displayField: string;
   constructor(props: SelectEditorProps) {

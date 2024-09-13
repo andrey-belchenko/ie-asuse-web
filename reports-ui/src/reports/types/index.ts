@@ -9,6 +9,8 @@ import { Folder } from "./Folder";
 import { Form } from "./Form";
 import { Navigator } from "./Navigator";
 import type { ConfigItem } from "./ConfigItem";
+import { Interface } from "readline";
+import { MethodParams } from "./MethodParams";
 
 function toDict(arr) {
   return arr.reduce((acc, curr) => {
@@ -81,10 +83,12 @@ export function instantiate<T>(object: T): T {
   return newObj;
 }
 
+
+
 type MethodCallHandler = (
   configItem: ConfigItem,
   method: string,
-  params?: any
+  params?: MethodParams
 ) => Promise<any>;
 
 // let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);

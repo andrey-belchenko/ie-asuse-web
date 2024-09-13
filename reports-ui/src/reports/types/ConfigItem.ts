@@ -4,11 +4,13 @@ export class ConfigItem {
 
   toJSON() {
     const obj = this;
-    const methodNames = Object.getOwnPropertyNames(obj).filter(
-      function (property) {
-        return typeof obj[property] == 'function';
-      },
-    );
+    const methodNames = [];
+    for (let key in obj) {
+      if (typeof obj[key] == 'function') {
+        methodNames.push(key);
+      }
+    }
+
     return {
       ...this,
       className: this.constructor.name,
