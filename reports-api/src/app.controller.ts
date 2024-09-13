@@ -44,14 +44,14 @@ export class AppController {
   async executeMethod(
     @Param('configItemId') configItemId: string,
     @Param('methodName') methodName: string,
-    @Body() request: any,
+    @Body() params: any,
   ): Promise<any> {
-    return { data: await configItemDict[configItemId][methodName]() };
+    return { data: await configItemDict[configItemId][methodName](params) };
   }
 
   @Get('test')
   async test(): Promise<any> {
-    return  new SelectEditor({
+    return new SelectEditor({
       columns: ['аббр', 'имя'],
       keyField: 'отделение_id',
       displayField: 'аббр',

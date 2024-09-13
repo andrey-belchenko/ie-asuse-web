@@ -11,6 +11,7 @@
             </DxDataGrid>
         </template>
     </DxDropDownBox>
+    <!-- {{ formValues }} -->
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
@@ -18,12 +19,10 @@ import DxDropDownBox from 'devextreme-vue/drop-down-box';
 import {
     DxDataGrid, DxSelection, DxPaging, DxFilterRow, DxScrolling,
 } from 'devextreme-vue/data-grid';
-import CustomStore from 'devextreme/data/custom_store';
 import type { SelectEditor as SelectEditorConfig } from '@/reports/types/editors/SelectEditor';
-import { queryTable } from '@/api-client/pg';
-
+import { makeDataSource } from './SelectEditor';
 const props = defineProps({
-    value: {
+    modelValue: {
         type: Array,
     },
     configuration: {
@@ -36,31 +35,17 @@ const props = defineProps({
 
 const gridColumns = ref(props.configuration?.columns);
 
-const gridDataSource = makeDataSource(props.configuration!);
+const gridDataSource = makeDataSource(props.configuration!, props.formValues);
 
-const gridBoxValue = ref(props.value);
+const gridBoxValue = ref(props.modelValue);
 
-const emit = defineEmits(['update:value']);
+const emit = defineEmits(['update:modelValue']);
 watch(gridBoxValue, (newValue, oldValue) => {
-    emit('update:value', newValue);
+    emit('update:modelValue', newValue);
 });
 
 
-function makeDataSource(config: SelectEditorConfig) {
-    return new CustomStore({
-        loadMode: 'raw',
-        key: config.keyField,
-        load() {
 
-            if (config.listItems) {
-                return config.listItems()
-            } else {
-                return []
-            }
-            // return config.data ?? queryTable({ tableName: config.tableName! })
-        },
-    });
-}
 
 
 </script>
