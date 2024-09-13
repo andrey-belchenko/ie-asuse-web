@@ -23,7 +23,7 @@ import type { SelectEditor as SelectEditorConfig } from '@/reports/types/editors
 import { queryTable } from '@/api-client/pg';
 
 const props = defineProps({
-    modelValue: {
+    value: {
         type: Array,
         required: false
     },
@@ -37,11 +37,11 @@ const gridColumns = ref(props.configuration?.columns);
 
 const gridDataSource = makeDataSource(props.configuration!);
 
-const gridBoxValue = ref(props.modelValue);
+const gridBoxValue = ref(props.value);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:value']);
 watch(gridBoxValue, (newValue, oldValue) => {
-    emit('update:modelValue', newValue);
+    emit('update:value', newValue);
 });
 
 
