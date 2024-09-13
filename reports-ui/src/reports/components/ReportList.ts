@@ -1,4 +1,4 @@
-import nav10 from "../config/navigators/nav10";
+
 import { Folder, type NavigatorItem } from "../types/Folder";
 import { defineComponent, onMounted, ref } from "vue";
 import DxTreeView from "devextreme-vue/tree-view";
