@@ -11,6 +11,7 @@ import { instantiate } from './reports/types';
 import { Folder } from './reports/types/Folder';
 import { RegularReport } from './reports/types/reports/RegularReport';
 import { ConfigItem, configItemDict } from './reports/types/ConfigItem';
+import { SelectEditor } from './reports/types/editors/SelectEditor';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -50,7 +51,14 @@ export class AppController {
 
   @Get('test')
   async test(): Promise<any> {
-    return { result: 'Ок' };
+    return  new SelectEditor({
+      columns: ['аббр', 'имя'],
+      keyField: 'отделение_id',
+      displayField: 'аббр',
+      listItems: async () => {
+        return await queryTable('report_dm.dim_отделение');
+      },
+    });
   }
 
   @Get('reports-config')

@@ -15,6 +15,7 @@ export class DataSource  extends ConfigItem {
 
   getFuncParams = (formParams: any): any => {
     const funcPars: any = {};
+    debugger;
     for (let name in this.paramsBinding) {
       funcPars[name] = formParams[this.paramsBinding[name]];
     }

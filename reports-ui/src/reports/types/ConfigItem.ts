@@ -17,10 +17,10 @@ export class ConfigItem {
   }
 
   setIds(rootId: string) {
-    this.setIdsLevel(this, rootId);
+    ConfigItem.setIdsLevel(this, rootId);
   }
 
-  private setIdsLevel(struct, path = '') {
+  private static setIdsLevel(struct, path = '') {
     if (typeof struct === 'object' && !Array.isArray(struct)) {
       if (struct instanceof ConfigItem) {
         struct.id = path;

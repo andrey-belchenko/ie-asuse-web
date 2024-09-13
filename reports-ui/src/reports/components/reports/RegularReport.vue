@@ -5,12 +5,14 @@
 
                 <ParamsForm v-if="reportConfig?.paramsForm" :formConfig="reportConfig?.paramsForm"
                     v-model:values="formValues" />
+                   
                 <DxToolbar class="toolbar">
                     <TbItem>
                         <ActionButton text="Сформировать отчет" @press="onSubmit" :loading="executing" :width="180"
                             :height="30" />
                     </TbItem>
                 </DxToolbar>
+                rep {{ JSON.stringify(formValues) }} 
             </DxItem>
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->

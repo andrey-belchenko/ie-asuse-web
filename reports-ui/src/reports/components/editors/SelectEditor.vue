@@ -50,7 +50,13 @@ function makeDataSource(config: SelectEditorConfig) {
         loadMode: 'raw',
         key: config.keyField,
         load() {
-            return config.data ?? queryTable({ tableName: config.tableName! })
+            
+            if (config.listItems) {
+                return config.listItems()
+            } else {
+                return []
+            }
+            // return config.data ?? queryTable({ tableName: config.tableName! })
         },
     });
 }

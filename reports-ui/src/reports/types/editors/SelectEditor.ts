@@ -4,6 +4,7 @@ export interface SelectEditorProps extends EditorProps {
   columns: string[];
   data?: any[];
   tableName?: string;
+  listItems?: () => Promise<any[]>;
   keyField: string;
   displayField: string;
 }
@@ -12,6 +13,7 @@ export class SelectEditor extends Editor {
   columns: string[];
   data?: any[];
   tableName?: string;
+  listItems?: () => Promise<any[]>;
   keyField: string;
   displayField: string;
   constructor(props: SelectEditorProps) {
