@@ -11,7 +11,7 @@
             </DxDataGrid>
         </template>
     </DxDropDownBox>
-    <!-- {{ formValues }} -->
+    {{ formValues }}
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
