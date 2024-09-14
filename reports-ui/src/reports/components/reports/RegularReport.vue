@@ -12,7 +12,7 @@
                             :height="30" />
                     </TbItem>
                 </DxToolbar>
-                rep {{ JSON.stringify(formValues) }} 
+                <!-- rep {{ JSON.stringify(formValues) }}  -->
             </DxItem>
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->

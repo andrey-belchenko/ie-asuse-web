@@ -54,6 +54,16 @@ export const execFunction = async (functionName: string, params: any) => {
   }
 };
 
+export const query = async (sql: string, params?:any[]) => {
+  const client = await pool.connect();
+  try {
+  
+    const res = await client.query(sql,params);
+    return res.rows as any[];
+  } finally {
+    client.release();
+  }
+};
 
 export const queryTable = async (tableName: string) => {
   const client = await pool.connect();

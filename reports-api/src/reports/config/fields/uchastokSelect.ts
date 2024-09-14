@@ -1,4 +1,4 @@
-import { queryTable } from '@/pgsql';
+import { query, queryTable } from '@/pgsql';
 import { SelectEditor } from '@/reports/types/editors/SelectEditor';
 import { Field } from '@/reports/types/Field';
 
@@ -10,8 +10,14 @@ export default new Field({
     keyField: 'участок_id',
     displayField: 'сокр_имя',
     listItems: async (params) => {
-      let a = params.formValues;
-      return await queryTable('report_dm.dim_участок');
+      if (!params.formValues.dep) {
+        return [];
+      }
+      return await query(
+        'select * from report_dm.dim_участок where отделение_id = ANY($1::int[])',
+        [params.formValues.dep],
+      );
     },
+    listItemsDeps: ['dep'],
   }),
 });

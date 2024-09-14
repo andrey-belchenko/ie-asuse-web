@@ -5,6 +5,7 @@ import { MethodParams } from '../MethodParams';
 export interface SelectEditorProps extends EditorProps {
   columns: string[];
   listItems?: Method;
+  listItemsDeps?: string[];
   keyField: string;
   displayField: string;
 }
@@ -12,6 +13,7 @@ export interface SelectEditorProps extends EditorProps {
 export class SelectEditor extends Editor {
   columns: string[];
   listItems?: Method;
+  listItemsDeps?: string[];
   keyField: string;
   displayField: string;
   constructor(props: SelectEditorProps) {
@@ -20,5 +22,6 @@ export class SelectEditor extends Editor {
     this.keyField = props.keyField;
     this.displayField = props.displayField;
     this.listItems = props.listItems;
+    this.listItemsDeps = props.listItemsDeps;
   }
 }

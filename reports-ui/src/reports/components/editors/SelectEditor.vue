@@ -11,10 +11,10 @@
             </DxDataGrid>
         </template>
     </DxDropDownBox>
-    {{ formValues }}
+    <!-- {{ changedValues }} -->
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { inject, Ref, ref, watch } from 'vue';
 import DxDropDownBox from 'devextreme-vue/drop-down-box';
 import {
     DxDataGrid, DxSelection, DxPaging, DxFilterRow, DxScrolling,
@@ -28,14 +28,14 @@ const props = defineProps({
     configuration: {
         type: Object as () => SelectEditorConfig,
     },
-    formValues: {
-        type: Object
-    },
 });
+
+const formValues = inject("formValues");
+const changedValues = inject<Ref>("changesValues");
 
 const gridColumns = ref(props.configuration?.columns);
 
-const gridDataSource = makeDataSource(props.configuration!, props.formValues);
+const gridDataSource = ref<any>(makeDataSource(props.configuration!, formValues));
 
 const gridBoxValue = ref(props.modelValue);
 
@@ -44,8 +44,27 @@ watch(gridBoxValue, (newValue, oldValue) => {
     emit('update:modelValue', newValue);
 });
 
+watch(() => props.modelValue, (newValue, oldValue) => {
+    emit('update:modelValue', newValue);
+});
 
+watch(changedValues, (newValue, oldValue) => {
+    let needRefreshList = false;
+    for (let changedField of newValue) {
 
+        if (props.configuration.listItemsDeps?.includes(changedField)) {
+            needRefreshList = true;
+            break;
+        }
+    }
+    console.log(needRefreshList)
+    if (needRefreshList) {
+        // gridDataSource.value = [] 
+        gridDataSource.value = makeDataSource(props.configuration!, formValues);
+        console.log(newValue)
+    }
+
+});
 
 
 </script>
