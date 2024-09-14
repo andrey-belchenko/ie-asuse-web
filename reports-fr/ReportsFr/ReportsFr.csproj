@@ -13,4 +13,8 @@
     <PackageReference Include="FastReport.Web" Version="2024.2.19-demo" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Home\" />
+  </ItemGroup>
+
 </Project>

@@ -16,24 +16,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Home/report.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxyZXBvcnQuY3NodG1s
+[C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Report/report.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XHJlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Repos/mygithub/ie-asuse-web/reports-fr/ReportsFr/Views/_ViewImports.cshtml]
