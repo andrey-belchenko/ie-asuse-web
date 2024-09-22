@@ -1,9 +1,10 @@
 <template>
     <div class="main" v-if="reportConfig">
-        <div>
+        <!-- <div>
             <h1> Компонент для просмотра отчета FastReports</h1>
             <h2> Template name: {{ viewConfig.templateName }} </h2>
-        </div>
+        </div> -->
+        <iframe class="frame"  :src="'http://localhost:5195/Report/DisplayReport'"></iframe>
 
     </div>
 </template>
@@ -26,11 +27,22 @@ const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
 .main {
     position: absolute;
     inset: 0;
-    display: flex;
+    background-color: red;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
-.main * {
+
+.frame {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /* inset: 0; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+/* .main * {
     text-align: center;
-}
+} */
 </style>
