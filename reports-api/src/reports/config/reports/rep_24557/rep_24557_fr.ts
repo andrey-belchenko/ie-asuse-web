@@ -1,6 +1,4 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
-import { DataSource } from '@/reports/types/DataSource';
-import { ReportTable } from '@/reports/types/views/ReportTable';
 import form from './form';
 import ds from './ds';
 import { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
