@@ -28,6 +28,7 @@ const remoteMethodCall = async (
   methodName: string,
   params: any
 ) => {
+  debugger;
   const response = await fetch(
     `${baseUrl}/config-items/${itemId}/methods/${methodName}/call`,
     {
@@ -39,7 +40,7 @@ const remoteMethodCall = async (
     }
   );
   const body = await response.json();
-  return replaceDateStrings(body).data;
+  return instantiate(replaceDateStrings(body).data);
 };
 
 function replaceDateStrings(obj: any) {

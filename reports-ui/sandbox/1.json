@@ -1,0 +1,52 @@
+{
+  "data": {
+    "fields": [
+      {
+        "label": "Дата",
+        "editor": {
+          "id": "nav10.items.0.items.0.paramsForm.fields.0.editor",
+          "className": "DateEditor",
+          "methodNames": []
+        },
+        "name": "date",
+        "id": "nav10.items.0.items.0.paramsForm.fields.0",
+        "className": "Field",
+        "methodNames": ["defaultValue"]
+      },
+      {
+        "label": "Отделение",
+        "editor": {
+          "columns": ["аббр", "имя"],
+          "keyField": "отделение_id",
+          "displayField": "аббр",
+          "id": "nav10.items.0.items.0.paramsForm.fields.1.editor",
+          "className": "SelectEditor",
+          "methodNames": ["listItems"]
+        },
+        "name": "dep",
+        "id": "nav10.items.0.items.0.paramsForm.fields.1",
+        "className": "Field",
+        "methodNames": []
+      },
+      {
+        "label": "Участок",
+        "editor": {
+          "columns": ["имя"],
+          "keyField": "участок_id",
+          "displayField": "сокр_имя",
+          "listItemsDeps": ["dep"],
+          "id": "nav10.items.0.items.0.paramsForm.fields.2.editor",
+          "className": "SelectEditor",
+          "methodNames": ["listItems"]
+        },
+        "name": "uchastok",
+        "id": "nav10.items.0.items.0.paramsForm.fields.2",
+        "className": "Field",
+        "methodNames": []
+      }
+    ],
+    "id": "nav10.items.0.items.0.paramsForm",
+    "className": "Form",
+    "methodNames": []
+  }
+}

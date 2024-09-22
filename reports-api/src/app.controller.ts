@@ -68,6 +68,7 @@ export class AppController {
 
   @Get('reports-config')
   async reportsConfig(): Promise<Navigator> {
+    nav10.setIds(nav10.name);
     return nav10;
   }
 

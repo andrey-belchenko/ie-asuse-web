@@ -16,6 +16,6 @@ export class Navigator  extends ConfigItem {
     super();
     this.name = props.name;
     this.items = props.items;
-    this.setIds(this.name)
+   
   }
 }
