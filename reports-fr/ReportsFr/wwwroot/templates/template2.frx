@@ -1,15 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Report ScriptLanguage="CSharp" ReportInfo.Created="09/22/2024 15:44:06" ReportInfo.Modified="09/22/2024 15:52:01" ReportInfo.CreatorVersion="2024.2.0.0">
-  <Styles Name="Standard">
-    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
-    <Style Name="Header" Font="Arial, 10pt, style=Bold"/>
-    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
-    <Style Name="Data" Font="Arial, 10pt"/>
-    <Style Name="Footer" Font="Arial, 10pt"/>
-    <Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
-  </Styles>
+	<Styles Name="Standard">
+		<Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+		<Style Name="Header" Font="Arial, 10pt, style=Bold"/>
+		<Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+		<Style Name="Data" Font="Arial, 10pt"/>
+		<Style Name="Footer" Font="Arial, 10pt"/>
+		<Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
+	</Styles>
 	<Dictionary>
-		<TableDataSource Name="main" ReferenceName="main" Alias="main" DataType="System.Int32" Enabled="true">
+		<TableDataSource Name="main" Alias="main" DataType="System.Int32" Enabled="true" ReferenceName="main">
 			<Column Name="договор_id" DataType="System.Int32"/>
 			<Column Name="период_id" DataType="System.Int32"/>
 			<Column Name="абонент_id" DataType="System.Int32"/>
@@ -29,58 +29,58 @@
 			<Column Name="долг" DataType="System.Decimal"/>
 		</TableDataSource>
 	</Dictionary>
-  <ReportPage Name="Отчет" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" Watermark.Font="Arial, 60pt">
-    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
-      <TextObject Name="Text1" Width="1047.06" Height="37.8" Dock="Fill" Text="main" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
-    </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="1047.06" Height="28.35">
-      <TextObject Name="Text3" Width="66.15" Height="18.9" Text="договор_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text5" Left="66.15" Width="66.15" Height="18.9" Text="период_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text7" Left="132.3" Width="66.15" Height="18.9" Text="абонент_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text9" Left="198.45" Width="66.15" Height="18.9" Text="отделение_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text11" Left="264.6" Width="66.15" Height="18.9" Text="участок_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text13" Left="330.75" Width="66.15" Height="18.9" Text="гр_потр_нас_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text15" Left="396.9" Width="66.15" Height="18.9" Text="период_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text17" Left="463.05" Width="66.15" Height="18.9" Text="год" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text19" Left="529.2" Width="56.7" Height="18.9" Text="месяц" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text21" Left="585.9" Width="56.7" Height="18.9" Text="месяц_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text23" Left="642.6" Width="56.7" Height="18.9" Text="договор_номер" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text25" Left="699.3" Width="56.7" Height="18.9" Text="абонент_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text27" Left="756" Width="56.7" Height="18.9" Text="отделение_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text29" Left="812.7" Width="56.7" Height="18.9" Text="участок_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text31" Left="869.4" Width="56.7" Height="18.9" Text="ику_рсо_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text33" Left="926.1" Width="56.7" Height="18.9" Text="гр_потр_нас_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text35" Left="982.8" Width="56.7" Height="18.9" Text="долг" Font="Arial, 10pt, style=Bold" Style="Header"/>
-    </PageHeaderBand>
-    <GroupHeaderBand Name="GroupHeader1" Top="74.15" Width="1047.06" Height="18.9" Condition="[main.договор_id]">
-      <TextObject Name="Text36" Width="1047.06" Height="18.9" Dock="Fill" Text="[main.договор_id]" Font="Arial, 10pt, style=Bold" Style="Group"/>
-      <GroupHeaderBand Name="GroupHeader2" Top="97.05" Width="1047.06" Height="18.9" Condition="[main.гр_потр_нас_id]">
-        <TextObject Name="Text37" Width="1047.06" Height="18.9" Dock="Fill" Text="[main.гр_потр_нас_id]" Font="Arial, 10pt, style=Bold" Style="Group"/>
-        <DataBand Name="Data1" Top="119.95" Width="1047.06" Height="18.9" EvenStyle="EvenRows" DataSource="main">
-          <TextObject Name="Text2" Width="66.15" Height="18.9" Text="[main.договор_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text4" Left="66.15" Width="66.15" Height="18.9" Text="[main.период_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text6" Left="132.3" Width="66.15" Height="18.9" Text="[main.абонент_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text8" Left="198.45" Width="66.15" Height="18.9" Text="[main.отделение_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text10" Left="264.6" Width="66.15" Height="18.9" Text="[main.участок_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text12" Left="330.75" Width="66.15" Height="18.9" Text="[main.гр_потр_нас_id]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text14" Left="396.9" Width="66.15" Height="18.9" Text="[main.период_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text16" Left="463.05" Width="66.15" Height="18.9" Text="[main.год]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text18" Left="529.2" Width="56.7" Height="18.9" Text="[main.месяц]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text20" Left="585.9" Width="56.7" Height="18.9" Text="[main.месяц_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text22" Left="642.6" Width="56.7" Height="18.9" Text="[main.договор_номер]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text24" Left="699.3" Width="56.7" Height="18.9" Text="[main.абонент_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text26" Left="756" Width="56.7" Height="18.9" Text="[main.отделение_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text28" Left="812.7" Width="56.7" Height="18.9" Text="[main.участок_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text30" Left="869.4" Width="56.7" Height="18.9" Text="[main.ику_рсо_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text32" Left="926.1" Width="56.7" Height="18.9" Text="[main.гр_потр_нас_имя]" Font="Arial, 10pt" Style="Data"/>
-          <TextObject Name="Text34" Left="982.8" Width="56.7" Height="18.9" Text="[main.долг]" Font="Arial, 10pt" Style="Data"/>
-        </DataBand>
-        <GroupFooterBand Name="GroupFooter2" Top="142.85" Width="1047.06" Height="18.9"/>
-      </GroupHeaderBand>
-      <GroupFooterBand Name="GroupFooter1" Top="165.75" Width="1047.06" Height="18.9"/>
-    </GroupHeaderBand>
-    <PageFooterBand Name="PageFooter1" Top="188.65" Width="1047.06" Height="18.9">
-      <TextObject Name="Text38" Width="1047.06" Height="18.9" Dock="Fill" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
-    </PageFooterBand>
-  </ReportPage>
+	<ReportPage Name="Отчет" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" Watermark.Font="Arial, 60pt">
+		<ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
+			<TextObject Name="Text1" Width="1047.06" Height="37.8" Dock="Fill" Text="main" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+		</ReportTitleBand>
+		<PageHeaderBand Name="PageHeader1" Top="41.8" Width="1047.06" Height="28.35">
+			<TextObject Name="Text3" Width="66.15" Height="18.9" Text="договор_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text5" Left="66.15" Width="66.15" Height="18.9" Text="период_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text7" Left="132.3" Width="66.15" Height="18.9" Text="абонент_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text9" Left="198.45" Width="66.15" Height="18.9" Text="отделение_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text11" Left="264.6" Width="66.15" Height="18.9" Text="участок_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text13" Left="330.75" Width="66.15" Height="18.9" Text="гр_потр_нас_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text15" Left="396.9" Width="66.15" Height="18.9" Text="период_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text17" Left="463.05" Width="66.15" Height="18.9" Text="год" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text19" Left="529.2" Width="56.7" Height="18.9" Text="месяц" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text21" Left="585.9" Width="56.7" Height="18.9" Text="месяц_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text23" Left="642.6" Width="56.7" Height="18.9" Text="договор_номер" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text25" Left="699.3" Width="56.7" Height="18.9" Text="абонент_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text27" Left="756" Width="56.7" Height="18.9" Text="отделение_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text29" Left="812.7" Width="56.7" Height="18.9" Text="участок_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text31" Left="869.4" Width="56.7" Height="18.9" Text="ику_рсо_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text33" Left="926.1" Width="56.7" Height="18.9" Text="гр_потр_нас_имя" Font="Arial, 10pt, style=Bold" Style="Header"/>
+			<TextObject Name="Text35" Left="982.8" Width="56.7" Height="18.9" Text="долг" Font="Arial, 10pt, style=Bold" Style="Header"/>
+		</PageHeaderBand>
+		<GroupHeaderBand Name="GroupHeader1" Top="74.15" Width="1047.06" Height="18.9" Condition="[main.договор_id]">
+			<TextObject Name="Text36" Width="1047.06" Height="18.9" Dock="Fill" Text="[main.договор_id]" Font="Arial, 10pt, style=Bold" Style="Group"/>
+			<GroupHeaderBand Name="GroupHeader2" Top="97.05" Width="1047.06" Height="18.9" Condition="[main.гр_потр_нас_id]">
+				<TextObject Name="Text37" Width="1047.06" Height="18.9" Dock="Fill" Text="[main.гр_потр_нас_id]" Font="Arial, 10pt, style=Bold" Style="Group"/>
+				<DataBand Name="Data1" Top="119.95" Width="1047.06" Height="18.9" EvenStyle="EvenRows" DataSource="main">
+					<TextObject Name="Text2" Width="66.15" Height="18.9" Text="[main.договор_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text4" Left="66.15" Width="66.15" Height="18.9" Text="[main.период_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text6" Left="132.3" Width="66.15" Height="18.9" Text="[main.абонент_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text8" Left="198.45" Width="66.15" Height="18.9" Text="[main.отделение_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text10" Left="264.6" Width="66.15" Height="18.9" Text="[main.участок_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text12" Left="330.75" Width="66.15" Height="18.9" Text="[main.гр_потр_нас_id]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text14" Left="396.9" Width="66.15" Height="18.9" Text="[main.период_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text16" Left="463.05" Width="66.15" Height="18.9" Text="[main.год]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text18" Left="529.2" Width="56.7" Height="18.9" Text="[main.месяц]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text20" Left="585.9" Width="56.7" Height="18.9" Text="[main.месяц_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text22" Left="642.6" Width="56.7" Height="18.9" Text="[main.договор_номер]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text24" Left="699.3" Width="56.7" Height="18.9" Text="[main.абонент_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text26" Left="756" Width="56.7" Height="18.9" Text="[main.отделение_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text28" Left="812.7" Width="56.7" Height="18.9" Text="[main.участок_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text30" Left="869.4" Width="56.7" Height="18.9" Text="[main.ику_рсо_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text32" Left="926.1" Width="56.7" Height="18.9" Text="[main.гр_потр_нас_имя]" Font="Arial, 10pt" Style="Data"/>
+					<TextObject Name="Text34" Left="982.8" Width="56.7" Height="18.9" Text="[main.долг]" Font="Arial, 10pt" Style="Data"/>
+				</DataBand>
+				<GroupFooterBand Name="GroupFooter2" Top="142.85" Width="1047.06" Height="18.9"/>
+			</GroupHeaderBand>
+			<GroupFooterBand Name="GroupFooter1" Top="165.75" Width="1047.06" Height="18.9"/>
+		</GroupHeaderBand>
+		<PageFooterBand Name="PageFooter1" Top="188.65" Width="1047.06" Height="18.9">
+			<TextObject Name="Text38" Width="1047.06" Height="18.9" Dock="Fill" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+		</PageFooterBand>
+	</ReportPage>
 </Report>

@@ -6,7 +6,18 @@
       "request": "launch",
       "name": "Launch via NPM",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start:debug"],
+      "runtimeArgs": ["run", "start:debug"]
+    },
+    {
+      "name": "Node: Current File",
+      "type": "node",
+      "request": "launch",
+      "sourceMaps": true,
+      "smartStep": true,
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ts-node", "-r", "tsconfig-paths/register"],
+      "args": ["${file}"],
+      "cwd": "${workspaceRoot}"
     }
   ]
 }

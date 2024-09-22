@@ -35,7 +35,9 @@ namespace ReportsFr.Controllers
                     {
                         foreach (var element in document)
                         {
+                            
                             table.Columns.Add(element.Name);
+
                         }
                         schemaCreated = true;
                     }
@@ -43,7 +45,9 @@ namespace ReportsFr.Controllers
                     DataRow row = table.NewRow();
                     foreach (var element in document)
                     {
+                       
                         row[element.Name] = element.Value;
+                        
                     }
                     table.Rows.Add(row);
                 }
@@ -87,10 +91,18 @@ namespace ReportsFr.Controllers
 
 
             var webRoot = _env.WebRootPath;
-            WebReport WebReport = new WebReport();
-            WebReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
-            ViewBag.WebReport = WebReport;
-            WebReport.Report.RegisterData(dataTable, "main");
+            WebReport webReport = new WebReport();
+            webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
+            var ds = webReport.Report.GetDataSource("main");
+            //webReport.Report.Dictionary.DataSources
+            //var table = new DataTable();
+            //foreach (FastReport.Data.Column col in ds.Columns)
+            //{
+            //    table.Columns.Add(col.Name, col.DataType);
+                
+            //}
+            ViewBag.WebReport = webReport;
+            webReport.Report.RegisterData(dataTable, "main");
             return View("report");
         }
 
