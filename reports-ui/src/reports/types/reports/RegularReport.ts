@@ -11,12 +11,13 @@ export interface RegularReportProps extends ReportProps {
 }
 
 export class RegularReport extends Report {
-  paramsForm?: Form;
+
+  paramsForm?:  () => Promise<Form>;
   dataSource?: DataSource;
   view: ReportView;
   constructor(props: RegularReportProps) {
     super(props);
-    this.paramsForm = props.paramsForm;
+    this.paramsForm = async ()=> props.paramsForm;
     this.dataSource = props.dataSource;
     this.view = props.view ?? new ReportTable({});
   }

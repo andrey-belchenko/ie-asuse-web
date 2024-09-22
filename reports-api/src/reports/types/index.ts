@@ -9,7 +9,6 @@ import { Folder } from "./Folder";
 import { Form } from "./Form";
 import { Navigator } from "./Navigator";
 import type { ConfigItem } from "./ConfigItem";
-import { Interface } from "readline";
 import { MethodParams } from "./MethodParams";
 
 function toDict(arr) {

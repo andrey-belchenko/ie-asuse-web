@@ -46,7 +46,12 @@ export class AppController {
     @Param('methodName') methodName: string,
     @Body() params: any,
   ): Promise<any> {
-    return { data: await configItemDict[configItemId][methodName](params) };
+    const result = await configItemDict[configItemId][methodName](params);
+    if (result instanceof ConfigItem) {
+      result.setIds(`${configItemId}.${methodName}`);
+    }
+    console.log(JSON.stringify({ data: result }));
+    return { data: result };
   }
 
   @Get('test')

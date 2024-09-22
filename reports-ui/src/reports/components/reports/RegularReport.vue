@@ -3,7 +3,7 @@
         <DxSplitter id="rep-splitter2">
             <DxItem :resizable="true" :collapsible="true" size="300px">
 
-                <ParamsForm v-if="reportConfig?.paramsForm" :formConfig="reportConfig?.paramsForm"
+                <ParamsForm v-if="paramsFormConfig" :formConfig="paramsFormConfig"
                     v-model:values="formValues" />
                    
                 <DxToolbar class="toolbar">
@@ -31,7 +31,7 @@
 import { DxSplitter, DxItem } from 'devextreme-vue/splitter';
 import DxToolbar, { DxItem as TbItem } from 'devextreme-vue/toolbar';
 import ParamsForm from '../ParamsForm.vue';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { RegularReport } from '../../types/reports/RegularReport';
 import ReportView from '../ReportView.vue';
 import notify from 'devextreme/ui/notify';
@@ -39,6 +39,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ActionButton from '../ActionButton.vue';
 import { runReport } from './RegularReport';
 import type { ReportViewComponent } from '../ReportView';
+import { Form } from '@/reports/types/Form';
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
@@ -52,6 +53,12 @@ const formValues = ref({});
 const execId = ref<string>();
 const executing = ref(false);
 const ready = ref(false);
+const paramsFormConfig = ref<Form>();
+
+onMounted(async () => {
+    paramsFormConfig.value = await props.reportConfig.paramsForm();
+});
+
 const onSubmit = () => {
     const action = async () => {
         execId.value = uuidv4();
