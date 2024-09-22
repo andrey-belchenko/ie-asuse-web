@@ -25,6 +25,18 @@
       "PackagePath": "staticwebassets\\templates\\my_table2.frx"
     },
     {
+      "Id": "C:\\Repos\\mygithub\\ie-asuse-web\\reports-fr\\ReportsFr\\wwwroot\\templates\\template1.frx",
+      "PackagePath": "staticwebassets\\templates\\template1.frx"
+    },
+    {
+      "Id": "C:\\Repos\\mygithub\\ie-asuse-web\\reports-fr\\ReportsFr\\wwwroot\\templates\\template2.frx",
+      "PackagePath": "staticwebassets\\templates\\template2.frx"
+    },
+    {
+      "Id": "C:\\Repos\\mygithub\\ie-asuse-web\\reports-fr\\ReportsFr\\wwwroot\\templates\\template3.frx",
+      "PackagePath": "staticwebassets\\templates\\template3.frx"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.ReportsFr.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

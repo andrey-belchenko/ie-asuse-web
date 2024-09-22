@@ -11,6 +11,8 @@
   <ItemGroup>
     <PackageReference Include="FastReport.Core" Version="2024.2.19-demo" />
     <PackageReference Include="FastReport.Web" Version="2024.2.19-demo" />
+    <PackageReference Include="MongoDB.Bson" Version="2.29.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.29.0" />
   </ItemGroup>
 
   <ItemGroup>
