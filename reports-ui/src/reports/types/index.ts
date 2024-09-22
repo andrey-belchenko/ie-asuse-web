@@ -75,6 +75,7 @@ export function instantiate<T>(object: T): T {
   }
 
   const newObj = new registry[className](buffObj);
+  newObj.id = buffObj.id;
   for (let methodName of obj.methodNames) {
     newObj[methodName] = async (params?: any) => {
       return await methodCallHandler(newObj, methodName, params);
