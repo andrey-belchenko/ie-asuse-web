@@ -27,7 +27,7 @@ const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
 .main {
     position: absolute;
     inset: 0;
-    background-color: red;
+    /* background-color: red; */
     /* display: flex;
     justify-content: center;
     align-items: center; */
@@ -37,6 +37,7 @@ const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
     position: absolute;
     height: 100%;
     width: 100%;
+    border: none;
     /* inset: 0; */
     /* display: flex;
     justify-content: center;
