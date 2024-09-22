@@ -52,6 +52,7 @@ function instantiateValue(value: any): any {
   return value;
 }
 
+// Для использования на клиенте, чтобы на основе JSON полученного с сервера создать объекты нужных классов (через new...)
 export function instantiate<T>(object: T): T {
   if (!object) {
     return undefined as T;
