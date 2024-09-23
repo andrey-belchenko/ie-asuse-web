@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { execQuery, putDataToTemp } from './mongo';
+import { execQuery, putDataToTemp, replaceDateStrings } from './mongo';
 import { execFunction, queryTable } from './pgsql';
 import nav10 from './reports/config/navigators/nav10';
 import { Navigator } from './reports/types/Navigator';
@@ -43,6 +43,7 @@ export class AppController {
     @Param('methodName') methodName: string,
     @Body() params: any,
   ): Promise<any> {
+    params =  replaceDateStrings(params);
     const result = await configItemDict[configItemId][methodName](params);
     if (result instanceof ConfigItem) {
       result.setIds(`${configItemId}.${methodName}`);

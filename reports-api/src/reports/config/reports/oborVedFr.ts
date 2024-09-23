@@ -26,13 +26,5 @@ export default new RegularReport({
       }),
     ],
   }),
-  dataSource: new DataSource({
-    functionName: "report_util.get_оборотная_ведомость",
-    paramsBinding: {
-      p_дата_с: "date1",
-      p_дата_по: "date2",
-      p_отделение_id: "dep",
-    },
-  }),
   view: new FastReportsViewer({ templatePath: "oborVed.frx" }),
 });

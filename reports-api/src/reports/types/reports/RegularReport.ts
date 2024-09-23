@@ -6,14 +6,16 @@ import { ReportTable } from "../views/ReportTable";
 
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
-  dataSource?: DataSource;
+  // dataSource?: DataSource;
+  dataSource?: (formValues:any) => Promise<any[]>;
   view?: ReportView;
 }
 
 export class RegularReport extends Report {
 
   paramsForm?:  () => Promise<Form>;
-  dataSource?: DataSource;
+  // dataSource?: DataSource;
+  dataSource?: (formValues:any) => Promise<any[]>;
   view: ReportView;
   constructor(props: RegularReportProps) {
     super(props);

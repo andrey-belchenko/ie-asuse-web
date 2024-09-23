@@ -5,6 +5,7 @@ import { RegularReport } from "../../types/reports/RegularReport";
 import { DataSource } from "@/reports/types/DataSource";
 import { ReportTable } from "@/reports/types/views/ReportTable";
 import depSelect from "../fields/depSelect";
+import { execFunction } from "@/pgsql";
 
 export default new RegularReport({
   title: "Оборотная ведомость за энергию",
@@ -25,14 +26,21 @@ export default new RegularReport({
       }),
     ],
   }),
-  dataSource: new DataSource({
-    functionName: "report_util.get_оборотная_ведомость",
-    paramsBinding: {
-      p_дата_с: "date1",
-      p_дата_по: "date2",
-      p_отделение_id: "dep",
-    },
-  }),
+  // dataSource: new DataSource({
+  //   functionName: "report_util.get_оборотная_ведомость",
+  //   paramsBinding: {
+  //     p_дата_с: "date1",
+  //     p_дата_по: "date2",
+  //     p_отделение_id: "dep",
+  //   },
+  // }),
+  dataSource: async (formValues)=>{
+     return execFunction("report_util.get_оборотная_ведомость",{
+      p_дата_с: formValues.date1,
+      p_дата_по: formValues.date2,
+      p_отделение_id: formValues.dep,
+    })
+  },
   view: new ReportTable({
     columns: [
       {
