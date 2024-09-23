@@ -85,18 +85,6 @@ export function instantiate<T>(object: T): T {
   return newObj;
 }
 
-// type MethodCallHandler = (
-//   configItem: ConfigItem,
-//   method: string,
-//   params?: MethodParams,
-// ) => Promise<any>;
-
-// // let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);
-// let methodCallHandler: MethodCallHandler = async () => undefined;
-
-// export function setMethodCallHandler(func: MethodCallHandler) {
-//   methodCallHandler = func;
-// }
 
 // type PrepareTemplateFunc = (
 //   filePath: string,

@@ -3,8 +3,7 @@ import { MethodParams } from './MethodParams';
 
 export class Executor {
   private static instance?: Executor;
-  constructor() {
-  }
+  constructor() {}
 
   public static setInstance(instance: Executor) {
     Executor.instance = instance;
@@ -22,4 +21,9 @@ export class Executor {
     method: string,
     params?: MethodParams,
   ) => Promise<any> = async () => undefined;
+
+  public prepareTemplate: (
+    filePath: string,
+    templateId: string,
+  ) => Promise<void> = async () => {};
 }
