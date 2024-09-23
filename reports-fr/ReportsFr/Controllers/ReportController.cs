@@ -91,12 +91,12 @@ namespace ReportsFr.Controllers
             return View("report");
         }
 
-        public async Task<IActionResult> DisplayReport()
+        public async Task<IActionResult> DisplayReport(string dataSetName, string templateId )
         {
 
             var client = new MongoClient("mongodb://localhost:27017");
             var database = client.GetDatabase("bav_test_report");
-            var collection = database.GetCollection<BsonDocument>("report_temp");
+            var collection = database.GetCollection<BsonDocument>(dataSetName);
             var filter = new BsonDocument();
 
             using var cursor = await collection.FindAsync(filter);
@@ -105,7 +105,7 @@ namespace ReportsFr.Controllers
             var webRoot = _env.WebRootPath;
             WebReport webReport = new WebReport();
             //webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
-            var template = await ReadTemplate("template");
+            var template = await ReadTemplate(templateId);
             webReport.Report.Load(template);
             var ds = webReport.Report.GetDataSource("main");
             ViewBag.WebReport = webReport;
@@ -113,27 +113,6 @@ namespace ReportsFr.Controllers
             return View("report");
         }
 
-        public async Task<IActionResult> DisplayReportV1()
-        {
-
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("bav_test_report");
-            var collection = database.GetCollection<BsonDocument>("sample");
-            var filter = new BsonDocument();
-
-            using var cursor = await collection.FindAsync(filter);
-            var dataTable = await ToDataTable(cursor);
-
-
-
-            var webRoot = _env.WebRootPath;
-            WebReport WebReport = new WebReport();
-            WebReport.Width = "1000";
-            WebReport.Height = "1000";
-            WebReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/my_table2.frx"));
-            ViewBag.WebReport = WebReport;
-            WebReport.Report.RegisterData(dataTable, "my_table");
-            return View("report");
-        }
+      
     }
 }

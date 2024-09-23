@@ -9,6 +9,7 @@ export async function convertAndSaveFrTemplate(
   filePath: string,
   templateId: string,
 ) {
+  filePath=filePath.replace("/dist/","/src/").replace("\\dist\\","\\src\\")
   const data = await fs.readFile(filePath, 'utf-8');
   const xObj = await parseString(data);
   const xDict = xObj.Report.Dictionary[0];

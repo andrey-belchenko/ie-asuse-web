@@ -8,6 +8,7 @@ export class AppService {
      Executor.setInstance(new ServerExecutor())
   } 
   getHello(): string {
+    
     console.log('yep');
     return 'Hello World!!!';
   }

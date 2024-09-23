@@ -1,14 +1,14 @@
 <template>
     <div class="main" v-if="templateId">
+        <!-- {{ reportUrl }} -->
         <!-- <div>
             <h1> Компонент для просмотра отчета FastReports</h1>
             <h2> Template name: {{ viewConfig.templateName }} </h2>
         </div> -->
-        <iframe class="frame" :src="'http://localhost:5195/Report/DisplayReport'"></iframe>
+        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=report_temp`"></iframe>
 
     </div>
 </template>
-
 <script setup lang="ts">
 import type { RegularReport } from '@/reports/types/reports/RegularReport';
 import type { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
@@ -21,14 +21,16 @@ const props = defineProps({
 });
 
 const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
-const templateId = ref("1");
+const templateId = ref(undefined);
+const reportUrl = ref(undefined);
 
-// watch(viewConfig, () => {
-//     viewConfig.value.prepareTemplate(viewConfig.value.id);
-//     templateId.value = viewConfig.value.id;
-// });
+watch(viewConfig, async () => {
+    templateId.value = await viewConfig.value.prepareTemplate();
+}, { immediate: true });
 
-
+watch(templateId,  (val) => {
+     reportUrl.value = `http://localhost:5195/Report/DisplayReport?templateId=${val}&dataSetName=report_temp`
+});
 
 
 </script>

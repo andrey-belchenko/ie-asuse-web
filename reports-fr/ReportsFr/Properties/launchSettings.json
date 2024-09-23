@@ -3,7 +3,7 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5195/Report/DisplayReport",
+      "launchUrl": "http://localhost:5195/Report/DisplayReport?templateId=template&dataSetName=report_temp",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

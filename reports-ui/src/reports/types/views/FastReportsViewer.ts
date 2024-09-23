@@ -1,4 +1,3 @@
-import { convertAndSaveFrTemplate } from '@/template';
 import { ReportView, type ReportViewProps } from '../ReportView';
 import { Executor } from '../Executor';
 // import { prepareTemplate } from '..';
@@ -9,12 +8,13 @@ export interface FastReportsViewerProps extends ReportViewProps {
 
 export class FastReportsViewer extends ReportView {
   templatePath: string;
-  prepareTemplate: () => Promise<void>;
+  prepareTemplate: () => Promise<string>;
   constructor(props: FastReportsViewerProps) {
     super(props);
     this.templatePath = props.templatePath;
     this.prepareTemplate = async () => {
-        await Executor.getInstance().prepareTemplate(this.templatePath, this.id)
+        await Executor.getInstance().prepareTemplate(this.templatePath, this.id);
+        return this.id
     };
   }
 }

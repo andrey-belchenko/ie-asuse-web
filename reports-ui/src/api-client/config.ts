@@ -33,7 +33,6 @@ export const remoteMethodCall = async (
   methodName: string,
   params: any
 ) => {
-  debugger;
   const response = await fetch(
     `${baseUrl}/config-items/${itemId}/methods/${methodName}/call`,
     {
