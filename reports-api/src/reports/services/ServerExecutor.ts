@@ -1,15 +1,21 @@
 import { convertAndSaveFrTemplate } from '@/template';
 import { Executor } from '../types/Executor';
+import { putDataToTemp } from '@/mongo';
 
 export class ServerExecutor extends Executor {
   constructor() {
     super();
   }
 
-  public override prepareTemplate: (
-    filePath: string,
-    templateId: string,
-  ) => Promise<void> = async (filePath, templateId) => {
+  override async prepareTemplate(filePath: string, templateId: string) {
     convertAndSaveFrTemplate(filePath, templateId);
-  };
+  }
+
+  override async putDataToTemp(
+    data: any[],
+    tempTableName: string,
+    tableName?: string,
+  ) {
+    putDataToTemp(data, tempTableName, tableName);
+  }
 }

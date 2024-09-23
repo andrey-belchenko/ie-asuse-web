@@ -5,25 +5,26 @@ export class Executor {
   private static instance?: Executor;
   constructor() {}
 
-  public static setInstance(instance: Executor) {
+  static setInstance(instance: Executor) {
     Executor.instance = instance;
   }
 
-  public static getInstance(): Executor {
+  static getInstance(): Executor {
     if (!Executor.instance) {
       Executor.instance = new Executor();
     }
     return Executor.instance;
   }
 
-  public methodCallHandler: (
+  async methodCallHandler(
     configItem: ConfigItem,
     method: string,
     params?: MethodParams,
-  ) => Promise<any> = async () => undefined;
+  ) {
+    return undefined as any;
+  }
 
-  public prepareTemplate: (
-    filePath: string,
-    templateId: string,
-  ) => Promise<void> = async () => {};
+  async prepareTemplate(filePath: string, templateId: string) {}
+
+  async putDataToTemp(data: any[], tempTableName: string, tableName?: string) {}
 }

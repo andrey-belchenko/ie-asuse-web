@@ -48,7 +48,7 @@ export class AppController {
     if (result instanceof ConfigItem) {
       result.setIds(`${configItemId}.${methodName}`);
     }
-    console.log(JSON.stringify({ data: result }));
+    // console.log(JSON.stringify({ data: result }));
     return { data: result };
   }
 
