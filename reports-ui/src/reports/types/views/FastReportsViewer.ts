@@ -1,4 +1,4 @@
-import { convertAndSaveFrTemplate } from '@/template';
+// import { convertAndSaveFrTemplate } from '@/template';
 import { ReportView, type ReportViewProps } from '../ReportView';
 
 export interface FastReportsViewerProps extends ReportViewProps {
@@ -12,7 +12,7 @@ export class FastReportsViewer extends ReportView {
     super(props);
     this.templatePath = props.templatePath;
     this.prepareTemplate = async (templateId) => {
-      await convertAndSaveFrTemplate(this.templatePath, templateId);
+      // await convertAndSaveFrTemplate(this.templatePath, templateId);
     };
   }
 }

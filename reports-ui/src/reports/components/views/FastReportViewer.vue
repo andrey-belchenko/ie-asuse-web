@@ -21,12 +21,12 @@ const props = defineProps({
 });
 
 const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
-const templateId = ref(undefined);
+const templateId = ref("1");
 
-watch(viewConfig, () => {
-    viewConfig.value.prepareTemplate(viewConfig.value.id);
-    templateId.value = viewConfig.value.id;
-});
+// watch(viewConfig, () => {
+//     viewConfig.value.prepareTemplate(viewConfig.value.id);
+//     templateId.value = viewConfig.value.id;
+// });
 
 
 

@@ -97,11 +97,11 @@ export function setMethodCallHandler(func: MethodCallHandler) {
   methodCallHandler = func;
 }
 
-type PrepareTemplateFunc = (
-  filePath: string,
-  templateId: string,
-) => Promise<void>;
-export var prepareTemplate: PrepareTemplateFunc = async () => {};
-export function setPrepareTemplateFunc(func: PrepareTemplateFunc) {
-  prepareTemplate = func;
-}
+// type PrepareTemplateFunc = (
+//   filePath: string,
+//   templateId: string,
+// ) => Promise<void>;
+// export var prepareTemplate: PrepareTemplateFunc = async () => {};
+// export function setPrepareTemplateFunc(func: PrepareTemplateFunc) {
+//   prepareTemplate = func;
+// }

@@ -1,14 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using ReportsFr.Models;
-using System.Diagnostics;
 using FastReport.Web;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Data;
-using MongoDB.Driver.GridFS;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Npgsql;
 
 namespace ReportsFr.Controllers
@@ -108,21 +102,12 @@ namespace ReportsFr.Controllers
             using var cursor = await collection.FindAsync(filter);
             var dataTable = await ToDataTable(cursor);
     
-
-
             var webRoot = _env.WebRootPath;
             WebReport webReport = new WebReport();
             //webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
             var template = await ReadTemplate("template");
             webReport.Report.Load(template);
             var ds = webReport.Report.GetDataSource("main");
-            //webReport.Report.Dictionary.DataSources
-            //var table = new DataTable();
-            //foreach (FastReport.Data.Column col in ds.Columns)
-            //{
-            //    table.Columns.Add(col.Name, col.DataType);
-                
-            //}
             ViewBag.WebReport = webReport;
             webReport.Report.RegisterData(dataTable, "main");
             return View("report");
