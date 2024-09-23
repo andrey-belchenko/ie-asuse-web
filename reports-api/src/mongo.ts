@@ -75,17 +75,17 @@ export async function putDataToTemp(data: any[], tableName): Promise<void> {
   });
 }
 
-export async function saveTextAsFile(content: string, fileName: string) {
-  const fileId = new ObjectId();
-  await useMongo(async (client: mongoDB.MongoClient) => {
-    const db = client.db(dbName);
-    const bucket = new GridFSBucket(db);
-    const uploadStream = bucket.openUploadStreamWithId(fileId, fileName);
-    await new Promise((resolve, reject) => {
-      uploadStream.end(content, 'utf8', () => {
-        resolve(null);
-      });
-    });
-  });
-  return fileId.toString();
-}
+// export async function saveTextAsFile(content: string, fileName: string) {
+//   const fileId = new ObjectId();
+//   await useMongo(async (client: mongoDB.MongoClient) => {
+//     const db = client.db(dbName);
+//     const bucket = new GridFSBucket(db);
+//     const uploadStream = bucket.openUploadStreamWithId(fileId, fileName);
+//     await new Promise((resolve, reject) => {
+//       uploadStream.end(content, 'utf8', () => {
+//         resolve(null);
+//       });
+//     });
+//   });
+//   return fileId.toString();
+// }

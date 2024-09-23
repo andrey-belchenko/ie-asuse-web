@@ -95,3 +95,7 @@ C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\ZstdSharp.d
 C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\runtimes\linux\native\libmongocrypt.so
 C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\runtimes\osx\native\libmongocrypt.dylib
 C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\runtimes\win\native\mongocrypt.dll
+C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\MongoDB.Driver.GridFS.dll
+C:\Repos\mygithub\ie-asuse-web\reports-fr\ReportsFr\bin\Debug\net7.0\Npgsql.dll

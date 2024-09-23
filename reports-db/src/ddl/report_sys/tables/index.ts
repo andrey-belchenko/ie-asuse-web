@@ -1,5 +1,5 @@
 
-import fr_template from "./fr_template";
+import fr_template from "./template";
 
 export default [
   fr_template,

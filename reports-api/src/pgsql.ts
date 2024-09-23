@@ -54,11 +54,10 @@ export const execFunction = async (functionName: string, params: any) => {
   }
 };
 
-export const query = async (sql: string, params?:any[]) => {
+export const query = async (sql: string, params?: any[]) => {
   const client = await pool.connect();
   try {
-  
-    const res = await client.query(sql,params);
+    const res = await client.query(sql, params);
     return res.rows as any[];
   } finally {
     client.release();
@@ -71,6 +70,22 @@ export const queryTable = async (tableName: string) => {
     const query = `select * from ${tableName}`;
     const res = await client.query(query);
     return res.rows as any[];
+  } finally {
+    client.release();
+  }
+};
+
+export const uploadFastReportTemplate = async (
+  templateId: string,
+  fileData: Buffer,
+) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `INSERT INTO report_sys.template (template_id, file_data) VALUES ($1, $2)
+       ON CONFLICT (template_id) DO UPDATE SET file_data = $2`,
+      [templateId, fileData],
+    );
   } finally {
     client.release();
   }

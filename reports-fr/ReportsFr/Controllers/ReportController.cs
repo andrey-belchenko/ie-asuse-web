@@ -9,6 +9,7 @@ using MongoDB.Driver.GridFS;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Npgsql;
 
 namespace ReportsFr.Controllers
 {
@@ -59,37 +60,26 @@ namespace ReportsFr.Controllers
             return table;
         }
 
-        public static async Task ReadTemplate(string[] args)
+        private static async Task<Stream> ReadTemplate(String templateId)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("bav_test_report");
-            var gridFsBucket = new GridFSBucket(database);
-            var id = new ObjectId("5f6fcd2f2f9e203a8c2e0157"); // replace with your file id
-            var filter = Builders<GridFSFileInfo>.Filter.Eq(x => x.Id, id);
-
-            using (var stream = await gridFsBucket.OpenDownloadStreamAsync(id))
+            string connString = "Host=asuse-ai-dev.infoenergo.loc;Username=asuse;Password=kl0pik;Database=asuse";
+            await using var conn = new NpgsqlConnection(connString);
+            await conn.OpenAsync();
+            var sql = "SELECT file_data FROM report_sys.template WHERE template_id = @p";
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("p", templateId);
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (!await reader.ReadAsync())
             {
-                var fileInfo = await gridFsBucket.Find(filter).FirstOrDefaultAsync();
-
-                if (fileInfo == null)
-                {
-                    Console.WriteLine("File not found");
-                    return;
-                }
-
-                var fileName = fileInfo.Filename;
-                var destination = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-
-                using (var fileStream = File.Create(destination))
-                {
-                    await stream.CopyToAsync(fileStream);
-                    Console.WriteLine($"File {fileName} downloaded to {destination}");
-                }
+                throw new Exception("Template not found");
             }
+            var bytes = (byte[])reader[0];
+            var stream = new MemoryStream(bytes);
+            return stream;
         }
 
 
-        public IActionResult Sample()
+        public  IActionResult Sample()
         {
 
             var dataTable = new System.Data.DataTable();
@@ -101,7 +91,7 @@ namespace ReportsFr.Controllers
 
             var webRoot = _env.WebRootPath;
             WebReport WebReport = new WebReport();
-            WebReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/my_table2.frx"));
+            WebReport.Report.Load(Path.Combine(webRoot, "templates/my_table2.frx"));
             ViewBag.WebReport = WebReport;
             WebReport.Report.RegisterData(dataTable, "my_table");
             return View("report");
@@ -122,7 +112,9 @@ namespace ReportsFr.Controllers
 
             var webRoot = _env.WebRootPath;
             WebReport webReport = new WebReport();
-            webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
+            //webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
+            var template = await ReadTemplate("template");
+            webReport.Report.Load(template);
             var ds = webReport.Report.GetDataSource("main");
             //webReport.Report.Dictionary.DataSources
             //var table = new DataTable();

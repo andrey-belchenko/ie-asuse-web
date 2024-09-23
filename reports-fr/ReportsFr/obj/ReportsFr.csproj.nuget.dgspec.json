@@ -65,6 +65,10 @@
             "MongoDB.Driver.GridFS": {
               "target": "Package",
               "version": "[2.29.0, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[8.0.4, )"
             }
           },
           "imports": [
