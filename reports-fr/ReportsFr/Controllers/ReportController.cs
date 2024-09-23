@@ -4,6 +4,9 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Data;
 using Npgsql;
+using FastReport;
+using FastReport.Data;
+using FastReport.RichTextParser;
 
 namespace ReportsFr.Controllers
 {
@@ -54,6 +57,31 @@ namespace ReportsFr.Controllers
             return table;
         }
 
+
+        private async Task FillDataSet(DataSet dataSet, String tempDataSetName)
+        {
+            var mongoClient = new MongoClient("mongodb://localhost:27017");
+            var mongoDb = mongoClient.GetDatabase("bav_test_report");
+            var collection = mongoDb.GetCollection<BsonDocument>(tempDataSetName);
+            
+            foreach (DataTable table in dataSet.Tables)
+            {
+                using var cursor = await collection.FindAsync(new BsonDocument());
+                while (await cursor.MoveNextAsync())
+                {
+                    var batch = cursor.Current;
+                    foreach (var document in batch)
+                    {
+                        DataRow row = table.NewRow();
+                        foreach (DataColumn column in table.Columns)
+                        {
+                            row[column.ColumnName] = BsonTypeMapper.MapToDotNetValue(document[column.ColumnName]) ?? DBNull.Value;
+                        }
+                        table.Rows.Add(row);
+                    }
+                }
+            }
+        }
         private static async Task<Stream> ReadTemplate(String templateId)
         {
             string connString = "Host=asuse-ai-dev.infoenergo.loc;Username=asuse;Password=kl0pik;Database=asuse";
@@ -93,26 +121,47 @@ namespace ReportsFr.Controllers
 
         public async Task<IActionResult> DisplayReport(string dataSetName, string templateId )
         {
+            //var client = new MongoClient("mongodb://localhost:27017");
+            //var database = client.GetDatabase("bav_test_report");
+            //var collection = database.GetCollection<BsonDocument>(dataSetName);
+            //var filter = new BsonDocument();
 
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("bav_test_report");
-            var collection = database.GetCollection<BsonDocument>(dataSetName);
-            var filter = new BsonDocument();
-
-            using var cursor = await collection.FindAsync(filter);
-            var dataTable = await ToDataTable(cursor);
-    
+            //using var cursor = await collection.FindAsync(filter);
+            //var dataTable = await ToDataTable(cursor);
             var webRoot = _env.WebRootPath;
             WebReport webReport = new WebReport();
-            //webReport.Report.Load(System.IO.Path.Combine(webRoot, "templates/template2.frx"));
             var template = await ReadTemplate(templateId);
             webReport.Report.Load(template);
-            var ds = webReport.Report.GetDataSource("main");
+            var dataSet = ExtractDataSetStruct(webReport.Report);
+            await FillDataSet(dataSet, dataSetName);
             ViewBag.WebReport = webReport;
-            webReport.Report.RegisterData(dataTable, "main");
+            //webReport.Report.RegisterData(dataTable, "main");
+            //webReport.Report.RegisterData(dataSet.Tables[0], "main");
+            foreach (DataTable dataTable in dataSet.Tables)
+            {
+                webReport.Report.RegisterData(dataTable, dataTable.TableName);
+            }
             return View("report");
         }
 
-      
+
+        private static DataSet ExtractDataSetStruct(Report report)
+        {
+            var dataSet = new DataSet();
+            foreach (TableDataSource reportDataSource in report.Dictionary.DataSources)
+            {
+                var dataTable = new DataTable(reportDataSource.Alias);
+                dataSet.Tables.Add(dataTable);
+                foreach (FastReport.Data.Column reportColumn in reportDataSource.Columns)
+                {
+                    dataTable.Columns.Add(reportColumn.Name, reportColumn.DataType);
+                }
+                
+            }
+            return dataSet;
+            
+        }
+
+
     }
 }
