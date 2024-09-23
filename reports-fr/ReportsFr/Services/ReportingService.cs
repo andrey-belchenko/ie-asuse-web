@@ -36,7 +36,7 @@ namespace ReportsFr.Services
             return webReport;
         }
 
-        private async Task FillDataSet(DataSet dataSet, String tempDataSetName)
+        private async Task FillDataSet(DataSet dataSet, string tempDataSetName)
         {
             var mongoClient = new MongoClient(_settings.MongoConnectionString);
             var mongoDb = mongoClient.GetDatabase(_settings.MongoTempDb);
@@ -60,7 +60,7 @@ namespace ReportsFr.Services
                 }
             }
         }
-        private async Task<Stream> ReadTemplate(String templateId)
+        private async Task<Stream> ReadTemplate(string templateId)
         {
             await using var conn = new NpgsqlConnection(_settings.PgConnectionString);
             await conn.OpenAsync();
@@ -84,7 +84,7 @@ namespace ReportsFr.Services
             {
                 var dataTable = new DataTable(reportDataSource.Alias);
                 dataSet.Tables.Add(dataTable);
-                foreach (FastReport.Data.Column reportColumn in reportDataSource.Columns)
+                foreach (Column reportColumn in reportDataSource.Columns)
                 {
                     dataTable.Columns.Add(reportColumn.Name, reportColumn.DataType);
                 }
