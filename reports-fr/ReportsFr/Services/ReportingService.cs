@@ -44,16 +44,23 @@ namespace ReportsFr.Services
 
             foreach (DataTable table in dataSet.Tables)
             {
-                using var cursor = await collection.FindAsync(new BsonDocument());
+                var filter = Builders<BsonDocument>.Filter.Exists(table.TableName);
+                using var cursor = await collection.FindAsync(filter);
                 while (await cursor.MoveNextAsync())
                 {
                     var batch = cursor.Current;
                     foreach (var document in batch)
                     {
+                        var item = (BsonDocument)document[table.TableName];
                         DataRow row = table.NewRow();
                         foreach (DataColumn column in table.Columns)
                         {
-                            row[column.ColumnName] = BsonTypeMapper.MapToDotNetValue(document[column.ColumnName]) ?? DBNull.Value;
+                            object value = DBNull.Value;
+                            if (item.Contains(column.ColumnName))
+                            {
+                                value = BsonTypeMapper.MapToDotNetValue(item[column.ColumnName]) ?? DBNull.Value;
+                            }
+                            row[column.ColumnName] = value;
                         }
                         table.Rows.Add(row);
                     }

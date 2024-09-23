@@ -41,9 +41,7 @@ export async function execQuery(req: any): Promise<any> {
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(req.database);
     const collection = db.collection(req.collection);
-    // console.log("Collection: " + collection.collectionName);
     let loadOptions = replaceDateStrings(req.loadOptions);
-    // console.log(JSON.stringify({ loadOptions: req.pipeline }));
     results = await query(collection, loadOptions);
     console.log('Response');
     // console.log(JSON.stringify(results));
@@ -66,11 +64,18 @@ async function useMongo(
   }
 }
 
-export async function putDataToTemp(data: any[], tableName): Promise<void> {
+export async function putDataToTemp(
+  data: any[],
+  tempTableName: string,
+  tableName?: string,
+): Promise<void> {
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(dbName);
-    const collection = db.collection(tableName);
+    const collection = db.collection(tempTableName);
     await collection.deleteMany();
+    if (tableName) {
+      data = data.map((it) => ({ main: it }));
+    }
     await collection.insertMany(data);
   });
 }

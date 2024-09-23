@@ -59,17 +59,17 @@ export class AppController {
     return { data: result };
   }
 
-  @Get('test')
-  async test(): Promise<any> {
-    return new SelectEditor({
-      columns: ['аббр', 'имя'],
-      keyField: 'отделение_id',
-      displayField: 'аббр',
-      listItems: async () => {
-        return await queryTable('report_dm.dim_отделение');
-      },
-    });
-  }
+  // @Get('test')
+  // async test(): Promise<any> {
+  //   return new SelectEditor({
+  //     columns: ['аббр', 'имя'],
+  //     keyField: 'отделение_id',
+  //     displayField: 'аббр',
+  //     listItems: async () => {
+  //       return await queryTable('report_dm.dim_отделение');
+  //     },
+  //   });
+  // }
 
   @Get('reports-config')
   async reportsConfig(): Promise<Navigator> {
@@ -81,40 +81,4 @@ export class AppController {
   findOne(@Param('id') id: string): ConfigItem {
     return configItemDict[id];
   }
-
-  // @Get('reports-config')
-  // async reportsConfig(): Promise<any> {
-  //   // const cls = DateEditor;
-  //   // return new cls({});
-  //   let item = new DateEditor({})
-  //   // return new registry[item.className](item.toJSON())
-  //   return instantiate(item.toJSON())
-  // }
-
-  // @Get('reports-config')
-  // async reportsConfig(): Promise<any> {
-  //   let  item = new Field({
-  //     label: 'Дата',
-  //     name: 'date',
-  //     editor: new DateEditor({}),
-  //     defaultValue: () => new Date(2022, 2, 31),
-  //   })
-
-  //   const text = JSON.stringify(item);
-  //   item = JSON.parse(text)
-  //   return instantiate(item)
-  // }
-
-  // @Get('reports-config')
-  // async reportsConfig(): Promise<any> {
-  //   let item = nav10;
-
-  //   const text = JSON.stringify(item);
-  //   item = JSON.parse(text);
-
-  //   // return item;
-  //   item =  instantiate(item);
-  //   // return instantiate(item);
-  //   return {value: ((item.items[0] as Folder).items[0] as RegularReport).paramsForm.fields[0].defaultValue()}
-  // }
 }
