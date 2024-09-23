@@ -4,15 +4,7 @@ import { execQuery, putDataToTemp } from './mongo';
 import { execFunction, queryTable } from './pgsql';
 import nav10 from './reports/config/navigators/nav10';
 import { Navigator } from './reports/types/Navigator';
-import { Field } from './reports/types/Field';
-import { DateEditor } from './reports/types/editors/DateEditor';
-import { Editor } from './reports/types/Editor';
-// import { instantiate, setPrepareTemplateFunc } from './reports/types';
-import { Folder } from './reports/types/Folder';
-import { RegularReport } from './reports/types/reports/RegularReport';
 import { ConfigItem, configItemDict } from './reports/types/ConfigItem';
-import { SelectEditor } from './reports/types/editors/SelectEditor';
-import { convertAndSaveFrTemplate } from './template';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {

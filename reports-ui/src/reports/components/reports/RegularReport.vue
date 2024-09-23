@@ -1,12 +1,12 @@
 <template>
     <div class="main">
         <DxSplitter id="rep-splitter2">
-            <DxItem :resizable="true" :collapsible="true" size="300px">
+            <DxItem  v-if="paramsFormConfig" :resizable="true" :collapsible="true" size="300px">
 
-                <ParamsForm v-if="paramsFormConfig" :formConfig="paramsFormConfig"
+                <ParamsForm  :formConfig="paramsFormConfig"
                     v-model:values="formValues" />
                    
-                <DxToolbar class="toolbar">
+                <DxToolbar  class="toolbar">
                     <TbItem>
                         <ActionButton text="Сформировать отчет" @press="onSubmit" :loading="executing" :width="180"
                             :height="30" />
