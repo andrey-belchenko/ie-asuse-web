@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import * as path from 'path';
 // import * as _ from 'lodash';
 import { JSONPath } from 'jsonpath-plus';
+import { saveTextAsFile } from '@/mongo';
 
 const parseString = promisify(xml2js.parseString);
 
@@ -59,15 +60,19 @@ async function processXML() {
   const builder = new xml2js.Builder();
   const xml = builder.buildObject(xObj);
 
+  let fileId = await saveTextAsFile(xml, 'template.xml');
+
+  console.log(fileId)
+
   // Save XML back to disk
-  await fs.writeFile(path.join(folder, 'template1_p.frx'), xml);
+//   await fs.writeFile(path.join(folder, 'template1_p.frx'), xml);
 
   //   await fs.writeFile(
   //     path.join(folder, 'template1.json'),
   //     JSON.stringify(result),
   //   );
 
-  console.log('XML file has been saved!');
+//   console.log('XML file has been saved!');
 }
 
 processXML();

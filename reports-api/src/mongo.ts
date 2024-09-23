@@ -1,8 +1,12 @@
 import * as mongoDB from 'mongodb';
+
+import { MongoClient, GridFSBucket, ObjectId } from 'mongodb';
+
 require('babel-polyfill');
 const query = require('devextreme-query-mongodb');
 // const mongoDbUrl = 'mongodb://root:dpt-dev@dpt.dpt-dev.oastu.lan:27017';
 const mongoDbUrl = 'mongodb://127.0.0.1:27017/';
+const dbName = 'bav_test_report';
 
 console.log(`mongoDbUrl: ${mongoDbUrl}`);
 
@@ -64,9 +68,24 @@ async function useMongo(
 
 export async function putDataToTemp(data: any[], tableName): Promise<void> {
   await useMongo(async (client: mongoDB.MongoClient) => {
-    const db = client.db('bav_test_report');
+    const db = client.db(dbName);
     const collection = db.collection(tableName);
     await collection.deleteMany();
     await collection.insertMany(data);
   });
+}
+
+export async function saveTextAsFile(content: string, fileName: string) {
+  const fileId = new ObjectId();
+  await useMongo(async (client: mongoDB.MongoClient) => {
+    const db = client.db(dbName);
+    const bucket = new GridFSBucket(db);
+    const uploadStream = bucket.openUploadStreamWithId(fileId, fileName);
+    await new Promise((resolve, reject) => {
+      uploadStream.end(content, 'utf8', () => {
+        resolve(null);
+      });
+    });
+  });
+  return fileId.toString();
 }
