@@ -5,6 +5,10 @@ using FastReport.Web;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Data;
+using MongoDB.Driver.GridFS;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ReportsFr.Controllers
 {
@@ -55,8 +59,34 @@ namespace ReportsFr.Controllers
             return table;
         }
 
+        public static async Task ReadTemplate(string[] args)
+        {
+            var client = new MongoClient("mongodb://localhost:27017");
+            var database = client.GetDatabase("bav_test_report");
+            var gridFsBucket = new GridFSBucket(database);
+            var id = new ObjectId("5f6fcd2f2f9e203a8c2e0157"); // replace with your file id
+            var filter = Builders<GridFSFileInfo>.Filter.Eq(x => x.Id, id);
 
-        
+            using (var stream = await gridFsBucket.OpenDownloadStreamAsync(id))
+            {
+                var fileInfo = await gridFsBucket.Find(filter).FirstOrDefaultAsync();
+
+                if (fileInfo == null)
+                {
+                    Console.WriteLine("File not found");
+                    return;
+                }
+
+                var fileName = fileInfo.Filename;
+                var destination = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+                using (var fileStream = File.Create(destination))
+                {
+                    await stream.CopyToAsync(fileStream);
+                    Console.WriteLine($"File {fileName} downloaded to {destination}");
+                }
+            }
+        }
 
 
         public IActionResult Sample()

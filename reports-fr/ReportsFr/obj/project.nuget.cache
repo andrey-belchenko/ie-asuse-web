@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9fGdfVNZkGWffzXZYxLGCkFO14tu4xo4+0qLj1KgCAIqYsOJ6Szek/7CP68WjG089GuNzhh2DUX7sWGpWl2mKg==",
+  "dgSpecHash": "jLyryYqheJ9tkhmWXLjx2cyJZS42TME9ekbQoHae+PIwrCPrM7J/tnd3dc1zHzTsY4nj5o20ZltCyOiUqVU1Dg==",
   "success": true,
   "projectFilePath": "C:\\Repos\\mygithub\\ie-asuse-web\\reports-fr\\ReportsFr\\ReportsFr.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,7 @@
     "C:\\Users\\andre\\.nuget\\packages\\mongodb.bson\\2.29.0\\mongodb.bson.2.29.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\mongodb.driver\\2.29.0\\mongodb.driver.2.29.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\mongodb.driver.core\\2.29.0\\mongodb.driver.core.2.29.0.nupkg.sha512",
+    "C:\\Users\\andre\\.nuget\\packages\\mongodb.driver.gridfs\\2.29.0\\mongodb.driver.gridfs.2.29.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\mongodb.libmongocrypt\\1.12.0\\mongodb.libmongocrypt.1.12.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\sharpcompress\\0.30.1\\sharpcompress.0.30.1.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\snappier\\1.0.0\\snappier.1.0.0.nupkg.sha512",

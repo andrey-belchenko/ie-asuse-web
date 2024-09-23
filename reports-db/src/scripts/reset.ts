@@ -37,6 +37,7 @@ import get_rep_24557 from "../ddl/report_util/get_rep_24557";
 import dim_дата from "../ddl/report_dm/tables/dim_дата";
 import fill_dim_дата from "../ddl/report_dm/procedures/fill_dim_дата";
 import get_month_name from "../ddl/report_stg/functions/get_month_name";
+import report_sys from "../ddl/report_sys";
 
 declaration;
 const run = async () => {
@@ -68,7 +69,7 @@ const run = async () => {
     // ...оборотная_ведомость,
     // dim_договор,
     // dim_гр_потр_нас,
-    dim_участок,
+    // dim_участок,
     // dim_абонент,
     // dim_док_нач
     // фин_опл,
@@ -77,6 +78,7 @@ const run = async () => {
     // get_month_name,
     // dim_дата,
     // fill_dim_дата,
+    ...report_sys
     
   ]);
   console.log("done");
