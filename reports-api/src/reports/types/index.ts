@@ -10,6 +10,7 @@ import { Form } from './Form';
 import { Navigator } from './Navigator';
 import type { ConfigItem } from './ConfigItem';
 import { MethodParams } from './MethodParams';
+import { Executor } from './Executor';
 
 function toDict(arr) {
   return arr.reduce((acc, curr) => {
@@ -78,24 +79,24 @@ export function instantiate<T>(object: T): T {
   newObj.id = buffObj.id;
   for (let methodName of obj.methodNames) {
     newObj[methodName] = async (params?: any) => {
-      return await methodCallHandler(newObj, methodName, params);
+      return await Executor.getInstance().methodCallHandler(newObj,methodName,params);
     };
   }
   return newObj;
 }
 
-type MethodCallHandler = (
-  configItem: ConfigItem,
-  method: string,
-  params?: MethodParams,
-) => Promise<any>;
+// type MethodCallHandler = (
+//   configItem: ConfigItem,
+//   method: string,
+//   params?: MethodParams,
+// ) => Promise<any>;
 
-// let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);
-let methodCallHandler: MethodCallHandler = async () => undefined;
+// // let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);
+// let methodCallHandler: MethodCallHandler = async () => undefined;
 
-export function setMethodCallHandler(func: MethodCallHandler) {
-  methodCallHandler = func;
-}
+// export function setMethodCallHandler(func: MethodCallHandler) {
+//   methodCallHandler = func;
+// }
 
 // type PrepareTemplateFunc = (
 //   filePath: string,

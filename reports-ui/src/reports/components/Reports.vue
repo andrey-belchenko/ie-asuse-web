@@ -19,6 +19,11 @@ import Report from './Report.vue';
 import { ref } from 'vue';
 import type { NavigatorItem } from '../types/Folder';
 import { Report as ReportConfig } from '../types/Report';
+import { RemoteExecutor } from '../services/RemoteExecutor';
+import { Executor } from '../types/Executor';
+
+Executor.setInstance(new RemoteExecutor())
+
 const selectedReport = ref<ReportConfig>();
 const handleReportSelect = (item: NavigatorItem) => {
     if (item instanceof ReportConfig) {
