@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="09/22/2024 15:44:06" ReportInfo.Modified="09/22/2024 15:52:01" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Name="Задолженность" ReportInfo.Created="09/22/2024 15:44:06" ReportInfo.Modified="09/23/2024 04:16:48" ReportInfo.CreatorVersion="2024.2.0.0">
   <Styles Name="Standard">
     <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
     <Style Name="Header" Font="Arial, 10pt, style=Bold"/>
@@ -9,7 +9,7 @@
     <Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
   </Styles>
   <Dictionary>
-    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlqavTvIf1SvTflHnUAgSzg3C0mEUgJHMMyRLmZyUMubfgAsFfVubLAcRI/M24jHt+qmyV9Q4PGGOUe/eY9W9QLbqB18q1crX9hlvAxR4cxf1o=">
+    <PostgresDataConnection Name="Connection" ConnectionString="rijcmlqavTvIf1SvTflHnUAgSzg3C0mEUgJHMMyRLmZyUMubfgAsFfVubLAcRI/M24jHt+qmyV9Q4PGGOUe/eY9W9QLbr/AIcQSA/1ZkK1jz0n1p3I=">
       <TableDataSource Name="Table" Alias="main" DataType="System.Int32" Enabled="true" SelectCommand="select * from report_util.get_rep_24557('2022-03-31',ARRAY[1172],null)">
         <Column Name="договор_id" DataType="System.Int32"/>
         <Column Name="период_id" DataType="System.Int32"/>
@@ -36,8 +36,8 @@
       <TextObject Name="Text1" Width="1047.06" Height="37.8" Dock="Fill" Text="main" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
     </ReportTitleBand>
     <PageHeaderBand Name="PageHeader1" Top="41.8" Width="1047.06" Height="28.35">
-      <TextObject Name="Text3" Width="66.15" Height="18.9" Text="договор_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
-      <TextObject Name="Text5" Left="66.15" Width="66.15" Height="18.9" Text="период_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text3" Width="66.15" Height="18.9" Text="ДОГ" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text5" Left="66.15" Width="66.15" Height="18.9" Text="ПЕР" Font="Arial, 10pt, style=Bold" Style="Header"/>
       <TextObject Name="Text7" Left="132.3" Width="66.15" Height="18.9" Text="абонент_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
       <TextObject Name="Text9" Left="198.45" Width="66.15" Height="18.9" Text="отделение_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
       <TextObject Name="Text11" Left="264.6" Width="66.15" Height="18.9" Text="участок_id" Font="Arial, 10pt, style=Bold" Style="Header"/>
