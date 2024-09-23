@@ -16,9 +16,10 @@ namespace ReportsFr.Controllers
         }
 
        
-        public async Task<IActionResult> DisplayReport(string dataSetName, string templateId )
+        public async Task<IActionResult> DisplayReport(string dataSetName, string templateId, bool? singleTable )
         {
-            var webReport = await _reportingService.PrepareReport(dataSetName, templateId);
+
+            var webReport = await _reportingService.PrepareReport(dataSetName, templateId, singleTable ?? false);
             ViewBag.WebReport = webReport;   
             return View("report");
         }

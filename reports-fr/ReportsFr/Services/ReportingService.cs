@@ -21,13 +21,13 @@ namespace ReportsFr.Services
             _settings = settings.Value;
         }
 
-        public async Task<WebReport> PrepareReport(string dataSetName, string templateId)
+        public async Task<WebReport> PrepareReport(string dataSetName, string templateId, bool isSingleTable)
         {
             WebReport webReport = new WebReport();
             var template = await ReadTemplate(templateId);
             webReport.Report.Load(template);
             var dataSet = ExtractDataSetStruct(webReport.Report);
-            await FillDataSet(dataSet, dataSetName);
+            await FillDataSet(dataSet, dataSetName, isSingleTable);
       
             foreach (DataTable dataTable in dataSet.Tables)
             {
@@ -36,7 +36,7 @@ namespace ReportsFr.Services
             return webReport;
         }
 
-        private async Task FillDataSet(DataSet dataSet, string tempDataSetName)
+        private async Task FillDataSet(DataSet dataSet, string tempDataSetName, bool isSingleTable)
         {
             var mongoClient = new MongoClient(_settings.MongoConnectionString);
             var mongoDb = mongoClient.GetDatabase(_settings.MongoTempDb);
@@ -44,14 +44,22 @@ namespace ReportsFr.Services
 
             foreach (DataTable table in dataSet.Tables)
             {
-                var filter = Builders<BsonDocument>.Filter.Exists(table.TableName);
+                var filter = new BsonDocument();
+                if (!isSingleTable)
+                {
+                    filter = Builders<BsonDocument>.Filter.Exists(table.TableName).ToBsonDocument();
+                }
                 using var cursor = await collection.FindAsync(filter);
                 while (await cursor.MoveNextAsync())
                 {
                     var batch = cursor.Current;
                     foreach (var document in batch)
                     {
-                        var item = (BsonDocument)document[table.TableName];
+                        var item = document;
+                        if (!isSingleTable)
+                        {
+                            item = (BsonDocument)document[table.TableName];
+                        }
                         DataRow row = table.NewRow();
                         foreach (DataColumn column in table.Columns)
                         {

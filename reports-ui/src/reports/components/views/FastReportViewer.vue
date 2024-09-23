@@ -5,7 +5,7 @@
             <h1> Компонент для просмотра отчета FastReports</h1>
             <h2> Template name: {{ viewConfig.templateName }} </h2>
         </div> -->
-        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=report_temp`"></iframe>
+        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=report_temp&singleTable=true`"></iframe>
 
     </div>
 </template>
