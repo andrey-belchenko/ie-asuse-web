@@ -1,13 +1,18 @@
-import { ReportView, type ReportViewProps } from "../ReportView";
+import { convertAndSaveFrTemplate } from '@/template';
+import { ReportView, type ReportViewProps } from '../ReportView';
 
 export interface FastReportsViewerProps extends ReportViewProps {
-  templateName: String;
+  templatePath: string;
 }
 
 export class FastReportsViewer extends ReportView {
-  templateName: String;
+  templatePath: string;
+  prepareTemplate: (templateId: string) => Promise<void>;
   constructor(props: FastReportsViewerProps) {
     super(props);
-    this.templateName = props.templateName;
+    this.templatePath = props.templatePath;
+    this.prepareTemplate = async (templateId) => {
+      await convertAndSaveFrTemplate(this.templatePath, templateId);
+    };
   }
 }

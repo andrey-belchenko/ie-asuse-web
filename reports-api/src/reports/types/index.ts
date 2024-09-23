@@ -1,15 +1,15 @@
 // TODO: переделать в виде класса
 
-import { editors } from "./editors";
-import { reports } from "./reports";
-import { views } from "./views";
-import { DataSource } from "./DataSource";
-import { Field } from "./Field";
-import { Folder } from "./Folder";
-import { Form } from "./Form";
-import { Navigator } from "./Navigator";
-import type { ConfigItem } from "./ConfigItem";
-import { MethodParams } from "./MethodParams";
+import { editors } from './editors';
+import { reports } from './reports';
+import { views } from './views';
+import { DataSource } from './DataSource';
+import { Field } from './Field';
+import { Folder } from './Folder';
+import { Form } from './Form';
+import { Navigator } from './Navigator';
+import type { ConfigItem } from './ConfigItem';
+import { MethodParams } from './MethodParams';
 
 function toDict(arr) {
   return arr.reduce((acc, curr) => {
@@ -32,7 +32,7 @@ const registry: Function[] = {
 };
 
 function isObject(value) {
-  return value && typeof value === "object" && value.constructor === Object;
+  return value && typeof value === 'object' && value.constructor === Object;
 }
 
 function isArray(value) {
@@ -84,12 +84,10 @@ export function instantiate<T>(object: T): T {
   return newObj;
 }
 
-
-
 type MethodCallHandler = (
   configItem: ConfigItem,
   method: string,
-  params?: MethodParams
+  params?: MethodParams,
 ) => Promise<any>;
 
 // let methodCallHandler: MethodCallHandler = () => new Date(2022, 2, 31);
@@ -97,4 +95,13 @@ let methodCallHandler: MethodCallHandler = async () => undefined;
 
 export function setMethodCallHandler(func: MethodCallHandler) {
   methodCallHandler = func;
+}
+
+type PrepareTemplateFunc = (
+  filePath: string,
+  templateId: string,
+) => Promise<void>;
+export var prepareTemplate: PrepareTemplateFunc = async () => {};
+export function setPrepareTemplateFunc(func: PrepareTemplateFunc) {
+  prepareTemplate = func;
 }

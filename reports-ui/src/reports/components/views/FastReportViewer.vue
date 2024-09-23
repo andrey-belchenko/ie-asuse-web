@@ -1,10 +1,10 @@
 <template>
-    <div class="main" v-if="reportConfig">
+    <div class="main" v-if="templateId">
         <!-- <div>
             <h1> Компонент для просмотра отчета FastReports</h1>
             <h2> Template name: {{ viewConfig.templateName }} </h2>
         </div> -->
-        <iframe class="frame"  :src="'http://localhost:5195/Report/DisplayReport'"></iframe>
+        <iframe class="frame" :src="'http://localhost:5195/Report/DisplayReport'"></iframe>
 
     </div>
 </template>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import type { RegularReport } from '@/reports/types/reports/RegularReport';
 import type { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
@@ -21,6 +21,16 @@ const props = defineProps({
 });
 
 const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
+const templateId = ref(undefined);
+
+watch(viewConfig, () => {
+    viewConfig.value.prepareTemplate(viewConfig.value.id);
+    templateId.value = viewConfig.value.id;
+});
+
+
+
+
 </script>
 
 <style scoped>
@@ -43,6 +53,7 @@ const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
     justify-content: center;
     align-items: center; */
 }
+
 /* .main * {
     text-align: center;
 } */

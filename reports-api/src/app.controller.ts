@@ -7,14 +7,19 @@ import { Navigator } from './reports/types/Navigator';
 import { Field } from './reports/types/Field';
 import { DateEditor } from './reports/types/editors/DateEditor';
 import { Editor } from './reports/types/Editor';
-import { instantiate } from './reports/types';
+import { instantiate, setPrepareTemplateFunc } from './reports/types';
 import { Folder } from './reports/types/Folder';
 import { RegularReport } from './reports/types/reports/RegularReport';
 import { ConfigItem, configItemDict } from './reports/types/ConfigItem';
 import { SelectEditor } from './reports/types/editors/SelectEditor';
+import { convertAndSaveFrTemplate } from './template';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) {
+    setPrepareTemplateFunc(async (templatePath, templateId) => {
+      await convertAndSaveFrTemplate(templatePath, templateId);
+    });
+  }
 
   @Get()
   getHello(): string {

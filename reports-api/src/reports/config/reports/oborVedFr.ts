@@ -34,5 +34,5 @@ export default new RegularReport({
       p_отделение_id: "dep",
     },
   }),
-  view: new FastReportsViewer({ templateName: "oborVed.frx" }),
+  view: new FastReportsViewer({ templatePath: "oborVed.frx" }),
 });
