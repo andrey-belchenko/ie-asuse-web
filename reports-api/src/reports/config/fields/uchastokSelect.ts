@@ -10,8 +10,8 @@ export default new Field({
     keyField: 'участок_id',
     displayField: 'сокр_имя',
     listItems: async (params) => {
-      if (!params.formValues.dep) {
-        return [];
+      if (!params.formValues.dep || params.formValues.dep.length == 0) {
+        return await queryTable('report_dm.dim_участок');
       }
       return await query(
         /*sql*/ `select * from report_dm.dim_участок where отделение_id = ANY($1::int[])`,
