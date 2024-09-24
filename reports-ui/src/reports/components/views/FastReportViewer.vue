@@ -5,7 +5,7 @@
             <h1> Компонент для просмотра отчета FastReports</h1>
             <h2> Template name: {{ viewConfig.templateName }} </h2>
         </div> -->
-        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=report_temp&singleTable=true`"></iframe>
+        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=${tempTableName}&singleTable=true`"></iframe>
 
     </div>
 </template>
@@ -17,7 +17,11 @@ const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
         required: true
-    }
+    },
+    tempTableName: {
+        type: String,
+        required: true
+    },
 });
 
 const viewConfig = ref(props.reportConfig.view as FastReportsViewer);

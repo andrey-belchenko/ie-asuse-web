@@ -8,11 +8,11 @@ export class RemoteExecutor extends Executor {
     super();
   }
 
-  public override methodCallHandler: (
+  override async methodCallHandler(
     configItem: ConfigItem,
     method: string,
     params?: MethodParams
-  ) => Promise<any> = async (configItem, method, params) => {
+  ) {
     return await remoteMethodCall(configItem.id, method, params);
-  };
+  }
 }

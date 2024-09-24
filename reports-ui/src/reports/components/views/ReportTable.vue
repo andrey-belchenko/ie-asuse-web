@@ -46,6 +46,10 @@ const props = defineProps({
         type: Object as () => RegularReport,
         required: true
     },
+    tempTableName: {
+        type: String,
+        required: true
+    },
 });
 
 let dataGridInstance: any = null;

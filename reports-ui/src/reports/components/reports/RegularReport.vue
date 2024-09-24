@@ -18,7 +18,7 @@
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
                 <div class="view-container">
                     <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
-                        :key="execId" :exec-id="execId" />
+                        :key="execId" :exec-id="execId" :tempTableName/>
                 </div>
             </DxItem>
         </DxSplitter>
@@ -37,7 +37,7 @@ import ReportView from '../ReportView.vue';
 import notify from 'devextreme/ui/notify';
 import { v4 as uuidv4 } from 'uuid';
 import ActionButton from '../ActionButton.vue';
-import { runReport } from './RegularReport';
+// import { runReport } from './RegularReport';
 import type { ReportViewComponent } from '../ReportView';
 import { Form } from '@/reports/types/Form';
 const props = defineProps({
@@ -52,6 +52,7 @@ const reportViewRef = ref<ReportViewComponent>();
 const formValues = ref({});
 const execId = ref<string>();
 const executing = ref(false);
+const tempTableName = ref(undefined);
 const ready = ref(false);
 const paramsFormConfig = ref<Form>();
 
@@ -64,7 +65,8 @@ const onSubmit = () => {
         execId.value = uuidv4();
         executing.value = true;
         ready.value = false;
-        await runReport(props.reportConfig!, formValues.value);
+        // await runReport(props.reportConfig!, formValues.value);
+        await props.reportConfig!.fillDataSet(formValues.value);
         executing.value = false;
         ready.value = true;
     }
