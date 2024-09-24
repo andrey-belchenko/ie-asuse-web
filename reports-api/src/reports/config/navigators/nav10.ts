@@ -10,13 +10,17 @@ import oborVedFr from '../reports/oborVedFr';
 import { getGeneratorReports } from '../reports/externalReports';
 import rep_24557 from '../reports/rep_24557';
 
-
 export default new Navigator({
   name: 'nav10',
   items: [
     new Folder({
       title: 'Отчеты по задолженности',
-      items: [...rep_24557],
+      items: [
+        new Folder({
+          title: 'Просроченная задолженность',
+          items: [...rep_24557],
+        }),
+      ],
     }),
     new Folder({
       title: 'Отчеты по безучетному потреблению',

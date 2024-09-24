@@ -6,7 +6,7 @@ import * as path from 'path';
 
 export default new RegularReport({
   title:
-    'Просроченная задолженности РСО ИКУ по периодам возникновения (FastReport)',
+    'Просроченная задолженность РСО ИКУ по периодам возникновения (FastReport)',
   paramsForm: form,
   dataSource: dataSetForFastReport,
   view: new FastReportsViewer({

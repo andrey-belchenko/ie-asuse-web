@@ -19,6 +19,10 @@ async function load(formValues: any) {
 }
 
 function prepare(data: any[]) {
+  // Разворачивание данных в динамические колонки.
+  // Выход:
+  // main - данные отчета с развернутыми колонками
+  // columns - информация о колонках для построения заголовков грида
   data = _(data)
     .map((it) => ({
       ...it,
@@ -26,7 +30,7 @@ function prepare(data: any[]) {
     }))
     .map((it) => ({
       ...it,
-      column_id: 1e2 * it.период_id + (it.месяц || 0),
+      column_id: 1e2 * it.период_id + (it.месяц || 0), //ПММ  П-относительный период ММ-месяц
     }))
     .value();
 
@@ -62,7 +66,6 @@ function prepare(data: any[]) {
     .sortBy((it) => it.column_id)
     .value();
 
-  // console.log(JSON.stringify(allColumns, null, 3));
   const result = _(data)
     .map((it) => ({
       props: {
@@ -99,7 +102,7 @@ function prepare(data: any[]) {
           .sumBy((it) => it.долг);
         let columnName = `долг_${column.column_id}`;
         row[columnName] = value || 0;
-        column["name"] = columnName;
+        column['name'] = columnName;
       }
       return row;
     })
@@ -109,5 +112,4 @@ function prepare(data: any[]) {
     main: result,
     columns: allColumns,
   };
-  // console.log(JSON.stringify(result[0], null, 3));
 }

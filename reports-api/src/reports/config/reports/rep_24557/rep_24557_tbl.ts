@@ -6,7 +6,7 @@ import tableView from './tableView';
 
 export default new RegularReport({
   title:
-    'Просроченная задолженности РСО ИКУ по периодам возникновения (Таблица)',
+    'Просроченная задолженность РСО ИКУ по периодам возникновения (Таблица)',
   paramsForm: form,
   dataSource: dataSetForTable,
   view: tableView,
