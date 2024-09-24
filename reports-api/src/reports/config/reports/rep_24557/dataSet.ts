@@ -1,10 +1,22 @@
 import { execFunction } from '@/pgsql';
 import * as _ from 'lodash';
 
-export default async (formValues: any) => {
+// export default async (formValues: any) => {
+//   let data = await load(formValues);
+//   return prepare(data);
+// };
+
+
+
+export async function dataSetForTable(formValues: any) {
   let data = await load(formValues);
   return prepare(data);
-};
+}
+
+export async function dataSetForFastReport(formValues: any) {
+  let data = await load(formValues);
+  return prepare(data);
+}
 
 async function load(formValues: any) {
   return await execFunction('report_util.get_rep_24557', {

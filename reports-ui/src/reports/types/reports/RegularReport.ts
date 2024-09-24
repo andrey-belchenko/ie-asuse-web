@@ -5,11 +5,12 @@ import { ReportTable } from '../views/ReportTable';
 import { Executor } from '../Executor';
 import { MethodParams } from '../MethodParams';
 import { ReportExecResult } from '../ReportExecResult';
+import { DataSet } from '../DataSet';
 
 type Context = MethodParams;
 type ViewPostProcessFunc = (
   context: Context,
-  data: any[],
+  data: DataSet,
 ) => Promise<ReportView>;
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
@@ -19,7 +20,7 @@ export interface RegularReportProps extends ReportProps {
 
 export class RegularReport extends Report {
   paramsForm?: () => Promise<Form>;
-  getData?: (formValues: any) => Promise<any[]>;
+  getData?: (formValues: any) => Promise<DataSet>;
   execute?: (params: MethodParams) => Promise<ReportExecResult>;
   getView?: ViewPostProcessFunc;
   constructor(props: RegularReportProps) {

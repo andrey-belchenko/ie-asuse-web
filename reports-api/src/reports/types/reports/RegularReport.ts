@@ -14,7 +14,7 @@ type ViewPostProcessFunc = (
 ) => Promise<ReportView>;
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
-  dataSource?: (formValues: any) => Promise<any[]>;
+  dataSource?: (formValues: any) => Promise<DataSet>;
   view?: ReportView | ViewPostProcessFunc;
 }
 
