@@ -9,7 +9,7 @@ function handleErrors(response: any) {
 
 export const createDataSource = (options: any) => {
   let idField = "_id";
-  let database = options.database;
+  // let database = options.database;
   let collectionName = options.collectionName;
 
   const customDataSource = new CustomStore({
@@ -22,7 +22,7 @@ export const createDataSource = (options: any) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          database: database,
+          // database: database,
           collection: collectionName,
           loadOptions: loadOptions,
         }),

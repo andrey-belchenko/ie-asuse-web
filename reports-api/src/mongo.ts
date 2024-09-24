@@ -39,7 +39,7 @@ export async function execQuery(req: any): Promise<any> {
   console.log(JSON.stringify(req.loadOptions));
   let results = undefined;
   await useMongo(async (client: mongoDB.MongoClient) => {
-    const db = client.db(req.database);
+    const db = client.db("bav_test_report");
     const collection = db.collection(req.collection);
     let loadOptions = replaceDateStrings(req.loadOptions);
     results = await query(collection, loadOptions);

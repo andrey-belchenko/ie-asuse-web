@@ -1,6 +1,4 @@
-import { RemoteExecutor } from "@/reports/services/RemoteExecutor";
 import { instantiate } from "@/reports/types";
-import { Executor } from "@/reports/types/Executor";
 import { Navigator } from "@/reports/types/Navigator";
 export interface ExecFunctionParams {
   tempTableName: string;
@@ -18,13 +16,6 @@ export const getNavigatorConfig = async () => {
     },
   });
   const body = await response.json();
-
-
- 
-  // setMethodCallHandler(async (configItem, method, params) => {
-  //   return await remoteMethodCall(configItem.id, method, params);
-  // });
-
   return instantiate<Navigator>(body);
 };
 

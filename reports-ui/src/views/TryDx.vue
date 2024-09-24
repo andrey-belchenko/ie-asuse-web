@@ -13,7 +13,7 @@ import {
 
 import { createDataSource } from "../api-client/mongo.js";
 const dataSource = createDataSource({
-      database: "bav_sample",
+      // database: "bav_sample",
       collectionName: "financial_facts"
     })
 </script>

@@ -16,7 +16,7 @@ import { sales } from './data';
 
 import { createDataSource } from "@/api-client/mongo";
 const dataStore = createDataSource({
-      database: "bav_sample",
+    //   database: "bav_sample",
       collectionName: "financial_facts"
     })
 
