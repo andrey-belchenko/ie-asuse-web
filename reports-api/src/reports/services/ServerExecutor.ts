@@ -16,6 +16,6 @@ export class ServerExecutor extends Executor {
     tempTableName: string,
     tableName?: string,
   ) {
-    putDataToTemp(data, tempTableName, tableName);
+    await putDataToTemp(data, tempTableName, tableName);
   }
 }

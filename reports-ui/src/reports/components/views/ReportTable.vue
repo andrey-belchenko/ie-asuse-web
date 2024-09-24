@@ -34,10 +34,7 @@ import { saveAs } from 'file-saver-es';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import type { ReportTable } from '@/reports/types/views/ReportTable';
 
-const dataSource = ref(createDataSource({
-    database: "bav_test_report",
-    collectionName: "report_temp"
-}));
+
 const props = defineProps({
     params: {
         type: Object,
@@ -51,6 +48,11 @@ const props = defineProps({
         required: true
     },
 });
+
+const dataSource = ref(createDataSource({
+    database: "bav_test_report",
+    collectionName: props.tempTableName
+}));
 
 let dataGridInstance: any = null;
 

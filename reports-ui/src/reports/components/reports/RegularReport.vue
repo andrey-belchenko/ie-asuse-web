@@ -1,24 +1,24 @@
 <template>
     <div class="main">
         <DxSplitter id="rep-splitter2">
-            <DxItem  v-if="paramsFormConfig" :resizable="true" :collapsible="true" size="300px">
+            <DxItem v-if="paramsFormConfig" :resizable="true" :collapsible="true" size="300px">
 
-                <ParamsForm  :formConfig="paramsFormConfig"
-                    v-model:values="formValues" />
-                   
-                <DxToolbar  class="toolbar">
+                <ParamsForm :formConfig="paramsFormConfig" v-model:values="formValues" />
+
+                <DxToolbar class="toolbar">
                     <TbItem>
                         <ActionButton text="Сформировать отчет" @press="onSubmit" :loading="executing" :width="180"
                             :height="30" />
                     </TbItem>
                 </DxToolbar>
                 <!-- rep {{ JSON.stringify(formValues) }}  -->
+                tt: {{ tempTableName }}
             </DxItem>
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
                 <div class="view-container">
                     <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
-                        :key="execId" :exec-id="execId" :tempTableName/>
+                        :key="execId" :exec-id="execId" :tempTableName />
                 </div>
             </DxItem>
         </DxSplitter>
@@ -66,7 +66,7 @@ const onSubmit = () => {
         executing.value = true;
         ready.value = false;
         // await runReport(props.reportConfig!, formValues.value);
-        await props.reportConfig!.fillDataSet(formValues.value);
+        tempTableName.value = await props.reportConfig!.fillDataSet(formValues.value);
         executing.value = false;
         ready.value = true;
     }
