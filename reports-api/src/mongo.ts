@@ -1,6 +1,7 @@
 import * as mongoDB from 'mongodb';
 
 import { MongoClient, GridFSBucket, ObjectId } from 'mongodb';
+import { DataSet } from './reports/types/DataSet';
 
 require('babel-polyfill');
 const query = require('devextreme-query-mongodb');
@@ -65,19 +66,53 @@ async function useMongo(
 }
 
 export async function putDataToTemp(
-  data: any[],
+  data: DataSet,
   tempTableName: string,
-  tableName?: string,
 ): Promise<void> {
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(dbName);
-    const collection = db.collection(tempTableName);
-    await collection.deleteMany();
-    if (tableName) {
-      data = data.map((it) => ({ main: it }));
+    const dsInfoCollection = db.collection(tempTableName + ':info');
+    await dsInfoCollection.deleteMany();
+    if (Array.isArray(data)) {
+      await dsInfoCollection.insertOne({ multiple: false });
+      let collection = db.collection(tempTableName);
+      await collection.deleteMany();
+      await collection.insertMany(data);
+    } else {
+      let info: any = { multiple: true, tables: {} };
+      for (let name in data) {
+        info.tables[name] = true;
+        let collection = db.collection(tempTableName + `.${name}`);
+        await collection.deleteMany();
+        await collection.insertMany(data[name]);
+      }
+      await dsInfoCollection.insertOne(info);
     }
-    await collection.insertMany(data);
   });
+}
+
+export async function getDataSetFromTemp(
+  tempTableName: string,
+): Promise<DataSet> {
+  let data: DataSet = [];
+  await useMongo(async (client: mongoDB.MongoClient) => {
+    const db = client.db(dbName);
+    const dsInfoCollection = db.collection(tempTableName + ':info');
+    let info = await dsInfoCollection.findOne();
+    if (info?.multiple) {
+      data = {};
+      for (let name in info.tables) {
+        const collection = db.collection(tempTableName);
+        const cursor = await collection.find();
+        data[name] = await cursor.toArray();
+      }
+    } else {
+      const collection = db.collection(tempTableName);
+      const cursor = await collection.find();
+      data = await cursor.toArray();
+    }
+  });
+  return data;
 }
 
 // export async function saveTextAsFile(content: string, fileName: string) {

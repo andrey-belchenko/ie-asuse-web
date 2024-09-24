@@ -1,6 +1,7 @@
 import { convertAndSaveFrTemplate } from '@/template';
 import { Executor } from '../types/Executor';
 import { putDataToTemp } from '@/mongo';
+import { DataSet } from '../types/DataSet';
 
 export class ServerExecutor extends Executor {
   constructor() {
@@ -12,10 +13,9 @@ export class ServerExecutor extends Executor {
   }
 
   override async putDataToTemp(
-    data: any[],
+    data: DataSet,
     tempTableName: string,
-    tableName?: string,
   ) {
-    await putDataToTemp(data, tempTableName, tableName);
+    await putDataToTemp(data, tempTableName);
   }
 }

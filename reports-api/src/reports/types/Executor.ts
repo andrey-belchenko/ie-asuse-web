@@ -1,4 +1,5 @@
 import { ConfigItem } from './ConfigItem';
+import { DataSet } from './DataSet';
 import { MethodParams } from './MethodParams';
 
 // Класс содержит методы для вызова из объектов конфигурации, те методы для которых реализация на сервере и на клиенте отличается
@@ -24,5 +25,5 @@ export class Executor {
 
   async prepareTemplate(filePath: string, templateId: string) {}
 
-  async putDataToTemp(data: any[], tempTableName: string, tableName?: string) {}
+  async putDataToTemp(data: DataSet, tempTableName: string) {}
 }
