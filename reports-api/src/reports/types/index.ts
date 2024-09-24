@@ -8,6 +8,7 @@ import { Folder } from './Folder';
 import { Form } from './Form';
 import { Navigator } from './Navigator';
 import { Executor } from './Executor';
+import { ReportExecResult } from './ReportExecResult';
 
 function toDict(arr) {
   return arr.reduce((acc, curr) => {
@@ -25,6 +26,7 @@ const registry: Function[] = {
     Folder,
     Form,
     Navigator,
+    ReportExecResult
   ]),
 };
 

@@ -4,17 +4,13 @@ import type { ReportView } from '../ReportView';
 import { ReportTable } from '../views/ReportTable';
 import { Executor } from '../Executor';
 import { MethodParams } from '../MethodParams';
+import { ReportExecResult } from '../ReportExecResult';
 
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
   // dataSource?: DataSource;
   dataSource?: (formValues: any) => Promise<any[]>;
   view?: ReportView;
-}
-
-export interface ReportExecResult {
-  tempId: any;
-  view: ReportView;
 }
 
 export class RegularReport extends Report {
@@ -33,10 +29,10 @@ export class RegularReport extends Report {
       let data = await this.dataSource(params.formValues);
       let tempId = this.id;
       await Executor.getInstance().putDataToTemp(data, tempId);
-      return {
+      return new ReportExecResult({
         tempId: tempId,
         view: this.view,
-      };
+      });
     };
   }
 }

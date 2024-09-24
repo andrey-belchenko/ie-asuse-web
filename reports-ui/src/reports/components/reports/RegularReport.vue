@@ -17,7 +17,7 @@
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
                 <div class="view-container">
-                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig" :report-view-config="reportConfig.view"
+                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig" :report-view-config="reportViewConfig"
                         :key="execId" :exec-id="execId" :tempId />
                 </div>
             </DxItem>
@@ -36,6 +36,7 @@ import { RegularReport } from '../../types/reports/RegularReport';
 import ReportView from '../ReportView.vue';
 import { v4 as uuidv4 } from 'uuid';
 import ActionButton from '../ActionButton.vue';
+import { ReportView as ReportViewConfig } from '../../types/ReportView';
 // import { runReport } from './RegularReport';
 import type { ReportViewComponent } from '../ReportView';
 import { Form } from '@/reports/types/Form';
@@ -48,6 +49,7 @@ const props = defineProps({
 
 
 const reportViewRef = ref<ReportViewComponent>();
+const reportViewConfig = ref<ReportViewConfig>();
 const formValues = ref({});
 const execId = ref<string>();
 const executing = ref(false);
@@ -67,6 +69,7 @@ const onSubmit = () => {
         // await runReport(props.reportConfig!, formValues.value);
         let execResult = await props.reportConfig!.execute({ formValues: formValues.value });
         tempId.value = execResult.tempId;
+        reportViewConfig.value = execResult.view;
         executing.value = false;
         ready.value = true;
     }

@@ -24,5 +24,5 @@ export class Executor {
 
   async prepareTemplate(filePath: string, templateId: string) {}
 
-  async putDataToTemp(data: any[], tempId: string, tableName?: string) {}
+  async putDataToTemp(data: any[], tempTableName: string, tableName?: string) {}
 }
