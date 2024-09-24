@@ -3,13 +3,10 @@
 import { editors } from './editors';
 import { reports } from './reports';
 import { views } from './views';
-import { DataSource } from './DataSource';
 import { Field } from './Field';
 import { Folder } from './Folder';
 import { Form } from './Form';
 import { Navigator } from './Navigator';
-import type { ConfigItem } from './ConfigItem';
-import { MethodParams } from './MethodParams';
 import { Executor } from './Executor';
 
 function toDict(arr) {
@@ -24,7 +21,6 @@ const registry: Function[] = {
     ...editors,
     ...views,
     ...reports,
-    DataSource,
     Field,
     Folder,
     Form,
