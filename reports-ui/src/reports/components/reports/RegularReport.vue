@@ -17,7 +17,7 @@
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
                 <div class="view-container">
-                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
+                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig" :report-view-config="reportConfig.view"
                         :key="execId" :exec-id="execId" :tempId />
                 </div>
             </DxItem>
@@ -31,10 +31,9 @@
 import { DxSplitter, DxItem } from 'devextreme-vue/splitter';
 import DxToolbar, { DxItem as TbItem } from 'devextreme-vue/toolbar';
 import ParamsForm from '../ParamsForm.vue';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RegularReport } from '../../types/reports/RegularReport';
 import ReportView from '../ReportView.vue';
-import notify from 'devextreme/ui/notify';
 import { v4 as uuidv4 } from 'uuid';
 import ActionButton from '../ActionButton.vue';
 // import { runReport } from './RegularReport';

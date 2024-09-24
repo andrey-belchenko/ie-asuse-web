@@ -6,11 +6,15 @@
 </template>
 <script setup lang="ts">
 import type { RegularReport } from '@/reports/types/reports/RegularReport';
-import type { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
+import type { FastReportsViewer as FastReportsViewerConfig } from '@/reports/types/views/FastReportsViewer';
 import { ref, watch } from 'vue';
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
+        required: true
+    },
+    reportViewConfig: {
+        type: Object as () => FastReportsViewerConfig,
         required: true
     },
     tempId: {
@@ -19,12 +23,12 @@ const props = defineProps({
     },
 });
 
-const viewConfig = ref(props.reportConfig.view as FastReportsViewer);
+
 const templateId = ref(undefined);
 const reportUrl = ref(undefined);
 
-watch(viewConfig, async () => {
-    templateId.value = await viewConfig.value.prepareTemplate();
+watch(()=>props.reportViewConfig, async () => {
+    templateId.value = await props.reportViewConfig.prepareTemplate();
 }, { immediate: true });
 
 watch(templateId,  (val) => {

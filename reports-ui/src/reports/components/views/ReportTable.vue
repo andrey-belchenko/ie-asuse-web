@@ -3,7 +3,7 @@
         <DxDataGrid :data-source="dataSource" :show-borders="false" :focused-row-enabled="true"
             :default-focused-row-index="0" :column-auto-width="true" :column-hiding-enabled="false"
             :show-column-lines="true" :show-row-lines="true" :hover-state-enabled="true" :allow-column-resizing="true"
-            @exporting="onExporting" column-resizing-mode="widget" :columns="reportTableConfig.columns" :summary="reportTableConfig.summary"
+            @exporting="onExporting" column-resizing-mode="widget" :columns="reportViewConfig.columns" :summary="reportViewConfig.summary"
             @initialized="saveGridInstance">
             <DxRemoteOperations :filtering="true" :sorting="true" :group-paging="true" :summary="true" :grouping="true">
             </DxRemoteOperations>
@@ -32,7 +32,7 @@ import { createDataSource } from "../../../api-client/mongo.js";
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver-es';
 import { exportDataGrid } from 'devextreme/excel_exporter';
-import type { ReportTable } from '@/reports/types/views/ReportTable';
+import type { ReportTable as ReportTableConfig } from '@/reports/types/views/ReportTable';
 
 
 const props = defineProps({
@@ -41,6 +41,10 @@ const props = defineProps({
     },
     reportConfig: {
         type: Object as () => RegularReport,
+        required: true
+    },
+    reportViewConfig: {
+        type: Object as () => ReportTableConfig,
         required: true
     },
     tempId: {
@@ -56,7 +60,6 @@ const dataSource = ref(createDataSource({
 
 let dataGridInstance: any = null;
 
-const reportTableConfig = ref(props.reportConfig.view as ReportTable);
 
 const saveGridInstance = (e: any) => {
     dataGridInstance = e.component;
