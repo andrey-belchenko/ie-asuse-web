@@ -1,6 +1,7 @@
 import { ConfigItem } from './ConfigItem';
 import { MethodParams } from './MethodParams';
 
+// Класс содержит методы для вызова из объектов конфигурации, те методы для которых реализация на сервере и на клиенте отличается
 export class Executor {
   private static instance?: Executor;
   constructor() {}
@@ -10,9 +11,6 @@ export class Executor {
   }
 
   static getInstance(): Executor {
-    if (!Executor.instance) {
-      Executor.instance = new Executor();
-    }
     return Executor.instance;
   }
 
