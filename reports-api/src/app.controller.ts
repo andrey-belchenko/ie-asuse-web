@@ -24,19 +24,6 @@ export class AppController {
     return data;
   }
 
-  @Post('call')
-  async call(@Body() request: any): Promise<void> {
-    const data = await execFunction(request.functionName, request.params);
-    await putDataToTemp(data, request.tempTableName);
-    // return data;
-  }
-
-  @Post('query-table')
-  async queryPgTable(@Body() request: any): Promise<any> {
-    const data = await queryTable(request.tableName);
-    return { data: data };
-  }
-
   @Post('config-items/:configItemId/methods/:methodName/call')
   async executeMethod(
     @Param('configItemId') configItemId: string,
@@ -70,8 +57,5 @@ export class AppController {
     return nav10;
   }
 
-  @Get('config-items/:id')
-  findOne(@Param('id') id: string): ConfigItem {
-    return configItemDict[id];
-  }
+  
 }

@@ -2,7 +2,6 @@ import { DateEditor } from "../../types/editors/DateEditor";
 import { Field } from "../../types/Field";
 import { Form } from "../../types/Form";
 import { RegularReport } from "../../types/reports/RegularReport";
-import { DataSource } from "@/reports/types/DataSource";
 import { ReportTable } from "@/reports/types/views/ReportTable";
 import depSelect from "../fields/depSelect";
 import { execFunction } from "@/pgsql";
