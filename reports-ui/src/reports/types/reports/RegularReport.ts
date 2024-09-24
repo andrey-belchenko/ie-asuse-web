@@ -1,37 +1,46 @@
 import type { Form } from '../Form';
 import { Report, type ReportProps } from '../Report';
-import type { ReportView } from '../ReportView';
+import { ReportView } from '../ReportView';
 import { ReportTable } from '../views/ReportTable';
 import { Executor } from '../Executor';
 import { MethodParams } from '../MethodParams';
 import { ReportExecResult } from '../ReportExecResult';
 
+type Context = MethodParams;
+type ViewPostProcessFunc = (
+  context: Context,
+  data: any[],
+) => Promise<ReportView>;
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
-  // dataSource?: DataSource;
   dataSource?: (formValues: any) => Promise<any[]>;
-  view?: ReportView;
+  view?: ReportView | ViewPostProcessFunc;
 }
 
 export class RegularReport extends Report {
   paramsForm?: () => Promise<Form>;
-  // dataSource?: DataSource;
-  dataSource?: (formValues: any) => Promise<any[]>;
+  getData?: (formValues: any) => Promise<any[]>;
   execute?: (params: MethodParams) => Promise<ReportExecResult>;
-
-  view: ReportView;
+  getView?: ViewPostProcessFunc;
   constructor(props: RegularReportProps) {
     super(props);
     this.paramsForm = async () => props.paramsForm;
-    this.dataSource = props.dataSource;
-    this.view = props.view ?? new ReportTable({});
+    this.getData = props.dataSource;
+    if (props.view instanceof ReportView) {
+      this.getView = async () => {
+        return props.view as ReportView;
+      };
+    } else if (typeof props.view == 'function') {
+      this.getView = props.view;
+    }
     this.execute = async (params: MethodParams) => {
-      let data = await this.dataSource(params.formValues);
+      let data = await this.getData(params.formValues);
       let tempId = this.id;
       await Executor.getInstance().putDataToTemp(data, tempId);
+      let view = await this.getView(params, data);
       return new ReportExecResult({
         tempId: tempId,
-        view: this.view,
+        view: view,
       });
     };
   }
