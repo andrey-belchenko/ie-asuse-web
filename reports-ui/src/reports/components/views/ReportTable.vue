@@ -3,8 +3,8 @@
         <DxDataGrid :data-source="dataSource" :show-borders="false" :focused-row-enabled="true"
             :default-focused-row-index="0" :column-auto-width="true" :column-hiding-enabled="false"
             :show-column-lines="true" :show-row-lines="true" :hover-state-enabled="true" :allow-column-resizing="true"
-            @exporting="onExporting" column-resizing-mode="widget" :columns="reportViewConfig.columns" :summary="reportViewConfig.summary"
-            @initialized="saveGridInstance">
+            @exporting="onExporting" column-resizing-mode="widget" :columns="reportViewConfig.columns"
+            :summary="reportViewConfig.summary" @initialized="saveGridInstance">
             <DxRemoteOperations :filtering="true" :sorting="true" :group-paging="true" :summary="true" :grouping="true">
             </DxRemoteOperations>
             <DxPaging :enabled="false" />
@@ -55,7 +55,7 @@ const props = defineProps({
 
 const dataSource = ref(createDataSource({
     // database: "bav_test_report",
-    collectionName: props.tempId
+    collectionName: props.tempId + (props.reportViewConfig.sourceTableName ? `.${props.reportViewConfig.sourceTableName}` : "")
 }));
 
 let dataGridInstance: any = null;
@@ -99,8 +99,8 @@ const onExporting = (e: DxDataGridTypes.ExportingEvent) => {
     inset: 0;
 }
 
-.rep-table td[role=columnheader] {  
-  text-align: center!important  
+.rep-table td[role=columnheader] {
+    text-align: center !important
 }
 
 /* .dx-datagrid-headers.dx-header-multi-row .dx-datagrid-content .dx-datagrid-table .dx-row.dx-header-row>td:last-child {

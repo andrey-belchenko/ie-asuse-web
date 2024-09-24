@@ -8,5 +8,5 @@ export default new RegularReport({
     'Просроченная задолженности РСО ИКУ по периодам возникновения (Таблица)',
   paramsForm: form,
   dataSource: dataSetForTable,
-  view: async () => new ReportTable({}),
+  view: async () => new ReportTable({ sourceTableName: 'columns' }),
 });

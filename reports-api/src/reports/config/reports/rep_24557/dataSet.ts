@@ -1,21 +1,13 @@
 import { execFunction } from '@/pgsql';
 import * as _ from 'lodash';
 
-// export default async (formValues: any) => {
-//   let data = await load(formValues);
-//   return prepare(data);
-// };
-
-
-
 export async function dataSetForTable(formValues: any) {
   let data = await load(formValues);
   return prepare(data);
 }
 
 export async function dataSetForFastReport(formValues: any) {
-  let data = await load(formValues);
-  return prepare(data);
+  return await load(formValues);
 }
 
 async function load(formValues: any) {
@@ -112,6 +104,9 @@ function prepare(data: any[]) {
     })
     .value();
 
-  return result;
+  return {
+    main: result,
+    columns: columns,
+  };
   // console.log(JSON.stringify(result[0], null, 3));
 }
