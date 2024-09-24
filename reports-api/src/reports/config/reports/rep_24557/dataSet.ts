@@ -99,6 +99,7 @@ function prepare(data: any[]) {
           .sumBy((it) => it.долг);
         let columnName = `долг_${column.column_id}`;
         row[columnName] = value || 0;
+        column["name"] = columnName;
       }
       return row;
     })
@@ -106,7 +107,7 @@ function prepare(data: any[]) {
 
   return {
     main: result,
-    columns: columns,
+    columns: allColumns,
   };
   // console.log(JSON.stringify(result[0], null, 3));
 }
