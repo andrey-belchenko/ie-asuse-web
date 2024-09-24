@@ -14,7 +14,7 @@ export default new Field({
         return [];
       }
       return await query(
-        'select * from report_dm.dim_участок where отделение_id = ANY($1::int[])',
+        /*sql*/ `select * from report_dm.dim_участок where отделение_id = ANY($1::int[])`,
         [params.formValues.dep],
       );
     },

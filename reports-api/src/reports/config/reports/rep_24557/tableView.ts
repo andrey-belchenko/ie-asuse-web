@@ -47,7 +47,7 @@ export default async function (context: Context, data: DataSet) {
   let summaries = [];
 
   const addSummary = (columnName: string) => {
-    summaries.push( {
+    summaries.push({
       column: columnName,
       summaryType: 'sum',
       valueFormat: {
@@ -57,6 +57,8 @@ export default async function (context: Context, data: DataSet) {
       displayFormat: '{0}',
     });
   };
+
+  addSummary('долг');
   let columnsInfo = data['columns'];
 
   let bandsInfos = _(columnsInfo)
