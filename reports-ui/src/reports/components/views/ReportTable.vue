@@ -43,7 +43,7 @@ const props = defineProps({
         type: Object as () => RegularReport,
         required: true
     },
-    tempTableName: {
+    tempId: {
         type: String,
         required: true
     },
@@ -51,7 +51,7 @@ const props = defineProps({
 
 const dataSource = ref(createDataSource({
     // database: "bav_test_report",
-    collectionName: props.tempTableName
+    collectionName: props.tempId
 }));
 
 let dataGridInstance: any = null;

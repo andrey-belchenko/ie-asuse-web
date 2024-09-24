@@ -12,13 +12,13 @@
                     </TbItem>
                 </DxToolbar>
                 <!-- rep {{ JSON.stringify(formValues) }}  -->
-                tt: {{ tempTableName }}
+                tt: {{ tempId }}
             </DxItem>
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
                 <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
                 <div class="view-container">
                     <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
-                        :key="execId" :exec-id="execId" :tempTableName />
+                        :key="execId" :exec-id="execId" :tempId />
                 </div>
             </DxItem>
         </DxSplitter>
@@ -52,7 +52,7 @@ const reportViewRef = ref<ReportViewComponent>();
 const formValues = ref({});
 const execId = ref<string>();
 const executing = ref(false);
-const tempTableName = ref(undefined);
+const tempId = ref(undefined);
 const ready = ref(false);
 const paramsFormConfig = ref<Form>();
 
@@ -66,7 +66,8 @@ const onSubmit = () => {
         executing.value = true;
         ready.value = false;
         // await runReport(props.reportConfig!, formValues.value);
-        tempTableName.value = await props.reportConfig!.fillDataSet(formValues.value);
+        let execResult = await props.reportConfig!.execute({ formValues: formValues.value });
+        tempId.value = execResult.tempId;
         executing.value = false;
         ready.value = true;
     }

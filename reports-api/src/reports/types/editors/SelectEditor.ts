@@ -1,6 +1,5 @@
 import { Editor, type EditorProps } from '../Editor';
 import { Method } from '../Method';
-import { MethodParams } from '../MethodParams';
 
 export interface SelectEditorProps extends EditorProps {
   columns: string[];

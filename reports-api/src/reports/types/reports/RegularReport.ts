@@ -1,9 +1,9 @@
-
 import type { Form } from '../Form';
 import { Report, type ReportProps } from '../Report';
 import type { ReportView } from '../ReportView';
 import { ReportTable } from '../views/ReportTable';
 import { Executor } from '../Executor';
+import { MethodParams } from '../MethodParams';
 
 export interface RegularReportProps extends ReportProps {
   paramsForm?: Form;
@@ -12,25 +12,31 @@ export interface RegularReportProps extends ReportProps {
   view?: ReportView;
 }
 
+export interface ReportExecResult {
+  tempId: any;
+  view: ReportView;
+}
+
 export class RegularReport extends Report {
   paramsForm?: () => Promise<Form>;
   // dataSource?: DataSource;
   dataSource?: (formValues: any) => Promise<any[]>;
-  fillDataSet?: (formValues: any) => Promise<string>;
-  
+  execute?: (params: MethodParams) => Promise<ReportExecResult>;
+
   view: ReportView;
   constructor(props: RegularReportProps) {
     super(props);
     this.paramsForm = async () => props.paramsForm;
     this.dataSource = props.dataSource;
     this.view = props.view ?? new ReportTable({});
-    this.fillDataSet = async (formValues) => {
-      let data = await this.dataSource(formValues);
-      let tempTaleName = this.id;
-      await Executor.getInstance().putDataToTemp(data, tempTaleName);
-      return tempTaleName;
-    }
-    // const data = await execFunction(request.functionName, request.params);
-    // await putDataToTemp(data, request.tempTableName);
+    this.execute = async (params: MethodParams) => {
+      let data = await this.dataSource(params.formValues);
+      let tempId = this.id;
+      await Executor.getInstance().putDataToTemp(data, tempId);
+      return {
+        tempId: tempId,
+        view: this.view,
+      };
+    };
   }
 }

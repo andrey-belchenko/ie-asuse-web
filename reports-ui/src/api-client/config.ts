@@ -1,7 +1,7 @@
 import { instantiate } from "@/reports/types";
 import { Navigator } from "@/reports/types/Navigator";
 export interface ExecFunctionParams {
-  tempTableName: string;
+  tempId: string;
   functionName: string;
   params?: any;
 }

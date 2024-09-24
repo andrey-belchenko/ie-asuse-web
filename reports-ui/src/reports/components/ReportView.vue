@@ -1,6 +1,6 @@
 <template>
-    <ReportTable v-if="isTable" :params="params" :report-config="reportConfig" :temp-table-name="tempTableName" />
-    <FastReportViewer v-if="isFastReportViewer" :params="params" :report-config="reportConfig" :temp-table-name="tempTableName" />
+    <ReportTable v-if="isTable" :params="params" :report-config="reportConfig" :temp-id="tempId" />
+    <FastReportViewer v-if="isFastReportViewer" :params="params" :report-config="reportConfig" :temp-id="tempId" />
 </template>
 
 <script setup lang="ts">
@@ -21,7 +21,7 @@ const props = defineProps({
         type: Object as () => RegularReport,
         required: true
     },
-    tempTableName: {
+    tempId: {
         type: String,
         required: true
     },

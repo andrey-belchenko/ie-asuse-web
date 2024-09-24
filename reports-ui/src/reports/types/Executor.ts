@@ -1,6 +1,7 @@
 import { ConfigItem } from './ConfigItem';
 import { MethodParams } from './MethodParams';
 
+// Класс содержит методы для вызова из объектов конфигурации, те методы для которых реализация на сервере и на клиенте отличается
 export class Executor {
   private static instance?: Executor;
   constructor() {}
@@ -10,9 +11,6 @@ export class Executor {
   }
 
   static getInstance(): Executor {
-    if (!Executor.instance) {
-      Executor.instance = new Executor();
-    }
     return Executor.instance;
   }
 
@@ -26,5 +24,5 @@ export class Executor {
 
   async prepareTemplate(filePath: string, templateId: string) {}
 
-  async putDataToTemp(data: any[], tempTableName: string, tableName?: string) {}
+  async putDataToTemp(data: any[], tempId: string, tableName?: string) {}
 }

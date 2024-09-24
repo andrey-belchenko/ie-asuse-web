@@ -1,7 +1,7 @@
 <template>
     <div class="main" v-if="templateId">
         <!-- {{ reportUrl }} -->
-        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=${tempTableName}&singleTable=true`"></iframe>
+        <iframe class="frame" :src="`http://localhost:5195/Report/DisplayReport?templateId=${templateId}&dataSetName=${tempId}&singleTable=true`"></iframe>
     </div>
 </template>
 <script setup lang="ts">
@@ -13,7 +13,7 @@ const props = defineProps({
         type: Object as () => RegularReport,
         required: true
     },
-    tempTableName: {
+    tempId: {
         type: String,
         required: true
     },
