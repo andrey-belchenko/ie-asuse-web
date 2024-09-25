@@ -2,6 +2,21 @@ import * as ExcelJS from 'exceljs';
 // import {Row}  from 'exceljs';
 import * as path from 'path';
 
+export interface RangeProps {}
+
+type CellsValues = { [key: number]: any };
+type RangeValues = { [key: number]: CellsValues };
+export class Range {
+  constructor(props: RangeProps) {}
+  values: RangeValues = {};
+  setValue(directIndex: number, crossIndex: number, value: any) {
+    if (!this.values[directIndex]) {
+      this.values[directIndex] = {};
+    }
+    this.values[directIndex][crossIndex] = value;
+  }
+}
+
 function translateFormula(
   formula: string,
   columnOffset: number,
@@ -35,7 +50,7 @@ function translateFormula(
 
 async function createMap(loops, sourceCount) {
   let map = [];
-  await createMapLevel(loops, sourceCount, map, 0, 0, undefined);
+  await createMapLevel(loops, sourceCount, map, 0, 0, undefined, undefined);
   return map;
 }
 
@@ -45,28 +60,41 @@ async function createMapLevel(
   map: any[],
   targetIndex,
   sourceOffset,
-  item
+  item,
+  rangeValues?: RangeValues,
 ) {
   let sourceIndex = 0;
   while (sourceIndex < sourceCount) {
     let loop = loops[sourceIndex];
     if (loop) {
       let childItems = await loop.items(item);
-      for (let childItem of childItems){
+      let childIndex = 0;
+      for (let childItem of childItems) {
+        let range = new Range({});
+        await loop.apply(range, childItem, childIndex);
         targetIndex = await createMapLevel(
           loop.loops,
           loop.length,
           map,
           targetIndex,
           sourceIndex + sourceOffset,
-          childItem
+          childItem,
+          range.values,
         );
+        childIndex++;
       }
       sourceIndex += loop.length;
     } else {
+      let values = {};
+      if (rangeValues) {
+        if (rangeValues[sourceIndex]) {
+          values = rangeValues[sourceIndex];
+        }
+      }
       map.push({
         trgIndex: targetIndex,
         srcIndex: sourceIndex + sourceOffset,
+        values: values,
       });
       targetIndex++;
       sourceIndex++;
@@ -124,12 +152,16 @@ async function processColumns(
     columns.push(sourceSheet.getColumn(index + 1));
   });
   let map = await createMap(loops, columns.length);
+
   for (let mapItem of map) {
+    let values: CellsValues = mapItem.values;
     let column = columns[mapItem.srcIndex];
     let offset = mapItem.trgIndex - mapItem.srcIndex;
     column.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
       let newCell = targetSheet.getCell(rowNumber, mapItem.trgIndex + 1);
-      if (cell.type == ExcelJS.ValueType.SharedString) {
+      if (values[rowNumber - 1]) {
+        newCell.value = values[rowNumber - 1];
+      } else if (cell.type == ExcelJS.ValueType.SharedString) {
         newCell.value = cell.text;
       } else if (cell.type == ExcelJS.ValueType.Formula) {
         let translatedFormula = translateFormula(cell.formula, offset, 0);
@@ -190,6 +222,9 @@ async function copySheetCellByCell(sourceSheetName: string) {
         { title: 'Колонка2' },
         { title: 'Колонка3' },
       ],
+      apply: async (range: Range, item, index) => {
+        range.setValue(0, 2, item.title);
+      },
       loops: {},
       // loops: {
       //   1: {
