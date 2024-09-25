@@ -58,14 +58,6 @@ function createMapLevel(
           targetIndex,
           sourceIndex + sourceOffset,
         );
-        // for (let relSrcIndex = 0; relSrcIndex < loop.length; relSrcIndex++) {
-        //   let srcIndex = sourceIndex + relSrcIndex;
-        //   map.push({
-        //     trgIndex: targetIndex,
-        //     srcIndex: srcIndex,
-        //   });
-        //   targetIndex++;
-        // }
       }
       sourceIndex += loop.length;
     } else {
@@ -80,39 +72,15 @@ function createMapLevel(
   return targetIndex;
 }
 
-async function copySheetCellByCell(
-  sourceSheetName: string,
-  targetSheetName: string,
+async function processRows(
+  sourceSheet: ExcelJS.Worksheet,
+  targetSheet: ExcelJS.Worksheet,
+  loops: any,
 ) {
-  const workbook = new ExcelJS.Workbook();
-  let srcPath = path.join(path.dirname(__filename), '24557.xlsx');
-  let trgPath = path.join(path.dirname(__filename), '24557-result.xlsx');
-  await workbook.xlsx.readFile(srcPath);
-
-  const sourceSheet = workbook.getWorksheet(sourceSheetName);
-  const targetSheet = workbook.addWorksheet(targetSheetName);
-
   let rows: ExcelJS.Row[] = [];
   sourceSheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
     rows.push(row);
   });
-
-  let loops = {
-    4: {
-      from: 4,
-      length: 5,
-      iterations: 3,
-      // loops: {},
-      loops: {
-        1: {
-          from: 1,
-          length: 4,
-          iterations: 2,
-          loops: {},
-        },
-      },
-    },
-  };
 
   let rowMap = createMap(loops, rows.length);
 
@@ -133,41 +101,36 @@ async function copySheetCellByCell(
       newCell.numFmt = cell.numFmt;
     });
   }
-  // while (sourceRowIndex < rows.length) {
-  //   if (!currentLoop) {
-  //     currentLoop = loops[sourceRowIndex + offset];
-  //     if (currentLoop) {
-  //       relSrcRowIndex = 0;
-  //     }
-  //   }
-  //   if (!currentLoop) {
-  //     rowIndexMap[targetRowIndex] = sourceRowIndex;
-  //   } else {
+}
 
-  //   }
-  // }
+async function copySheetCellByCell(sourceSheetName: string) {
+  const workbook = new ExcelJS.Workbook();
+  let srcPath = path.join(path.dirname(__filename), '24557.xlsx');
+  let trgPath = path.join(path.dirname(__filename), '24557-result.xlsx');
+  await workbook.xlsx.readFile(srcPath);
 
-  // let shift = 0;
-  // while (sourceRowIndex < rows.length) {
-  //   let row = rows[sourceRowIndex];
-  //   let targetRowIndex = sourceRowIndex;
-  //   row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
-  //     let newCell = targetSheet.getCell(targetRowIndex + 1, colNumber);
-  //     if (cell.type == ExcelJS.ValueType.SharedString) {
-  //       newCell.value = cell.text;
-  //     } else if (cell.type == ExcelJS.ValueType.Formula) {
-  //       let translatedFormula = translateFormula(cell.formula, 0, shift);
-  //       newCell.value = { formula: translatedFormula };
-  //     } else {
-  //       newCell.value = cell.value;
-  //     }
-  //     newCell.style = cell.style;
-  //     newCell.numFmt = cell.numFmt;
-  //   });
-  //   sourceRowIndex += 1;
-  // }
+  const sourceSheet = workbook.getWorksheet(sourceSheetName);
+  const targetSheet = workbook.addWorksheet(sourceSheetName + '-1');
 
-  // Copy column widths
+  let rowLoops = {
+    4: {
+      from: 4,
+      length: 5,
+      iterations: 3,
+      // loops: {},
+      loops: {
+        1: {
+          from: 1,
+          length: 4,
+          iterations: 2,
+          loops: {},
+        },
+      },
+    },
+  };
+
+  // let rowLoops = {};
+  processRows(sourceSheet, targetSheet, rowLoops);
   sourceSheet.columns.forEach((column, index) => {
     let trgCol = targetSheet.getColumn(index + 1);
     trgCol.hidden = column.hidden;
@@ -178,11 +141,11 @@ async function copySheetCellByCell(
   //     targetSheet.getRow(rowNumber).height = row.height;
   //   });
 
-  let merges = sourceSheet['_merges'];
+  // let merges = sourceSheet['_merges'];
 
-  for (let name in merges) {
-    targetSheet.mergeCells(merges[name]);
-  }
+  // for (let name in merges) {
+  //   targetSheet.mergeCells(merges[name]);
+  // }
 
   //   .forEach((merge: any) => {
   //     targetSheet.mergeCells(merge);
@@ -192,4 +155,4 @@ async function copySheetCellByCell(
   console.log('done');
 }
 
-copySheetCellByCell('2.10.', '2.10.-copy');
+copySheetCellByCell('2.10.');
