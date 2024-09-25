@@ -1,13 +1,41 @@
+import type { Column, Summary } from 'devextreme/ui/data_grid';
+import { ReportView, type ReportViewProps } from '../ReportView';
 import * as ExcelJS from 'exceljs';
-// import {Row}  from 'exceljs';
 import * as path from 'path';
 
-export interface RangeProps {}
+export interface ExcelViewerProps extends ReportViewProps {
+  templatePath: string;
+}
+
+export class ExcelViewer extends ReportView {
+  templatePath: string;
+  // columns?: Column[];
+  // summary?: Summary;
+  // sourceTableName?: string;
+  constructor(props: ExcelViewerProps) {
+    super(props);
+    this.templatePath = props.templatePath;
+    // this.columns = props.columns;
+    // this.summary = props.summary;
+    // this.sourceTableName = props.sourceTableName;
+  }
+}
+
+type ItemsFunc = (parentItem?: any, parentIndex?: number) => Promise<any[]>;
+type ApplyItemFunc = (range: Range, item: any, index: any) => Promise<void>;
+
+interface Loop {
+  from: number;
+  length: number;
+  items: ItemsFunc;
+  apply: ApplyItemFunc;
+  loops: Loop[]
+}
 
 type CellsValues = { [key: number]: any };
 type RangeValues = { [key: number]: CellsValues };
 export class Range {
-  constructor(props: RangeProps) {}
+  constructor() {}
   values: RangeValues = {};
   setValue(directIndex: number, crossIndex: number, value: any) {
     if (!this.values[directIndex]) {
@@ -47,13 +75,11 @@ function translateFormula(
     return newColumn + newRow;
   });
 }
-
 async function createMap(loops, sourceCount) {
   let map = [];
   await createMapLevel(loops, sourceCount, map, 0, 0, undefined, undefined);
   return map;
 }
-
 async function createMapLevel(
   loops,
   sourceCount,
@@ -70,10 +96,8 @@ async function createMapLevel(
       let childItems = await loop.items(item);
       let childIndex = 0;
       for (let childItem of childItems) {
-        let range = new Range({});
-        if (loop.apply) {
-          await loop.apply(range, childItem, childIndex);
-        }
+        let range = new Range();
+        await loop.apply(range, childItem, childIndex);
         targetIndex = await createMapLevel(
           loop.loops,
           loop.length,
@@ -104,7 +128,6 @@ async function createMapLevel(
   }
   return targetIndex;
 }
-
 async function processRows(
   sourceSheet: ExcelJS.Worksheet,
   targetSheet: ExcelJS.Worksheet,
@@ -143,7 +166,6 @@ async function processRows(
     trgCol.width = column.width;
   });
 }
-
 async function processColumns(
   sourceSheet: ExcelJS.Worksheet,
   targetSheet: ExcelJS.Worksheet,
@@ -185,80 +207,3 @@ async function processColumns(
     trgRow.height = row.height;
   });
 }
-
-async function copySheetCellByCell(sourceSheetName: string) {
-  const workbook = new ExcelJS.Workbook();
-  let srcPath = path.join(path.dirname(__filename), '24557.xlsx');
-  let trgPath = path.join(path.dirname(__filename), '24557-result.xlsx');
-  await workbook.xlsx.readFile(srcPath);
-
-  const sourceSheet = workbook.getWorksheet(sourceSheetName);
-  const targetSheet1 = workbook.addWorksheet(sourceSheetName + '-1');
-  const targetSheet2 = workbook.addWorksheet(sourceSheetName + '-2');
-
-  let rowLoops = {
-    4: {
-      from: 4,
-      length: 5,
-      items: () => [1, 2, 3],
-      // loops: {},
-      loops: {
-        1: {
-          from: 1,
-          length: 4,
-          items: () => [1, 2],
-          loops: {},
-        },
-      },
-    },
-  };
-
-  // let rowLoops = {};
-
-  let columnLoops = {
-    5: {
-      from: 5,
-      length: 2,
-      items: async (parentItem) => [
-        { title: 'Колонка1' },
-        { title: 'Колонка2' },
-        { title: 'Колонка3' },
-      ],
-      apply: async (range: Range, item, index) => {
-        range.setValue(0, 2, item.title);
-      },
-      loops: {},
-      // loops: {
-      //   1: {
-      //     from: 1,
-      //     length: 1,
-      //     iterations: 12,
-      //     loops: {},
-      //   },
-      // },
-    },
-  };
-  // let columnLoops = {};
-
-  await processColumns(sourceSheet, targetSheet1, columnLoops);
-  await processRows(targetSheet1, targetSheet2, rowLoops);
-
-  //   sourceSheet.eachRow((row, rowNumber) => {
-  //     targetSheet.getRow(rowNumber).height = row.height;
-  //   });
-
-  // let merges = sourceSheet['_merges'];
-
-  // for (let name in merges) {
-  //   targetSheet.mergeCells(merges[name]);
-  // }
-
-  //   .forEach((merge: any) => {
-  //     targetSheet.mergeCells(merge);
-  //   });
-
-  await workbook.xlsx.writeFile(trgPath);
-  console.log('done');
-}
-
-copySheetCellByCell('2.10.');
