@@ -90,3 +90,47 @@ export const uploadFastReportTemplate = async (
     client.release();
   }
 };
+
+export interface StoredFile {
+  fileId: string;
+  fileName: string;
+  fileData: Buffer;
+}
+
+export const uploadFile = async (file: StoredFile) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `INSERT INTO report_sys.file (file_id, file_name, file_data) VALUES ($1, $2, $3)
+       ON CONFLICT (file_id) DO UPDATE SET file_name=$2, file_data = $3`,
+      [file.fileId, file.fileName, file.fileData],
+    );
+  } finally {
+    client.release();
+  }
+};
+
+export const downloadFile = async (
+  fileId: string,
+): Promise<StoredFile | null> => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `SELECT file_id, file_name, file_data FROM report_sys.file WHERE file_id = $1`,
+      [fileId],
+    );
+
+    if (result.rows.length > 0) {
+      const row = result.rows[0];
+      return {
+        fileId: row.file_id,
+        fileName: row.file_name,
+        fileData: row.file_data,
+      };
+    } else {
+      return null;
+    }
+  } finally {
+    client.release();
+  }
+};

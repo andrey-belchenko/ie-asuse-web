@@ -1,6 +1,6 @@
 import { convertAndSaveFrTemplate } from '@/fastReportTemplate';
 import { Executor } from '../types/Executor';
-import { putDataToTemp } from '@/mongo';
+import { getDataSetFromTemp, putDataToTemp } from '@/mongo';
 import { DataSet } from '../types/DataSet';
 
 export class ServerExecutor extends Executor {
@@ -12,10 +12,11 @@ export class ServerExecutor extends Executor {
     convertAndSaveFrTemplate(filePath, templateId);
   }
 
-  override async putDataToTemp(
-    data: DataSet,
-    tempTableName: string,
-  ) {
-    await putDataToTemp(data, tempTableName);
+  override async putDataToTemp(data: DataSet, tempId: string) {
+    await putDataToTemp(data, tempId);
+  }
+
+  override async getDataSetFromTemp(tempId: string) {
+    return await getDataSetFromTemp(tempId);
   }
 }

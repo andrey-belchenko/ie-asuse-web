@@ -1,45 +1,44 @@
-import { ReportView, type ReportViewProps } from '../ReportView';
+import { convertPath } from '@/path';
 import * as ExcelJS from 'exceljs';
 
-export interface ExcelViewerProps extends ReportViewProps {
-  templatePath: string;
-}
+// export interface ExcelTemplateProps {
+//   templatePath: string;
+// }
 
-export class ExcelViewer extends ReportView {
-  templatePath: string;
-  mappings: Mapping[] = [];
-  mapRows(loops: Loop[]) {
-    this.mappings.push({
-      direction: MappingDirection.rows,
-      loops: loops,
-    });
+export class ExcelTemplate {
+  private workbook?: ExcelJS.Workbook;
+  private currentSheet?: ExcelJS.Worksheet;
+  private sheetName?: string;
+  async loadFile(templatePath: string) {
+    this.workbook = new ExcelJS.Workbook();
+    await this.workbook.xlsx.readFile(convertPath(templatePath));
+    this.currentSheet = this.workbook.getWorksheet(0);
+    this.sheetName = this.currentSheet.name;
   }
-  mapColumns(loops: Loop[]) {
-    this.mappings.push({
-      direction: MappingDirection.columns,
-      loops: loops,
-    });
+  async mapRows(loops: Loop[]) {
+    const newSheet = this.workbook.addWorksheet();
+    await processRows(this.currentSheet, newSheet, loops);
+    this.currentSheet = newSheet;
   }
-  constructor(props: ExcelViewerProps) {
-    super(props);
-    this.templatePath = props.templatePath;
+  async mapColumns(loops: Loop[]) {
+    const newSheet = this.workbook.addWorksheet();
+    await processColumns(this.currentSheet, newSheet, loops);
+    this.currentSheet = newSheet;
   }
-}
 
-interface Mapping {
-  direction: MappingDirection;
-  loops: Loop[];
-}
-
-enum MappingDirection {
-  rows,
-  columns,
+  async result() {
+    let workbook = new ExcelJS.Workbook();
+    let sheet =  workbook.addWorksheet(this.sheetName);
+    sheet.model = this.currentSheet.model;
+    let excelBuffer =  await workbook.xlsx.writeBuffer();
+    return Buffer.from(excelBuffer);
+  }
 }
 
 type ItemsFunc = (parentItem?: any, parentIndex?: number) => Promise<any[]>;
 type ApplyItemFunc = (range: Range, item: any, index: any) => Promise<void>;
 
-interface Loop {
+export interface Loop {
   from: number;
   length: number;
   items: ItemsFunc;

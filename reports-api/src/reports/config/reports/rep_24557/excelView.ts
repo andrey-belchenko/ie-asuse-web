@@ -1,14 +1,15 @@
+import { uploadFile } from '@/pgsql';
+import { ExcelTemplate } from '@/reports/services/ExcelTemplate';
 import { DataSet } from '@/reports/types/DataSet';
 import { Context } from '@/reports/types/reports/RegularReport';
-import { ExcelViewer } from '@/reports/types/views/ExcelViewer';
+import { FileViewer } from '@/reports/types/views/FileViewer';
 import * as _ from 'lodash';
 import * as path from 'path';
-export default async function (context: Context, data: DataSet) {
-  let view = new ExcelViewer({
-    templatePath: path.join(path.dirname(__filename), 'template.xlsx'),
-  });
 
-  view.mapColumns([
+export default async function (context: Context, data: DataSet) {
+  let template = new ExcelTemplate();
+  await template.loadFile(path.join(path.dirname(__filename), 'template.xlsx'));
+  await template.mapColumns([
     {
       from: 5,
       length: 2,
@@ -22,8 +23,7 @@ export default async function (context: Context, data: DataSet) {
       },
     },
   ]);
-
-  view.mapRows([
+  await template.mapRows([
     {
       from: 4,
       length: 5,
@@ -37,5 +37,16 @@ export default async function (context: Context, data: DataSet) {
       ],
     },
   ]);
-  return view;
+
+  let fileId = 'test';
+  let fileName = 'Отчет.xlsx';
+  uploadFile({
+    fileId,
+    fileName,
+    fileData: await template.result(),
+  });
+  return new FileViewer({
+    fileId,
+    fileName,
+  });
 }

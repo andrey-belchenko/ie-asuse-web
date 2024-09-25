@@ -67,22 +67,22 @@ async function useMongo(
 
 export async function putDataToTemp(
   data: DataSet,
-  tempTableName: string,
+  tempId: string,
 ): Promise<void> {
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(dbName);
-    const dsInfoCollection = db.collection(tempTableName + ':info');
+    const dsInfoCollection = db.collection(tempId + ':info');
     await dsInfoCollection.deleteMany();
     if (Array.isArray(data)) {
       await dsInfoCollection.insertOne({ multiple: false });
-      let collection = db.collection(tempTableName);
+      let collection = db.collection(tempId);
       await collection.deleteMany();
       await collection.insertMany(data);
     } else {
       let info: any = { multiple: true, tables: {} };
       for (let name in data) {
         info.tables[name] = true;
-        let collection = db.collection(tempTableName + `.${name}`);
+        let collection = db.collection(tempId + `.${name}`);
         await collection.deleteMany();
         await collection.insertMany(data[name]);
       }
@@ -92,22 +92,22 @@ export async function putDataToTemp(
 }
 
 export async function getDataSetFromTemp(
-  tempTableName: string,
+  tempId: string,
 ): Promise<DataSet> {
   let data: DataSet = [];
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(dbName);
-    const dsInfoCollection = db.collection(tempTableName + ':info');
+    const dsInfoCollection = db.collection(tempId + ':info');
     let info = await dsInfoCollection.findOne();
     if (info?.multiple) {
       data = {};
       for (let name in info.tables) {
-        const collection = db.collection(tempTableName);
+        const collection = db.collection(tempId);
         const cursor = await collection.find();
         data[name] = await cursor.toArray();
       }
     } else {
-      const collection = db.collection(tempTableName);
+      const collection = db.collection(tempId);
       const cursor = await collection.find();
       data = await cursor.toArray();
     }
