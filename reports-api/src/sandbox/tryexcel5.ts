@@ -63,9 +63,13 @@ async function createMapLevel(
   item,
   rangeValues?: RangeValues,
 ) {
+  let loopsDict = loops.reduce((obj, item) => {
+    obj[item.from] = item;
+    return obj;
+  }, {});
   let sourceIndex = 0;
   while (sourceIndex < sourceCount) {
-    let loop = loops[sourceIndex];
+    let loop = loopsDict[sourceIndex];
     if (loop) {
       let childItems = await loop.items(item);
       let childIndex = 0;
@@ -75,7 +79,7 @@ async function createMapLevel(
           await loop.apply(range, childItem, childIndex);
         }
         targetIndex = await createMapLevel(
-          loop.loops,
+          loop.loops || [],
           loop.length,
           map,
           targetIndex,
@@ -196,27 +200,26 @@ async function copySheetCellByCell(sourceSheetName: string) {
   const targetSheet1 = workbook.addWorksheet(sourceSheetName + '-1');
   const targetSheet2 = workbook.addWorksheet(sourceSheetName + '-2');
 
-  let rowLoops = {
-    4: {
+  let rowLoops = [
+    {
       from: 4,
       length: 5,
       items: () => [1, 2, 3],
       // loops: {},
-      loops: {
-        1: {
+      loops: [
+        {
           from: 1,
           length: 4,
           items: () => [1, 2],
-          loops: {},
         },
-      },
+      ],
     },
-  };
+  ];
 
   // let rowLoops = {};
 
-  let columnLoops = {
-    5: {
+  let columnLoops = [
+    {
       from: 5,
       length: 2,
       items: async (parentItem) => [
@@ -227,7 +230,6 @@ async function copySheetCellByCell(sourceSheetName: string) {
       apply: async (range: Range, item, index) => {
         range.setValue(0, 2, item.title);
       },
-      loops: {},
       // loops: {
       //   1: {
       //     from: 1,
@@ -237,7 +239,7 @@ async function copySheetCellByCell(sourceSheetName: string) {
       //   },
       // },
     },
-  };
+  ];
   // let columnLoops = {};
 
   await processColumns(sourceSheet, targetSheet1, columnLoops);
