@@ -45,26 +45,23 @@ async function createMapLevel(
   map: any[],
   targetIndex,
   sourceOffset,
-  parentItem
+  item
 ) {
   let sourceIndex = 0;
   while (sourceIndex < sourceCount) {
     let loop = loops[sourceIndex];
     if (loop) {
-      let items = await loop.items(parentItem);
-      for (let item of items){
+      let childItems = await loop.items(item);
+      for (let childItem of childItems){
         targetIndex = await createMapLevel(
           loop.loops,
           loop.length,
           map,
           targetIndex,
           sourceIndex + sourceOffset,
-          item
+          childItem
         );
       }
-      // for (let iteration = 0; iteration < loop.iterations; iteration++) {
-        
-      // }
       sourceIndex += loop.length;
     } else {
       map.push({
