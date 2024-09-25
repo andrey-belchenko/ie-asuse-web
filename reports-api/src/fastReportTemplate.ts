@@ -3,13 +3,14 @@ import * as xml2js from 'xml2js';
 import { promisify } from 'util';
 import { JSONPath } from 'jsonpath-plus';
 import { uploadFastReportTemplate } from '@/pgsql';
+import { convertPath } from './path';
 const parseString = promisify(xml2js.parseString);
 
 export async function convertAndSaveFrTemplate(
   filePath: string,
   templateId: string,
 ) {
-  filePath=filePath.replace("/dist/","/src/").replace("\\dist\\","\\src\\")
+  filePath = convertPath(filePath);
   const data = await fs.readFile(filePath, 'utf-8');
   const xObj = await parseString(data);
   const xDict = xObj.Report.Dictionary[0];

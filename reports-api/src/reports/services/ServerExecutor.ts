@@ -1,4 +1,4 @@
-import { convertAndSaveFrTemplate } from '@/template';
+import { convertAndSaveFrTemplate } from '@/fastReportTemplate';
 import { Executor } from '../types/Executor';
 import { putDataToTemp } from '@/mongo';
 import { DataSet } from '../types/DataSet';

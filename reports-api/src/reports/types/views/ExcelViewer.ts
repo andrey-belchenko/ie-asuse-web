@@ -1,7 +1,5 @@
-import type { Column, Summary } from 'devextreme/ui/data_grid';
 import { ReportView, type ReportViewProps } from '../ReportView';
 import * as ExcelJS from 'exceljs';
-import * as path from 'path';
 
 export interface ExcelViewerProps extends ReportViewProps {
   templatePath: string;
@@ -9,16 +7,33 @@ export interface ExcelViewerProps extends ReportViewProps {
 
 export class ExcelViewer extends ReportView {
   templatePath: string;
-  // columns?: Column[];
-  // summary?: Summary;
-  // sourceTableName?: string;
+  mappings: Mapping[] = [];
+  mapRows(loops: Loop[]) {
+    this.mappings.push({
+      direction: MappingDirection.rows,
+      loops: loops,
+    });
+  }
+  mapColumns(loops: Loop[]) {
+    this.mappings.push({
+      direction: MappingDirection.columns,
+      loops: loops,
+    });
+  }
   constructor(props: ExcelViewerProps) {
     super(props);
     this.templatePath = props.templatePath;
-    // this.columns = props.columns;
-    // this.summary = props.summary;
-    // this.sourceTableName = props.sourceTableName;
   }
+}
+
+interface Mapping {
+  direction: MappingDirection;
+  loops: Loop[];
+}
+
+enum MappingDirection {
+  rows,
+  columns,
 }
 
 type ItemsFunc = (parentItem?: any, parentIndex?: number) => Promise<any[]>;
@@ -28,8 +43,8 @@ interface Loop {
   from: number;
   length: number;
   items: ItemsFunc;
-  apply: ApplyItemFunc;
-  loops: Loop[]
+  apply?: ApplyItemFunc;
+  loops?: Loop[];
 }
 
 type CellsValues = { [key: number]: any };
@@ -45,61 +60,44 @@ export class Range {
   }
 }
 
-function translateFormula(
-  formula: string,
-  columnOffset: number,
-  rowOffset: number,
-): string {
-  if (rowOffset == 0 && columnOffset == 0) return formula;
-  return formula.replace(/([A-Z]+)(\d+)/g, (match, column, row) => {
-    // Convert column from letters to number (A -> 1, B -> 2, etc.)
-    let columnNumber = 0;
-    for (let i = 0; i < column.length; i++) {
-      columnNumber =
-        columnNumber * 26 + column.charCodeAt(i) - 'A'.charCodeAt(0) + 1;
-    }
-
-    // Apply offset and convert back to letters
-    columnNumber += columnOffset;
-    let newColumn = '';
-    while (columnNumber > 0) {
-      newColumn =
-        String.fromCharCode(((columnNumber - 1) % 26) + 'A'.charCodeAt(0)) +
-        newColumn;
-      columnNumber = Math.floor((columnNumber - 1) / 26);
-    }
-
-    // Apply row offset
-    let newRow = parseInt(row) + rowOffset;
-
-    return newColumn + newRow;
-  });
+interface MapItem {
+  trgIndex: number;
+  srcIndex: number;
+  values: CellsValues;
 }
-async function createMap(loops, sourceCount) {
-  let map = [];
-  await createMapLevel(loops, sourceCount, map, 0, 0, undefined, undefined);
+
+async function createMap(loops: Loop[], sourceCount) {
+  let map: MapItem[] = [];
+  await createMapLevel(loops, sourceCount, map, 0, 0);
   return map;
 }
+
 async function createMapLevel(
-  loops,
-  sourceCount,
-  map: any[],
-  targetIndex,
-  sourceOffset,
-  item,
+  loops: Loop[],
+  sourceCount: number,
+  map: MapItem[],
+  targetIndex: number,
+  sourceOffset: number,
+  item?: any,
   rangeValues?: RangeValues,
 ) {
+  let loopsDict = loops.reduce((obj, item) => {
+    obj[item.from] = item;
+    return obj;
+  }, {});
   let sourceIndex = 0;
   while (sourceIndex < sourceCount) {
-    let loop = loops[sourceIndex];
+    let loop = loopsDict[sourceIndex];
     if (loop) {
       let childItems = await loop.items(item);
       let childIndex = 0;
       for (let childItem of childItems) {
         let range = new Range();
-        await loop.apply(range, childItem, childIndex);
+        if (loop.apply) {
+          await loop.apply(range, childItem, childIndex);
+        }
         targetIndex = await createMapLevel(
-          loop.loops,
+          loop.loops || [],
           loop.length,
           map,
           targetIndex,
@@ -128,10 +126,11 @@ async function createMapLevel(
   }
   return targetIndex;
 }
+
 async function processRows(
   sourceSheet: ExcelJS.Worksheet,
   targetSheet: ExcelJS.Worksheet,
-  loops: any,
+  loops: Loop[],
 ) {
   let rows: ExcelJS.Row[] = [];
   sourceSheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
@@ -166,10 +165,11 @@ async function processRows(
     trgCol.width = column.width;
   });
 }
+
 async function processColumns(
   sourceSheet: ExcelJS.Worksheet,
   targetSheet: ExcelJS.Worksheet,
-  loops: any,
+  loops: Loop[],
 ) {
   let columns: ExcelJS.Column[] = [];
   sourceSheet.columns.forEach((column, index) => {
@@ -205,5 +205,35 @@ async function processColumns(
     let trgRow = targetSheet.getRow(rowNumber);
     trgRow.hidden = row.hidden;
     trgRow.height = row.height;
+  });
+}
+
+function translateFormula(
+  formula: string,
+  columnOffset: number,
+  rowOffset: number,
+): string {
+  if (rowOffset == 0 && columnOffset == 0) return formula;
+  return formula.replace(/([A-Z]+)(\d+)/g, (match, column, row) => {
+    // Convert column from letters to number (A -> 1, B -> 2, etc.)
+    let columnNumber = 0;
+    for (let i = 0; i < column.length; i++) {
+      columnNumber =
+        columnNumber * 26 + column.charCodeAt(i) - 'A'.charCodeAt(0) + 1;
+    }
+
+    // Apply offset and convert back to letters
+    columnNumber += columnOffset;
+    let newColumn = '';
+    while (columnNumber > 0) {
+      newColumn =
+        String.fromCharCode(((columnNumber - 1) % 26) + 'A'.charCodeAt(0)) +
+        newColumn;
+      columnNumber = Math.floor((columnNumber - 1) / 26);
+    }
+
+    // Apply row offset
+    let newRow = parseInt(row) + rowOffset;
+    return newColumn + newRow;
   });
 }

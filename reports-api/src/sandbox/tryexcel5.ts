@@ -205,7 +205,6 @@ async function copySheetCellByCell(sourceSheetName: string) {
       from: 4,
       length: 5,
       items: () => [1, 2, 3],
-      // loops: {},
       loops: [
         {
           from: 1,
