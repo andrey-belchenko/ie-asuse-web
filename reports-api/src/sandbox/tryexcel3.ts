@@ -82,9 +82,8 @@ async function processRows(
     rows.push(row);
   });
 
-  let rowMap = createMap(loops, rows.length);
-
-  for (let mapItem of rowMap) {
+  let map = createMap(loops, rows.length);
+  for (let mapItem of map) {
     let row = rows[mapItem.srcIndex];
     let offset = mapItem.trgIndex - mapItem.srcIndex;
     row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
@@ -100,7 +99,54 @@ async function processRows(
       newCell.style = cell.style;
       newCell.numFmt = cell.numFmt;
     });
+    let trgRow = targetSheet.getRow(mapItem.trgIndex + 1);
+    trgRow.hidden = row.hidden;
+    trgRow.height = row.height;
   }
+
+  sourceSheet.columns.forEach((column, index) => {
+    let trgCol = targetSheet.getColumn(index + 1);
+    trgCol.hidden = column.hidden;
+    trgCol.width = column.width;
+  });
+}
+
+async function processColumns(
+  sourceSheet: ExcelJS.Worksheet,
+  targetSheet: ExcelJS.Worksheet,
+  loops: any,
+) {
+  let columns: ExcelJS.Column[] = [];
+  sourceSheet.columns.forEach((column, index) => {
+    columns.push(sourceSheet.getColumn(index + 1));
+  });
+  let map = createMap(loops, columns.length);
+  for (let mapItem of map) {
+    let column = columns[mapItem.srcIndex];
+    let offset = mapItem.trgIndex - mapItem.srcIndex;
+    column.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+      let newCell = targetSheet.getCell(rowNumber, mapItem.trgIndex + 1);
+      if (cell.type == ExcelJS.ValueType.SharedString) {
+        newCell.value = cell.text;
+      } else if (cell.type == ExcelJS.ValueType.Formula) {
+        let translatedFormula = translateFormula(cell.formula, offset, 0);
+        newCell.value = { formula: translatedFormula };
+      } else {
+        newCell.value = cell.value;
+      }
+      newCell.style = cell.style;
+      newCell.numFmt = cell.numFmt;
+    });
+    let trgCol = targetSheet.getColumn(mapItem.trgIndex + 1);
+    trgCol.hidden = column.hidden;
+    trgCol.width = column.width;
+  }
+
+  sourceSheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+    let trgRow = targetSheet.getRow(rowNumber);
+    trgRow.hidden = row.hidden;
+    trgRow.height = row.height;
+  });
 }
 
 async function copySheetCellByCell(sourceSheetName: string) {
@@ -110,7 +156,8 @@ async function copySheetCellByCell(sourceSheetName: string) {
   await workbook.xlsx.readFile(srcPath);
 
   const sourceSheet = workbook.getWorksheet(sourceSheetName);
-  const targetSheet = workbook.addWorksheet(sourceSheetName + '-1');
+  const targetSheet1 = workbook.addWorksheet(sourceSheetName + '-1');
+  const targetSheet2 = workbook.addWorksheet(sourceSheetName + '-2');
 
   let rowLoops = {
     4: {
@@ -130,12 +177,29 @@ async function copySheetCellByCell(sourceSheetName: string) {
   };
 
   // let rowLoops = {};
-  processRows(sourceSheet, targetSheet, rowLoops);
-  sourceSheet.columns.forEach((column, index) => {
-    let trgCol = targetSheet.getColumn(index + 1);
-    trgCol.hidden = column.hidden;
-    trgCol.width = column.width;
-  });
+
+  let columnLoops = {
+    5: {
+      from: 5,
+      length: 2,
+      iterations: 3,
+      // loops: {},
+      loops: {
+        1: {
+          from: 1,
+          length: 1,
+          iterations: 12,
+          loops: {},
+        },
+      },
+    },
+  };
+  // let columnLoops = {};
+  
+
+
+  processColumns(sourceSheet, targetSheet1, columnLoops);
+  processRows(targetSheet1, targetSheet2, rowLoops);
 
   //   sourceSheet.eachRow((row, rowNumber) => {
   //     targetSheet.getRow(rowNumber).height = row.height;
