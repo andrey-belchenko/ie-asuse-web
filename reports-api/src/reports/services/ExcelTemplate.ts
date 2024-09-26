@@ -150,7 +150,10 @@ async function processRows(
     let offset = mapItem.trgIndex - mapItem.srcIndex;
     row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
       let newCell = targetSheet.getCell(mapItem.trgIndex + 1, colNumber);
-      if (cell.type == ExcelJS.ValueType.SharedString) {
+      let values = mapItem.values;
+      if (values[colNumber - 1]) {
+        newCell.value = values[colNumber - 1];
+      } else if (cell.type == ExcelJS.ValueType.SharedString) {
         newCell.value = cell.text;
       } else if (cell.type == ExcelJS.ValueType.Formula) {
         let translatedFormula = translateFormula(cell.formula, 0, offset);
