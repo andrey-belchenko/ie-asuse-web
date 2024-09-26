@@ -1,5 +1,5 @@
 <template>
-    <DxSplitter id="splitter">
+    <!-- <DxSplitter id="splitter">
         <DxItem :resizable="true" :collapsible="true" size="300px" text="Left Pane">
             <ReportList @report-select="handleReportSelect" />
         </DxItem>
@@ -7,9 +7,18 @@
             <div class="report-container">
                 <Report v-if="selectedReport" :report-config="selectedReport" :key="selectedReport?.title" />
             </div>
-
         </DxItem>
-    </DxSplitter>
+    </DxSplitter> -->
+    <Splitpanes style="height: 400px" class="default-theme">
+        <Pane min-size="20">
+            <ReportList @report-select="handleReportSelect" />
+        </Pane>
+        <Pane>
+            <div>
+                <Report v-if="selectedReport" :report-config="selectedReport" :key="selectedReport?.title" />
+            </div>
+        </Pane>
+    </Splitpanes>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +30,8 @@ import type { NavigatorItem } from '../types/Folder';
 import { Report as ReportConfig } from '../types/Report';
 import { RemoteExecutor } from '../services/RemoteExecutor';
 import { Executor } from '../types/Executor';
+import { Splitpanes, Pane } from 'Splitpanes'
+import 'Splitpanes/dist/Splitpanes.css'
 
 Executor.setInstance(new RemoteExecutor())
 
