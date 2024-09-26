@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { GeneratorReport } from '@/reports/types/reports/GeneratorReport';
+import type { GeneratorReport } from '@/features/reports/types/reports/GeneratorReport';
 const props = defineProps({
     reportConfig: {
         type: Object as () => GeneratorReport,

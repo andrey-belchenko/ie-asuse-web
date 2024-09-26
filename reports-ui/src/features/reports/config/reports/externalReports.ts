@@ -1,4 +1,4 @@
-import { GeneratorReport } from "@/reports/types/reports/GeneratorReport";
+import { GeneratorReport } from "@/features/reports/types/reports/GeneratorReport";
 
 export function getGeneratorReports() {
   const reports = [];

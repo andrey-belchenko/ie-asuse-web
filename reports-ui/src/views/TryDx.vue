@@ -11,7 +11,7 @@ import {
   DxDataGrid, DxColumn, DxPaging, DxPager,
 } from 'devextreme-vue/data-grid';
 
-import { createDataSource } from "../reports/services/api-client/mongo.js";
+import { createDataSource } from "../features/reports/services/api-client/mongo.js";
 const dataSource = createDataSource({
       // database: "bav_sample",
       collectionName: "financial_facts"

@@ -2,7 +2,7 @@
 import { Folder, type NavigatorItem } from "../types/Folder";
 import { defineComponent, onMounted, ref } from "vue";
 import DxTreeView from "devextreme-vue/tree-view";
-import { getNavigatorConfig } from "@/reports/services/api-client/config";
+import { getNavigatorConfig } from "@/features/reports/services/api-client/config";
 
 export default defineComponent({
   components: {

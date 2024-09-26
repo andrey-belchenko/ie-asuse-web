@@ -39,7 +39,7 @@ import ActionButton from '../ActionButton.vue';
 import { ReportView as ReportViewConfig } from '../../types/ReportView';
 // import { runReport } from './RegularReport';
 import type { ReportViewComponent } from '../ReportView';
-import { Form } from '@/reports/types/Form';
+import { Form } from '@/features/reports/types/Form';
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,

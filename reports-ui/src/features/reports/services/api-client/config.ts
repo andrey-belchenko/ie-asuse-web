@@ -1,5 +1,5 @@
-import { instantiate } from "@/reports/types";
-import { Navigator } from "@/reports/types/Navigator";
+import { instantiate } from "@/features/reports/types";
+import { Navigator } from "@/features/reports/types/Navigator";
 export interface ExecFunctionParams {
   tempId: string;
   functionName: string;

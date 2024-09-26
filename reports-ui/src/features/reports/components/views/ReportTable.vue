@@ -32,7 +32,7 @@ import { createDataSource } from "../../services/api-client/mongo.js";
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver-es';
 import { exportDataGrid } from 'devextreme/excel_exporter';
-import type { ReportTable as ReportTableConfig } from '@/reports/types/views/ReportTable';
+import type { ReportTable as ReportTableConfig } from '@/features/reports/types/views/ReportTable';
 
 
 const props = defineProps({

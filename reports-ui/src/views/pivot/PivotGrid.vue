@@ -14,7 +14,7 @@ import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 import { sales } from './data';
 // import { createDataSource } from "../../api-client/query/query.js";
 
-import { createDataSource } from "@/reports/services/api-client/mongo";
+import { createDataSource } from "@/features/reports/services/api-client/mongo";
 const dataStore = createDataSource({
     //   database: "bav_sample",
       collectionName: "financial_facts"

@@ -1,6 +1,6 @@
 
 import CustomStore from 'devextreme/data/custom_store';
-import type { SelectEditor as SelectEditorConfig } from '@/reports/types/editors/SelectEditor';
+import type { SelectEditor as SelectEditorConfig } from '@/features/reports/types/editors/SelectEditor';
 
 export function makeDataSource(config: SelectEditorConfig, formValues:any) {
     return new CustomStore({

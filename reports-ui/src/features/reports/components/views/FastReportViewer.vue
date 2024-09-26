@@ -5,8 +5,8 @@
     </div>
 </template>
 <script setup lang="ts">
-import type { RegularReport } from '@/reports/types/reports/RegularReport';
-import type { FastReportsViewer as FastReportsViewerConfig } from '@/reports/types/views/FastReportsViewer';
+import type { RegularReport } from '@/features/reports/types/reports/RegularReport';
+import type { FastReportsViewer as FastReportsViewerConfig } from '@/features/reports/types/views/FastReportsViewer';
 import { ref, watch } from 'vue';
 const props = defineProps({
     reportConfig: {

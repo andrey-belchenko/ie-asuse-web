@@ -1,4 +1,4 @@
-import { remoteMethodCall } from "@/reports/services/api-client/config";
+import { remoteMethodCall } from "@/features/reports/services/api-client/config";
 import { ConfigItem } from "../types/ConfigItem";
 import { Executor } from "../types/Executor";
 import { MethodParams } from "../types/MethodParams";

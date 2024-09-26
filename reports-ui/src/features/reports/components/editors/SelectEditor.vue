@@ -19,7 +19,7 @@ import DxDropDownBox from 'devextreme-vue/drop-down-box';
 import {
     DxDataGrid, DxSelection, DxPaging, DxFilterRow, DxScrolling,
 } from 'devextreme-vue/data-grid';
-import type { SelectEditor as SelectEditorConfig } from '@/reports/types/editors/SelectEditor';
+import type { SelectEditor as SelectEditorConfig } from '@/features/reports/types/editors/SelectEditor';
 import { makeDataSource } from './SelectEditor';
 const props = defineProps({
     modelValue: {
