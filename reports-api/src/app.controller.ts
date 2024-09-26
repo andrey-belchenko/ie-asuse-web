@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { execQuery, putDataToTemp, replaceDateStrings } from './mongo';
 import { execFunction, queryTable } from './pgsql';
-import nav10 from './reports/config/navigators/nav10';
-import { Navigator } from './reports/types/Navigator';
-import { ConfigItem, configItemDict } from './reports/types/ConfigItem';
+import nav10 from './features/reports/config/navigators/nav10';
+import { Navigator } from './features/reports/types/Navigator';
+import { ConfigItem, configItemDict } from './features/reports/types/ConfigItem';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {

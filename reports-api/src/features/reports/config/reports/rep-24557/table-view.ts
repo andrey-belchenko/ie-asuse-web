@@ -1,6 +1,6 @@
-import { DataSet } from '@/reports/types/DataSet';
-import { Context } from '@/reports/types/reports/RegularReport';
-import { ReportTable } from '@/reports/types/views/ReportTable';
+import { DataSet } from '@/features/reports/types/DataSet';
+import { Context } from '@/features/reports/types/reports/RegularReport';
+import { ReportTable } from '@/features/reports/types/views/ReportTable';
 import { Column } from 'devextreme/ui/data_grid';
 import * as _ from 'lodash';
 export default async function (context: Context, data: DataSet) {

@@ -1,9 +1,9 @@
-import { FastReportsViewer } from "@/reports/types/views/FastReportsViewer";
+import { FastReportsViewer } from "@/features/reports/types/views/FastReportsViewer";
 import { DateEditor } from "../../types/editors/DateEditor";
 import { Field } from "../../types/Field";
 import { Form } from "../../types/Form";
 import { RegularReport } from "../../types/reports/RegularReport";
-import { ReportTable } from "@/reports/types/views/ReportTable";
+import { ReportTable } from "@/features/reports/types/views/ReportTable";
 import depSelect from "../fields/dep-select";
 
 export default new RegularReport({

@@ -1,6 +1,6 @@
 import { getDataSetFromTemp } from '@/mongo';
 import { downloadFile } from '@/pgsql';
-import excelView from '@/reports/config/reports/rep-24557/excel-view';
+import excelView from '@/features/reports/config/reports/rep-24557/excel-view';
 
 import * as fs from 'fs';
 import * as path from 'path';

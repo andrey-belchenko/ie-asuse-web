@@ -1,6 +1,6 @@
 import { query, queryTable } from '@/pgsql';
-import { SelectEditor } from '@/reports/types/editors/SelectEditor';
-import { Field } from '@/reports/types/Field';
+import { SelectEditor } from '@/features/reports/types/editors/SelectEditor';
+import { Field } from '@/features/reports/types/Field';
 
 export default new Field({
   label: 'Участок',

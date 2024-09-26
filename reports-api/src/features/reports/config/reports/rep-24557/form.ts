@@ -1,4 +1,4 @@
-import { Form } from '@/reports/types/Form';
+import { Form } from '@/features/reports/types/Form';
 import { DateEditor } from '../../../types/editors/DateEditor';
 import { Field } from '../../../types/Field';
 import depSelect from '../../fields/dep-select';

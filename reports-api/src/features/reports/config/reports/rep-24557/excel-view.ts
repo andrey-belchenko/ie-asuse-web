@@ -1,8 +1,8 @@
 import { uploadFile } from '@/pgsql';
-import { ExcelTemplate } from '@/reports/services/ExcelTemplate';
-import { DataSet } from '@/reports/types/DataSet';
-import { Context } from '@/reports/types/reports/RegularReport';
-import { FileViewer } from '@/reports/types/views/FileViewer';
+import { ExcelTemplate } from '@/features/reports/services/ExcelTemplate';
+import { DataSet } from '@/features/reports/types/DataSet';
+import { Context } from '@/features/reports/types/reports/RegularReport';
+import { FileViewer } from '@/features/reports/types/views/FileViewer';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as path from 'path';

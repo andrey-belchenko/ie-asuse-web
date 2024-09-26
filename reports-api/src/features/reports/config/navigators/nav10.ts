@@ -1,4 +1,4 @@
-import { GeneratorReport } from '@/reports/types/reports/GeneratorReport';
+import { GeneratorReport } from '@/features/reports/types/reports/GeneratorReport';
 import { Folder } from '../../types/Folder';
 import { Navigator } from '../../types/Navigator';
 import { RegularReport } from '../../types/reports/RegularReport';

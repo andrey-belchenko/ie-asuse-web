@@ -1,5 +1,5 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
-import { ReportTable } from '@/reports/types/views/ReportTable';
+import { ReportTable } from '@/features/reports/types/views/ReportTable';
 import form from './form';
 import { dataSetForTable } from './data-set';
 import tableView from './table-view';

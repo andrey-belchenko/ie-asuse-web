@@ -1,7 +1,7 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
 import { dataSetForFastReport } from './data-set';
 import form from './form';
-import { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
+import { FastReportsViewer } from '@/features/reports/types/views/FastReportsViewer';
 import * as path from 'path';
 
 export default new RegularReport({
