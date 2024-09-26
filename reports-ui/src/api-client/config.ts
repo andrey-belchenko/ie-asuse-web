@@ -6,7 +6,7 @@ export interface ExecFunctionParams {
   params?: any;
 }
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://localhost:4000";
 
 export const getNavigatorConfig = async () => {
   const response = await fetch(`${baseUrl}/reports-config`, {

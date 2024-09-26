@@ -15,7 +15,7 @@ export const createDataSource = (options: any) => {
   const customDataSource = new CustomStore({
     key: idField,
     load: (loadOptions) => {
-      let url = `http://localhost:3000/query`;
+      let url = `http://localhost:4000/query`;
       const query = fetch(url, {
         method: "POST",
         headers: {
