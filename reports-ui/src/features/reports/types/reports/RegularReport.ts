@@ -7,7 +7,7 @@ import { MethodParams } from '../MethodParams';
 import { ReportExecResult } from '../ReportExecResult';
 import { DataSet } from '../DataSet';
 
-type Context = MethodParams;
+export type Context = MethodParams ;
 type ViewPostProcessFunc = (
   context: Context,
   data: DataSet,

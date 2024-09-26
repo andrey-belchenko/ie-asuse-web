@@ -25,5 +25,9 @@ export class Executor {
 
   async prepareTemplate(filePath: string, templateId: string) {}
 
-  async putDataToTemp(data: DataSet, tempTableName: string) {}
+  async putDataToTemp(data: DataSet, tempId: string) {}
+
+  async getDataSetFromTemp(tempId: string) {
+    return [] as DataSet;
+  }
 }
