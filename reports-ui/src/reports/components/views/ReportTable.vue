@@ -28,7 +28,7 @@ import {
     type DxDataGridTypes,
 } from 'devextreme-vue/data-grid';
 import type { RegularReport } from '../../types/reports/RegularReport';
-import { createDataSource } from "../../../api-client/mongo.js";
+import { createDataSource } from "../../services/api-client/mongo.js";
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver-es';
 import { exportDataGrid } from 'devextreme/excel_exporter';
