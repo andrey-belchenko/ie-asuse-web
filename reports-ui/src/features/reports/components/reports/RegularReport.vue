@@ -1,27 +1,5 @@
 <template>
     <div class="main">
-        <!-- <DxSplitter id="rep-splitter2">
-            <DxItem v-if="paramsFormConfig" :resizable="true" :collapsible="true" size="300px">
-
-                <ParamsForm :formConfig="paramsFormConfig" v-model:values="formValues" />
-
-                <DxToolbar class="toolbar">
-                    <TbItem>
-                        <ActionButton text="Сформировать отчет" @press="onSubmit" :loading="executing" :width="180"
-                            :height="30" />
-                    </TbItem>
-                </DxToolbar>
-           
-                tt: {{ tempId }}
-            </DxItem>
-            <DxItem :resizable="true" :collapsible="true" min-size="70px">
-            
-                <div class="view-container">
-                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
-                        :report-view-config="reportViewConfig" :key="execId" :exec-id="execId" :tempId />
-                </div>
-            </DxItem>
-        </DxSplitter> -->
         <Splitpanes class="default-theme">
             <Pane v-if="paramsFormConfig" size="20">
                 
@@ -48,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import { DxSplitter, DxItem } from 'devextreme-vue/splitter';
 import DxToolbar, { DxItem as TbItem } from 'devextreme-vue/toolbar';
 import ParamsForm from '../ParamsForm.vue';
 import { onMounted, ref } from 'vue';

@@ -1,14 +1,4 @@
 <template>
-    <!-- <DxSplitter id="splitter">
-        <DxItem :resizable="true" :collapsible="true" size="300px" text="Left Pane">
-            <ReportList @report-select="handleReportSelect" />
-        </DxItem>
-        <DxItem :resizable="true" :collapsible="true" min-size="70px">
-            <div class="report-container">
-                <Report v-if="selectedReport" :report-config="selectedReport" :key="selectedReport?.title" />
-            </div>
-        </DxItem>
-    </DxSplitter> -->
     <Splitpanes class="default-theme">
         <Pane size="20" max>
             <ReportList @report-select="handleReportSelect" />
@@ -22,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { DxSplitter, DxItem } from 'devextreme-vue/splitter';
 import ReportList from './ReportList.vue';
 import Report from './Report.vue';
 import { ref } from 'vue';
