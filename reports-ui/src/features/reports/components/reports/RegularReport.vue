@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <DxSplitter id="rep-splitter2">
+        <!-- <DxSplitter id="rep-splitter2">
             <DxItem v-if="paramsFormConfig" :resizable="true" :collapsible="true" size="300px">
 
                 <ParamsForm :formConfig="paramsFormConfig" v-model:values="formValues" />
@@ -11,17 +11,37 @@
                             :height="30" />
                     </TbItem>
                 </DxToolbar>
-                <!-- rep {{ JSON.stringify(formValues) }}  -->
+           
                 tt: {{ tempId }}
             </DxItem>
             <DxItem :resizable="true" :collapsible="true" min-size="70px">
-                <!-- <ReportView v-if="ready" :params="formValues" :report-config="reportConfig" :exec-id="execId" /> -->
+            
                 <div class="view-container">
-                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig" :report-view-config="reportViewConfig"
-                        :key="execId" :exec-id="execId" :tempId />
+                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
+                        :report-view-config="reportViewConfig" :key="execId" :exec-id="execId" :tempId />
                 </div>
             </DxItem>
-        </DxSplitter>
+        </DxSplitter> -->
+        <Splitpanes class="default-theme">
+            <Pane v-if="paramsFormConfig" size="20">
+                
+                <ParamsForm :formConfig="paramsFormConfig" v-model:values="formValues" />
+
+                <DxToolbar class="toolbar">
+                    <TbItem>
+                        <ActionButton text="Сформировать отчет" @press="onSubmit" :loading="executing" :width="180"
+                            :height="30" />
+                    </TbItem>
+                </DxToolbar>
+            </Pane>
+            <Pane>
+                <div class="view-container">
+                    <ReportView ref="reportViewRef" v-if="ready" :params="formValues" :report-config="reportConfig"
+                        :report-view-config="reportViewConfig" :key="execId" :exec-id="execId" :tempId />
+                </div>
+            </Pane>
+        </Splitpanes>
+
 
     </div>
 
@@ -40,6 +60,8 @@ import { ReportView as ReportViewConfig } from '../../types/ReportView';
 // import { runReport } from './RegularReport';
 import type { ReportViewComponent } from '../ReportView';
 import { Form } from '@/features/reports/types/Form';
+import { Splitpanes, Pane } from 'Splitpanes'
+import 'Splitpanes/dist/Splitpanes.css'
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
@@ -92,4 +114,9 @@ const onSubmit = () => {
     position: absolute;
     inset: 0;
 }
+
+/* .splitpanes__pane{
+    background-color: unset !important;
+    position: relative;
+} */
 </style>

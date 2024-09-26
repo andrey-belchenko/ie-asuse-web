@@ -9,8 +9,8 @@
             </div>
         </DxItem>
     </DxSplitter> -->
-    <Splitpanes style="height: 400px" class="default-theme">
-        <Pane min-size="20">
+    <Splitpanes class="default-theme">
+        <Pane size="20" max>
             <ReportList @report-select="handleReportSelect" />
         </Pane>
         <Pane>
@@ -45,7 +45,28 @@ const handleReportSelect = (item: NavigatorItem) => {
 }
 
 </script>
-<style scoped>
+<style>
+.splitpanes__pane {
+    background-color: unset !important;
+    position: relative;
+    transition: none !important;
+}
+
+.splitpanes__splitter {
+    border-left: 1px solid #eee !important;
+    border-right: 1px solid #eee !important;
+    width: 20px;
+
+    /* border: none !important;
+    background-color: purple !important; */
+}
+
+.splitpanes__splitter::before {
+    display: none !important;
+}
+.splitpanes__splitter::after {
+    display: none !important;
+}
 /* .report-container {
     position: absolute;
     inset: 0;
