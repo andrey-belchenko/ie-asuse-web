@@ -1,8 +1,8 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
 import { ReportTable } from '@/reports/types/views/ReportTable';
 import form from './form';
-import { dataSetForTable } from './dataSet';
-import tableView from './tableView';
+import { dataSetForTable } from './data-set';
+import tableView from './table-view';
 
 export default new RegularReport({
   title:

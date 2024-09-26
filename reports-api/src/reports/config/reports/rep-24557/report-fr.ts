@@ -1,5 +1,5 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
-import { dataSetForFastReport } from './dataSet';
+import { dataSetForFastReport } from './data-set';
 import form from './form';
 import { FastReportsViewer } from '@/reports/types/views/FastReportsViewer';
 import * as path from 'path';

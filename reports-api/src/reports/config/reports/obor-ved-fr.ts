@@ -4,7 +4,7 @@ import { Field } from "../../types/Field";
 import { Form } from "../../types/Form";
 import { RegularReport } from "../../types/reports/RegularReport";
 import { ReportTable } from "@/reports/types/views/ReportTable";
-import depSelect from "../fields/depSelect";
+import depSelect from "../fields/dep-select";
 
 export default new RegularReport({
   title: "Оборотная ведомость за энергию (FastReport)",

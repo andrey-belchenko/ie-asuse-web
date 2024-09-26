@@ -1,7 +1,7 @@
 import { RegularReport } from '../../../types/reports/RegularReport';
 import form from './form';
-import { dataSetForTable } from './dataSet';
-import excelView from './excelView';
+import { dataSetForTable } from './data-set';
+import excelView from './excel-view';
 
 export default new RegularReport({
   title:

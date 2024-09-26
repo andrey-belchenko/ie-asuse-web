@@ -2,9 +2,9 @@ import { DateEditor } from "../../types/editors/DateEditor";
 import { Field } from "../../types/Field";
 import { Form } from "../../types/Form";
 import { RegularReport } from "../../types/reports/RegularReport";
-import { DataSource } from "@/features/reports/types/DataSource";
-import { ReportTable } from "@/features/reports/types/views/ReportTable";
-import depSelect from "../fields/depSelect";
+import { ReportTable } from "@/reports/types/views/ReportTable";
+import depSelect from "../fields/dep-select";
+import { execFunction } from "@/pgsql";
 
 export default new RegularReport({
   title: "Оборотная ведомость за энергию",
@@ -15,24 +15,31 @@ export default new RegularReport({
         label: "Дата с",
         name: "date1",
         editor: new DateEditor({}),
-        defaultValue: () => new Date(2022, 1, 28),
+        defaultValue:async () =>  new Date(2022, 1, 28),
       }),
       new Field({
         label: "Дата по",
         name: "date2",
         editor: new DateEditor({}),
-        defaultValue: () => new Date(2022, 2, 31),
+        defaultValue:async () => new Date(2022, 2, 31),
       }),
     ],
   }),
-  dataSource: new DataSource({
-    functionName: "report_util.get_оборотная_ведомость",
-    paramsBinding: {
-      p_дата_с: "date1",
-      p_дата_по: "date2",
-      p_отделение_id: "dep",
-    },
-  }),
+  // dataSource: new DataSource({
+  //   functionName: "report_util.get_оборотная_ведомость",
+  //   paramsBinding: {
+  //     p_дата_с: "date1",
+  //     p_дата_по: "date2",
+  //     p_отделение_id: "dep",
+  //   },
+  // }),
+  dataSource: async (formValues)=>{
+     return execFunction("report_util.get_оборотная_ведомость",{
+      p_дата_с: formValues.date1,
+      p_дата_по: formValues.date2,
+      p_отделение_id: formValues.dep,
+    })
+  },
   view: new ReportTable({
     columns: [
       {
