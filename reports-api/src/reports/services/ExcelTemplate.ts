@@ -12,7 +12,7 @@ export class ExcelTemplate {
   async loadFile(templatePath: string) {
     this.workbook = new ExcelJS.Workbook();
     await this.workbook.xlsx.readFile(convertPath(templatePath));
-    this.currentSheet = this.workbook.getWorksheet(0);
+    this.currentSheet = this.workbook.getWorksheet(1);
     this.sheetName = this.currentSheet.name;
   }
   async mapRows(loops: Loop[]) {
@@ -27,10 +27,18 @@ export class ExcelTemplate {
   }
 
   async result() {
-    let workbook = new ExcelJS.Workbook();
-    let sheet =  workbook.addWorksheet(this.sheetName);
-    sheet.model = this.currentSheet.model;
-    let excelBuffer =  await workbook.xlsx.writeBuffer();
+    [...this.workbook.worksheets].forEach((sheet) => {
+      if (sheet.id != this.currentSheet.id) {
+        this.workbook.removeWorksheet(sheet.id);
+      }
+    });
+    this.currentSheet.name = this.sheetName;
+    // let workbook = new ExcelJS.Workbook();
+    // let sheet = workbook.addWorksheet(this.sheetName);
+    // await processRows(this.currentSheet, sheet, []);
+    // sheet.model = this.currentSheet.model;
+    // let excelBuffer = await workbook.xlsx.writeBuffer();
+    let excelBuffer = await this.workbook.xlsx.writeBuffer();
     return Buffer.from(excelBuffer);
   }
 }

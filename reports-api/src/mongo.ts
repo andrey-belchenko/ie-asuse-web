@@ -91,9 +91,7 @@ export async function putDataToTemp(
   });
 }
 
-export async function getDataSetFromTemp(
-  tempId: string,
-): Promise<DataSet> {
+export async function getDataSetFromTemp(tempId: string): Promise<DataSet> {
   let data: DataSet = [];
   await useMongo(async (client: mongoDB.MongoClient) => {
     const db = client.db(dbName);
@@ -102,7 +100,7 @@ export async function getDataSetFromTemp(
     if (info?.multiple) {
       data = {};
       for (let name in info.tables) {
-        const collection = db.collection(tempId);
+        const collection = db.collection(tempId + `.${name}`);
         const cursor = await collection.find();
         data[name] = await cursor.toArray();
       }
