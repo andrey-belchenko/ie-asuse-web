@@ -1,4 +1,6 @@
-import rep_24557_fr from "./report-fr";
-import rep_24557_tbl from "./report-tbl";
+import reportExcel from "./report-excel";
+import reportFr from "./report-fr";
+import reportTbl from "./report-tbl";
 
-export default [rep_24557_tbl, rep_24557_fr]
+
+export default [reportFr, reportTbl,reportExcel]

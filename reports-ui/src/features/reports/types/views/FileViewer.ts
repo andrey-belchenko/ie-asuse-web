@@ -1,4 +1,4 @@
-import { StoredFile, uploadFile } from '@/pgsql';
+import { StoredFile, uploadFile } from '@/features/reports/services/pgsql';
 import { Executor } from '../Executor';
 import { ReportView, type ReportViewProps } from '../ReportView';
 
