@@ -1,10 +1,22 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { execQuery, putDataToTemp, replaceDateStrings } from './features/reports/services/mongo';
-import { execFunction, queryTable } from './features/reports/services/pgsql';
+import {
+  execQuery,
+  putDataToTemp,
+  replaceDateStrings,
+} from './features/reports/services/mongo';
+import {
+  downloadFile,
+  execFunction,
+  queryTable,
+} from './features/reports/services/pgsql';
 import nav10 from './features/reports/config/navigators/nav10';
 import { Navigator } from './features/reports/types/Navigator';
-import { ConfigItem, configItemDict } from './features/reports/types/ConfigItem';
+import {
+  ConfigItem,
+  configItemDict,
+} from './features/reports/types/ConfigItem';
+import { Response } from 'express';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {
@@ -30,7 +42,7 @@ export class AppController {
     @Param('methodName') methodName: string,
     @Body() params: any,
   ): Promise<any> {
-    params =  replaceDateStrings(params);
+    params = replaceDateStrings(params);
     const result = await configItemDict[configItemId][methodName](params);
     if (result instanceof ConfigItem) {
       result.setIds(`${configItemId}.${methodName}`);
@@ -57,5 +69,14 @@ export class AppController {
     return nav10;
   }
 
-  
+  @Get('file/:id')
+  async download(@Param('id') id: string, @Res() res: Response) {
+    let file = await downloadFile(id);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename*=UTF-8''${encodeURIComponent(file.fileName)}`,
+    );
+    res.type('application/octet-stream');
+    res.send(file.fileData);
+  }
 }
