@@ -3,6 +3,8 @@
         :report-view-config="(reportViewConfig as ReportTableConfig)" :temp-id="tempId" />
     <FastReportViewer v-if="isFastReportViewer" :params="params" :report-config="reportConfig"
         :report-view-config="(reportViewConfig as FastReportsViewerConfig)" :temp-id="tempId" />
+    <FileViewer v-if="isFileViewer" :params="params" :report-config="reportConfig"
+        :report-view-config="(reportViewConfig as FileViewerConfig)" :temp-id="tempId" />
 </template>
 
 <script setup lang="ts">
@@ -15,6 +17,8 @@ import notify from 'devextreme/ui/notify';
 import { ReportTable as ReportTableConfig } from '../types/views/ReportTable';
 import { FastReportsViewer as FastReportsViewerConfig } from '../types/views/FastReportsViewer';
 import { ReportView as ReportViewConfig } from '../types/ReportView';
+import { FileViewer as FileViewerConfig } from '../types/views/FileViewer';
+import FileViewer from './views/FileViewer.vue';
 
 const props = defineProps({
     params: {
@@ -36,6 +40,7 @@ const props = defineProps({
 
 const isTable = ref(props.reportViewConfig instanceof ReportTableConfig)
 const isFastReportViewer = ref(props.reportViewConfig instanceof FastReportsViewerConfig)
+const isFileViewer = ref(props.reportViewConfig instanceof FileViewerConfig)
 
 
 const refresh = () => {

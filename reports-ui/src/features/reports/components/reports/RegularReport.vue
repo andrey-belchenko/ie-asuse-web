@@ -92,8 +92,4 @@ const onSubmit = () => {
     inset: 0;
 }
 
-/* .splitpanes__pane{
-    background-color: unset !important;
-    position: relative;
-} */
 </style>
