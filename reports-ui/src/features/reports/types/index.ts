@@ -1,8 +1,8 @@
 // TODO: переделать в виде класса
 
-import { editors } from './editors';
-import { reports } from './reports';
-import { views } from './views';
+import editors from './editors';
+import reports from './reports';
+import views from './views';
 import { Field } from './Field';
 import { Folder } from './Folder';
 import { Form } from './Form';
@@ -26,7 +26,7 @@ const registry: Function[] = {
     Folder,
     Form,
     Navigator,
-    ReportExecResult
+    ReportExecResult,
   ]),
 };
 
@@ -78,12 +78,15 @@ export function instantiate<T>(object: T): T {
   for (let methodName of obj.methodNames) {
     newObj[methodName] = async (params?: any) => {
       // реализация методов на клиенте подменяется на запрос к серверу с выполнением соотв. метода на сервере.
-      return await Executor.getInstance().methodCallHandler(newObj,methodName,params);
+      return await Executor.getInstance().methodCallHandler(
+        newObj,
+        methodName,
+        params,
+      );
     };
   }
   return newObj;
 }
-
 
 // type PrepareTemplateFunc = (
 //   filePath: string,

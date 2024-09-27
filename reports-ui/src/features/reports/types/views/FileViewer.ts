@@ -1,5 +1,3 @@
-import { StoredFile, uploadFile } from '@/features/reports/services/pgsql';
-import { Executor } from '../Executor';
 import { ReportView, type ReportViewProps } from '../ReportView';
 
 export interface FileViewerProps extends ReportViewProps {

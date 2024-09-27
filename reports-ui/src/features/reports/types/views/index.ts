@@ -1,5 +1,6 @@
 import { FastReportsViewer } from "./FastReportsViewer";
+import { FileViewer } from "./FileViewer";
 import { ReportTable } from "./ReportTable";
 
 
-export const views = [FastReportsViewer, ReportTable];
+export default [FastReportsViewer, ReportTable, FileViewer];
