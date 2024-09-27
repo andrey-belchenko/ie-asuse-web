@@ -9,6 +9,7 @@ import {
   downloadFile,
   execFunction,
   queryTable,
+  StoredFile,
 } from './features/reports/services/pgsql';
 import nav10 from './features/reports/config/navigators/nav10';
 import { Navigator } from './features/reports/types/Navigator';
@@ -17,6 +18,7 @@ import {
   configItemDict,
 } from './features/reports/types/ConfigItem';
 import { Response } from 'express';
+import * as fs from 'fs/promises';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {
@@ -69,9 +71,15 @@ export class AppController {
     return nav10;
   }
 
+  // "C:\Users\\andre\\Downloads\\test1.xlsx"
   @Get('file/:id')
   async download(@Param('id') id: string, @Res() res: Response) {
-    let file = await downloadFile(id);
+    // let file = await downloadFile(id);
+    let file:StoredFile ={
+       fileData: await fs.readFile("C:\\Users\\andre\\Downloads\\test1.xlsx"),
+       fileName: "test.xlsx",
+       fileId: "test"
+    }
     res.setHeader(
       'Content-Disposition',
       `attachment; filename*=UTF-8''${encodeURIComponent(file.fileName)}`,
