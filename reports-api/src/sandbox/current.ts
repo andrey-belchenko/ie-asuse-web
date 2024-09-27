@@ -1,4 +1,4 @@
-import { getDataSetFromTemp, putDataToTemp } from '@/mongo';
+import { getDataSetFromTemp, putDataToTemp } from '@/features/reports/services/mongo';
 import * as _ from 'lodash';
 
 async function main() {

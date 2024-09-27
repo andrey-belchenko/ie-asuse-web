@@ -2,7 +2,7 @@ import * as fs from 'fs/promises';
 import * as xml2js from 'xml2js';
 import { promisify } from 'util';
 import { JSONPath } from 'jsonpath-plus';
-import { uploadFastReportTemplate } from '@/pgsql';
+import { uploadFastReportTemplate } from '@/features/reports/services/pgsql';
 import { convertPath } from './path';
 const parseString = promisify(xml2js.parseString);
 

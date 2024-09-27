@@ -1,4 +1,4 @@
-import { query, queryTable } from '@/pgsql';
+import { query, queryTable } from '@/features/reports/services/pgsql';
 import { SelectEditor } from '@/features/reports/types/editors/SelectEditor';
 import { Field } from '@/features/reports/types/Field';
 

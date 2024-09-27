@@ -1,4 +1,4 @@
-import { convertPath } from '@/path';
+import { convertPath } from '@/features/reports/services/path';
 import * as ExcelJS from 'exceljs';
 
 // export interface ExcelTemplateProps {

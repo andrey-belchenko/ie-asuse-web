@@ -1,4 +1,4 @@
-import { execFunction } from '@/pgsql';
+import { execFunction } from '@/features/reports/services/pgsql';
 import * as _ from 'lodash';
 
 export async function dataSetForTable(formValues: any) {

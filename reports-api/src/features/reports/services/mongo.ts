@@ -1,7 +1,7 @@
 import * as mongoDB from 'mongodb';
 
 import { MongoClient, GridFSBucket, ObjectId } from 'mongodb';
-import { DataSet } from './features/reports/types/DataSet';
+import { DataSet } from '../types/DataSet';
 
 require('babel-polyfill');
 const query = require('devextreme-query-mongodb');

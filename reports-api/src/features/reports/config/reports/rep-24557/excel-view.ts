@@ -1,4 +1,4 @@
-import { uploadFile } from '@/pgsql';
+import { uploadFile } from '@/features/reports/services/pgsql';
 import { ExcelTemplate } from '@/features/reports/services/ExcelTemplate';
 import { DataSet } from '@/features/reports/types/DataSet';
 import { Context } from '@/features/reports/types/reports/RegularReport';

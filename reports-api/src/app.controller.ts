@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { execQuery, putDataToTemp, replaceDateStrings } from './mongo';
-import { execFunction, queryTable } from './pgsql';
+import { execQuery, putDataToTemp, replaceDateStrings } from './features/reports/services/mongo';
+import { execFunction, queryTable } from './features/reports/services/pgsql';
 import nav10 from './features/reports/config/navigators/nav10';
 import { Navigator } from './features/reports/types/Navigator';
 import { ConfigItem, configItemDict } from './features/reports/types/ConfigItem';
