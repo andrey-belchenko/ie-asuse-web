@@ -73,7 +73,7 @@ export class Range {
     if (!this.values[directIndex]) {
       this.values[directIndex] = {};
     }
-    this.values[directIndex][crossIndex] = value;
+    this.values[directIndex][crossIndex] = value || null;
   }
   loop<T>(
     from: number,
@@ -181,7 +181,7 @@ async function processRows(
     row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
       let newCell = targetSheet.getCell(mapItem.trgIndex + 1, colNumber);
       let values = mapItem.values;
-      if (values[colNumber - 1]) {
+      if (values[colNumber - 1] !== undefined) {
         newCell.value = values[colNumber - 1];
       } else if (cell.type == ExcelJS.ValueType.SharedString) {
         newCell.value = cell.text;
@@ -223,7 +223,7 @@ async function processColumns(
     let offset = mapItem.trgIndex - mapItem.srcIndex;
     column.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
       let newCell = targetSheet.getCell(rowNumber, mapItem.trgIndex + 1);
-      if (values[rowNumber - 1]) {
+      if (values[rowNumber - 1] !== undefined) {
         newCell.value = values[rowNumber - 1];
       } else if (cell.type == ExcelJS.ValueType.SharedString) {
         newCell.value = cell.text;

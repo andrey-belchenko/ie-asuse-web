@@ -42,7 +42,7 @@ export default async function (context: Context, data: DataSet) {
     }))
     .value();
 
-  type GroupingTreeItem<T> = { props: T; items?: GroupingTree<T> };
+  type GroupingTreeItem<T> = { props: T; summary: T; items?: GroupingTree<T> };
 
   type GroupingTree<T> = GroupingTreeItem<T>[];
 
@@ -69,6 +69,68 @@ export default async function (context: Context, data: DataSet) {
   //   return result;
   // };
 
+  function grouping<T>(rows: T[], keys: (row: T) => any[]): GroupingTree<T> {
+    if (rows.length == 0) {
+      return [];
+    }
+    const rowsWithKey = rows.map((row) => ({ props: row, keys: keys(row) }));
+    const levelsCount = rowsWithKey[0].keys.length;
+    const numericColumnsDict: any = {};
+    for (let row of rows) {
+      for (let name in row) {
+        if (numericColumnsDict[name] !== false) {
+          let value = row[name];
+          if (typeof value === 'number') {
+            numericColumnsDict[name] = true;
+          } else if (value) {
+            numericColumnsDict[name] = false;
+          }
+        }
+      }
+    }
+    const numericColumns = [];
+    for (let name in numericColumnsDict) {
+      if (numericColumnsDict[name]) {
+        numericColumns.push(name);
+      }
+    }
+    const groupNext = (rows: any[], level: number) => {
+      let result = _(rows)
+        .groupBy((row) => row.keys[level])
+        .map((groupRows) => {
+          let items: GroupingTree<T> = undefined;
+          if (level < levelsCount) {
+            items = groupNext(groupRows, level + 1);
+          } else {
+            items = groupRows.map((row) => ({
+              props: row.props,
+              summary: row.props,
+              items: [],
+            }));
+          }
+          let summary: any = {};
+          for (let name of numericColumns) {
+            summary[name] = _(items).sumBy((row) => row[name]);
+          }
+          return {
+            props: groupRows[0].props,
+            summary: summary,
+            items: items,
+          };
+        })
+        .value();
+      return result;
+    };
+    const result = groupNext(rowsWithKey, 0);
+    return result;
+  }
+
+  // let grouped = grouping(rows, (row) => [
+  //   row.абонент_имя,
+  //   row['test'],
+  //   row.год,
+  // ]);
+
   function group<T, TSum>(
     rows: T[],
     keyExpr: (row: T) => any,
@@ -88,14 +150,16 @@ export default async function (context: Context, data: DataSet) {
     return result;
   }
 
-  let deps = group(
-    rows,
-    (row) => row.отделение_имя,
-    (rows) => ({
-      долг: _(rows).sumBy((it) => it.долг),
-    }),
-    (rows) => group(rows, (row) => row.ику_рсо_имя),
-  );
+  // let deps = group(
+  //   rows,
+  //   (row) => row.отделение_имя,
+  //   (rows) => ({
+  //     долг: _(rows).sumBy((it) => it.долг),
+  //   }),
+  //   (rows) => group(rows, (row) => row.ику_рсо_имя),
+  // );
+
+  let deps = grouping(rows, (row) => [row.отделение_имя, row.ику_рсо_имя]);
 
   // let grouped = _(rows)
   //   .groupBy((it) => it.отделение_имя)
@@ -161,7 +225,7 @@ export default async function (context: Context, data: DataSet) {
             2,
             `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
           );
-          // range.setValue(0, 3, item.props.долг);
+          range.setValue(0, 3, item.summary.долг);
         });
       },
     );
