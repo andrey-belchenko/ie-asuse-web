@@ -1,182 +1,62 @@
-import { uploadFile } from '@/features/reports/services/pgsql';
-import { ExcelTemplate } from '@/features/reports/services/ExcelTemplate';
+import { saveFile } from '@/features/reports/services/pgsql';
+import {
+  ExcelTemplate,
+  TemplateRange,
+} from '@/features/reports/services/ExcelTemplate';
 import { DataSet } from '@/features/reports/types/DataSet';
 import { Context } from '@/features/reports/types/reports/RegularReport';
 import { FileViewer } from '@/features/reports/types/views/FileViewer';
-import * as _ from 'lodash';
+
 import * as moment from 'moment';
 import * as path from 'path';
+import { grouping } from '@/features/reports/services/transform';
+import * as _ from 'lodash';
 
 export default async function (context: Context, data: DataSet) {
-  let columns = data['columns'];
+  let columns = data['columns'] as {
+    column_id: any;
+    период_id: any;
+    период_имя: any;
+    год: any;
+    месяц_имя: any;
+    месяц: any;
+    name: any;
+  }[];
 
   let groupedColumns = _(columns)
-    .map((it) => ({
-      column_id: it.column_id,
-      период_id: it.период_id,
-      период_имя: it.период_имя,
-      год: it.год,
-      месяц_имя: it.месяц_имя,
-      месяц: it.месяц,
-      name: it.name,
-    }))
     .groupBy((it) => it.период_id)
     .values()
     .sortBy((it) => it[0].column_id)
     .value();
 
-  let rows = _(data['main'])
-    .map((it) => ({
-      договор_id: it.договор_id,
-      договор_номер: it.договор_номер,
-      абонент_имя: it.абонент_имя,
-      отделение_имя: it.отделение_имя,
-      участок_имя: it.участок_имя,
-      ику_рсо_имя: it.ику_рсо_имя,
-      гр_потр_нас_имя: it.гр_потр_нас_имя,
-      год: it.год,
-      период_id: it.период_id,
-      месяц_имя: it.месяц_имя,
-      месяц: it.месяц,
-      долг: it.долг,
-    }))
-    .value();
+  let rows = data['main'] as {
+    договор_id: any;
+    договор_номер: any;
+    абонент_имя: any;
+    отделение_имя: any;
+    участок_имя: any;
+    ику_рсо_имя: any;
+    гр_потр_нас_имя: any;
+    год: any;
+    период_id: any;
+    месяц_имя: any;
+    месяц: any;
+    долг: any;
+  }[];
 
-  type GroupingTreeItem<T> = { props: T; summary: T; items?: GroupingTree<T> };
-
-  type GroupingTree<T> = GroupingTreeItem<T>[];
-
-  type GroupNextFunction<T> = (rows: T[]) => GroupingTree<T>;
-
-  type GroupingFunction<T> = (
-    rows: T[],
-    keyExpr: (row: T) => any,
-    groupNext?: GroupNextFunction<T>,
-  ) => GroupingTree<T>;
-
-  // let group: GroupingFunction = (
-  //   rows,
-  //   keyExpr,
-  //   groupChildren?: GroupNextFunction,
-  // ) => {
-  //   let result = _(rows)
-  //     .groupBy((row) => keyExpr(row))
-  //     .map((groupItems) => ({
-  //       props: groupItems[0],
-  //       items: groupChildren ? groupChildren(groupItems) : undefined,
-  //     }))
-  //     .value();
-  //   return result;
-  // };
-
-  function grouping<T>(rows: T[], keys: (row: T) => any[]): GroupingTree<T> {
-    if (rows.length == 0) {
-      return [];
-    }
-    const rowsWithKey = rows.map((row) => ({ props: row, keys: keys(row) }));
-    const levelsCount = rowsWithKey[0].keys.length;
-    const numericColumnsDict: any = {};
-    for (let row of rows) {
-      for (let name in row) {
-        if (numericColumnsDict[name] !== false) {
-          let value = row[name];
-          if (typeof value === 'number') {
-            numericColumnsDict[name] = true;
-          } else if (value) {
-            numericColumnsDict[name] = false;
-          }
-        }
-      }
-    }
-    const numericColumns = [];
-    for (let name in numericColumnsDict) {
-      if (numericColumnsDict[name]) {
-        numericColumns.push(name);
-      }
-    }
-    const groupNext = (rows: any[], level: number) => {
-      let result = _(rows)
-        .groupBy((row) => row.keys[level])
-        .map((groupRows) => {
-          let items: GroupingTree<T> = undefined;
-          if (level < levelsCount) {
-            items = groupNext(groupRows, level + 1);
-          } else {
-            items = groupRows.map((row) => ({
-              props: row.props,
-              summary: row.props,
-              items: [],
-            }));
-          }
-          let summary: any = {};
-          for (let name of numericColumns) {
-            summary[name] = _(items).sumBy((row) => row[name]);
-          }
-          return {
-            props: groupRows[0].props,
-            summary: summary,
-            items: items,
-          };
-        })
-        .value();
-      return result;
-    };
-    const result = groupNext(rowsWithKey, 0);
-    return result;
-  }
-
-  // let grouped = grouping(rows, (row) => [
-  //   row.абонент_имя,
-  //   row['test'],
-  //   row.год,
-  // ]);
-
-  function group<T, TSum>(
-    rows: T[],
-    keyExpr: (row: T) => any,
-    summaryExpr?: (rows: T[]) => TSum,
-    groupNext?: GroupNextFunction<T>,
-  ) {
-    let result = _(rows)
-      .groupBy((row) => keyExpr(row))
-      .map((groupRows) => ({
-        props: groupRows[0],
-        summary: summaryExpr ? summaryExpr(groupRows) : ({} as TSum),
-        items: groupNext
-          ? groupNext(groupRows)
-          : groupRows.map((it) => ({ props: it })),
-      }))
-      .value();
-    return result;
-  }
-
-  // let deps = group(
-  //   rows,
-  //   (row) => row.отделение_имя,
-  //   (rows) => ({
-  //     долг: _(rows).sumBy((it) => it.долг),
-  //   }),
-  //   (rows) => group(rows, (row) => row.ику_рсо_имя),
-  // );
-
-  let deps = grouping(rows, (row) => [row.отделение_имя, row.ику_рсо_имя]);
-
-  // let grouped = _(rows)
-  //   .groupBy((it) => it.отделение_имя)
-  //   .map((it) => ({
-  //     props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-  //     items: _(it)
-  //       .groupBy((it) => it.ику_рсо_имя)
-  //       .map((it) => ({
-  //         props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-  //         items: it,
-  //       }))
-  //       .value(),
-  //   }))
-  //   .value();
+  let groupedData = grouping(rows, (row) => [
+    null,
+    row.отделение_имя,
+    row.ику_рсо_имя,
+    row.участок_имя,
+    row.гр_потр_нас_имя,
+    row.договор_id,
+  ]);
 
   let template = new ExcelTemplate();
   await template.loadFile(path.join(path.dirname(__filename), 'template.xlsx'));
+
+  let dynamicColNames: string[] = [];
   await template.mapColumns((range) => {
     range.loop(
       4,
@@ -191,6 +71,7 @@ export default async function (context: Context, data: DataSet) {
             ? `Просроченная задолженность за ${first.год} год, в т.ч.`
             : first.период_имя,
         );
+        dynamicColNames.push(first.name);
         range.loop(
           1,
           1,
@@ -199,6 +80,7 @@ export default async function (context: Context, data: DataSet) {
               .filter((it) => it.месяц_имя)
               .value(),
           (range, item) => {
+            dynamicColNames.push(item.name);
             range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
         );
@@ -206,26 +88,61 @@ export default async function (context: Context, data: DataSet) {
     );
   });
 
+  const setRowValues = (range: TemplateRange, item: any, rowIndex = 0) => {
+    range.setValue(rowIndex, 3, item.summary.долг);
+    range.setValues(
+      rowIndex,
+      4,
+      dynamicColNames.map((name) => item.summary[name] || 0),
+    );
+  };
+
   await template.mapRows((range) => {
     range.setValue(
       2,
       3,
       `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`,
     );
+
+    setRowValues(range, groupedData[0], 3);
     range.loop(
       4,
       5,
-      () => deps,
-      (range, dep) => {
-        range.setValue(0, 2, `Итого по ${dep.props.отделение_имя}`);
-        range.setValue(0, 3, dep.summary.долг);
-        range.loop(1, 4, dep.items, (range, item) => {
+      () => groupedData[0].items,
+      (range, item) => {
+        range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
+        setRowValues(range, item);
+        range.loop(1, 4, item.items, (range, item) => {
           range.setValue(
             0,
             2,
             `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
           );
-          range.setValue(0, 3, item.summary.долг);
+          setRowValues(range, item);
+          range.loop(1, 3, item.items, (range, item) => {
+            range.setValue(
+              0,
+              2,
+              `Итого ${item.props.ику_рсо_имя} по ${item.props.участок_имя}, в т.ч.`,
+            );
+            setRowValues(range, item);
+            range.loop(1, 2, item.items, (range, item) => {
+              range.setValue(
+                0,
+                2,
+                item.props.гр_потр_нас_имя,
+              );
+              setRowValues(range, item);
+              range.loop(1, 1, item.items, (range, item) => {
+                range.setValue(
+                  0,
+                  2,
+                  item.props.абонент_имя,
+                );
+                setRowValues(range, item);
+              });
+            });
+          });
         });
       },
     );
@@ -233,7 +150,7 @@ export default async function (context: Context, data: DataSet) {
 
   let fileId = 'test';
   let fileName = 'Отчет.xlsx';
-  await uploadFile({
+  await saveFile({
     fileId,
     fileName,
     fileData: await template.result(),

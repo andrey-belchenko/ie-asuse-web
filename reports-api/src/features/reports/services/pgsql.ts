@@ -97,7 +97,7 @@ export interface StoredFile {
   fileData: Buffer;
 }
 
-export const uploadFile = async (file: StoredFile) => {
+export const saveFile = async (file: StoredFile) => {
   const client = await pool.connect();
   try {
     await client.query(

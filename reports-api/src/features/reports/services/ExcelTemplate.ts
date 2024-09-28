@@ -13,7 +13,7 @@ export class ExcelTemplate {
   }
 
   async mapRows<T>(apply: ApplyRootFunc) {
-    const range = new Range();
+    const range = new TemplateRange();
     range.loop(0, this.currentSheet.lastRow.number, async () => [{}], apply);
     const newSheet = this.workbook.addWorksheet();
     await processRows(this.currentSheet, newSheet, range.loops);
@@ -21,7 +21,7 @@ export class ExcelTemplate {
   }
 
   async mapColumns<T>(apply: ApplyRootFunc) {
-    const range = new Range();
+    const range = new TemplateRange();
     range.loop(0, this.currentSheet.lastColumn.number, async () => [{}], apply);
     const newSheet = this.workbook.addWorksheet();
     await processColumns(this.currentSheet, newSheet, range.loops);
@@ -44,15 +44,15 @@ type ItemsFuncAsync<T> = () => Promise<T[]>;
 type ItemsFuncSync<T> = () => T[];
 type ItemsFunc<T> = ItemsFuncSync<T> | ItemsFuncAsync<T>;
 type ApplyItemFuncAsync<T> = (
-  range: Range,
+  range: TemplateRange,
   item: T,
   index: any,
 ) => Promise<void>;
-type ApplyItemFuncSync<T> = (range: Range, item: T, index: any) => void;
+type ApplyItemFuncSync<T> = (range: TemplateRange, item: T, index: any) => void;
 type ApplyItemFunc<T> = ApplyItemFuncAsync<T> | ApplyItemFuncSync<T>;
 
-type ApplyRootFuncAsync = (range: Range) => Promise<void>;
-type ApplyRootFuncSync = (range: Range) => void;
+type ApplyRootFuncAsync = (range: TemplateRange) => Promise<void>;
+type ApplyRootFuncSync = (range: TemplateRange) => void;
 type ApplyRootFunc = ApplyRootFuncAsync | ApplyRootFuncSync;
 
 type Loop = {
@@ -65,7 +65,7 @@ type Loop = {
 type CellsValues = { [key: number]: any };
 type RangeValues = { [key: number]: CellsValues };
 
-export class Range {
+export class TemplateRange {
   values: RangeValues = {};
   loops: Loop[] = [];
   constructor() {}
@@ -73,7 +73,12 @@ export class Range {
     if (!this.values[directIndex]) {
       this.values[directIndex] = {};
     }
-    this.values[directIndex][crossIndex] = value || null;
+    this.values[directIndex][crossIndex] = value ?? null;
+  }
+  setValues(directIndex: number, crossIndex: number, values: any[]) {
+    for (let i = 0; i < values.length; i++) {
+      this.setValue(directIndex, crossIndex + i, values[i]);
+    }
   }
   loop<T>(
     from: number,
@@ -125,7 +130,7 @@ async function createMapLevel(
       }
       let childIndex = 0;
       for (let childItem of childItems) {
-        let range = new Range();
+        let range = new TemplateRange();
         if (loop.apply) {
           let result = loop.apply(range, childItem, childIndex);
           if (result instanceof Promise) {
