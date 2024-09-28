@@ -11,6 +11,7 @@ export default async function (context: Context, data: DataSet) {
       precision: 2,
     },
   };
+
   let columns: Column[] = [
     {
       caption: 'Номер договора',

@@ -58,28 +58,12 @@ export default async function (context: Context, data: DataSet) {
 
   let dynamicColNames: string[] = [];
   await template.mapColumns((range) => {
-    range.loop(
-      4,
-      2,
-      () => groupedColumns,
-      (range, colsInGroup) => {
+    range.loop(4,2, () => groupedColumns, (range, colsInGroup) => {
         let first = colsInGroup[0];
-        range.setValue(
-          0,
-          2,
-          first.год
-            ? `Просроченная задолженность за ${first.год} год, в т.ч.`
-            : first.период_имя,
-        );
+        range.setValue(0,2,first.год ? `Просроченная задолженность за ${first.год} год, в т.ч.`: first.период_имя);
         dynamicColNames.push(first.name);
-        range.loop(
-          1,
-          1,
-          () =>
-            _(colsInGroup)
-              .filter((it) => it.месяц_имя)
-              .value(),
-          (range, item) => {
+        range.loop(1,1,() => _(colsInGroup).filter((it) => it.месяц_имя).value(), 
+        (range, item) => {
             dynamicColNames.push(item.name);
             range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
@@ -98,47 +82,28 @@ export default async function (context: Context, data: DataSet) {
   };
 
   await template.mapRows((range) => {
-    range.setValue(
-      2,
-      3,
-      `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`,
-    );
-
+    // ИТОГ
+    range.setValue(2, 3, `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`);
     setRowValues(range, groupedData[0], 3);
-    range.loop(
-      4,
-      5,
-      () => groupedData[0].items,
-      (range, item) => {
+    range.loop(4,5,() => groupedData[0].items, (range, item) => {
+        // ОТДЕЛЕНИЕ
         range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
         setRowValues(range, item);
         range.loop(1, 4, item.items, (range, item) => {
-          range.setValue(
-            0,
-            2,
-            `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
-          );
+          // ИКУ/РСО
+          range.setValue(0,2,`Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`);
           setRowValues(range, item);
           range.loop(1, 3, item.items, (range, item) => {
-            range.setValue(
-              0,
-              2,
-              `Итого ${item.props.ику_рсо_имя} по ${item.props.участок_имя}, в т.ч.`,
-            );
+            // УЧАСТОК
+            range.setValue(0,2,`Итого ${item.props.ику_рсо_имя} по ${item.props.участок_имя}, в т.ч.`,);
             setRowValues(range, item);
             range.loop(1, 2, item.items, (range, item) => {
-              range.setValue(
-                0,
-                2,
-                item.props.гр_потр_нас_имя,
-              );
+              // ГР. ПОТР
+              range.setValue(0,2, item.props.гр_потр_нас_имя);
               setRowValues(range, item);
               range.loop(1, 1, item.items, (range, item) => {
-                range.setValue(
-                  0,
-                  2,
-                  item.props.абонент_имя,
-                );
+                // ДОГОВОР
+                range.setValue( 0,2, item.props.абонент_имя);
                 setRowValues(range, item);
               });
             });

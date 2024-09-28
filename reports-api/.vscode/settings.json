@@ -1,3 +1,4 @@
 {
     "cSpell.language": "en, ru",
+    "prettier.printWidth": 160,
 }
