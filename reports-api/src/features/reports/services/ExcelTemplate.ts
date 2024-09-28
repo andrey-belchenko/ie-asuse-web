@@ -15,11 +15,19 @@ export class ExcelTemplate {
     this.currentSheet = this.workbook.getWorksheet(1);
     this.sheetName = this.currentSheet.name;
   }
-  async mapRows(loops: Loop[]) {
+
+  async mapRows<T>(loops: Loop[]) {
     const newSheet = this.workbook.addWorksheet();
     await processRows(this.currentSheet, newSheet, loops);
     this.currentSheet = newSheet;
   }
+
+  async mapRows1<T>(items: ItemsFunc<T>, apply?: ApplyItemFunc<T>) {
+    const newSheet = this.workbook.addWorksheet();
+    // await processRows(this.currentSheet, newSheet, loops);
+    this.currentSheet = newSheet;
+  }
+
   async mapColumns(loops: Loop[]) {
     const newSheet = this.workbook.addWorksheet();
     await processColumns(this.currentSheet, newSheet, loops);
@@ -43,28 +51,58 @@ export class ExcelTemplate {
   }
 }
 
-type ItemsFunc = (parentItem?: any, parentIndex?: number) => Promise<any[]>;
-type ApplyItemFunc = (range: Range, item: any, index: any) => Promise<void>;
+type ItemsFunc<T> = (parentItem?: T, parentIndex?: number) => Promise<T[]>;
+type ApplyItemFunc<T> = (range: Range, item: T, index: any) => Promise<void>;
 
-export interface Loop {
+type Loop = {
   from: number;
   length: number;
-  items: ItemsFunc;
-  apply?: ApplyItemFunc;
+  items: ItemsFunc<any>;
+  apply?: ApplyItemFunc<any>;
   loops?: Loop[];
-}
+  values?: RangeValues;
+};
+
+type LoopProps<T> = {
+  from: number;
+  length: number;
+  items: ItemsFunc<T>;
+  apply?: ApplyItemFunc<T>;
+};
 
 type CellsValues = { [key: number]: any };
 type RangeValues = { [key: number]: CellsValues };
+
+// export interface RangeSettingProps {
+//   start: number;
+//   size: number;
+// }
+// export class RangeSetting {
+//   values: RangeValues = {};
+//   start: number;
+//   size: number;
+//   constructor(props: RangeSettingProps) {
+//     this.start = props.start;
+//     this.size = props.size;
+//   }
+// }
+
 export class Range {
-  constructor() {}
   values: RangeValues = {};
+  constructor() {}
   setValue(directIndex: number, crossIndex: number, value: any) {
     if (!this.values[directIndex]) {
       this.values[directIndex] = {};
     }
     this.values[directIndex][crossIndex] = value;
   }
+
+  loop<T>(
+    from: number,
+    length: number,
+    items: ItemsFunc<T>,
+    apply?: ApplyItemFunc<T>,
+  ) {}
 }
 
 interface MapItem {
@@ -94,7 +132,7 @@ async function createMapLevel(
   }, {});
   let sourceIndex = 0;
   while (sourceIndex < sourceCount) {
-    let loop = loopsDict[sourceIndex];
+    let loop: Loop = loopsDict[sourceIndex];
     if (loop) {
       let childItems = await loop.items(item);
       let childIndex = 0;

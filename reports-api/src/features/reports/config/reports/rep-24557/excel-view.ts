@@ -42,25 +42,93 @@ export default async function (context: Context, data: DataSet) {
     }))
     .value();
 
-  function group<T>(rows: T[], columnName: string) {
-    return _(rows)
-      .groupBy((it) => it[columnName])
-      .map((it) => ({
-        item: it[0],
-        subItems: it,
+  type MyObj = { someField: string };
+
+  type GroupingTreeItem<T> = { props: T; items?: GroupingTree<T> };
+
+  type GroupingTree<T> = GroupingTreeItem<T>[];
+
+  type GroupNextFunction = <T>(rows: T[]) => GroupingTree<T>;
+
+  type GroupingFunction = <T>(
+    rows: T[],
+    columnName: string,
+    groupNext?: GroupNextFunction,
+  ) => GroupingTree<T>;
+
+  let group: GroupingFunction = (
+    rows,
+    columnName,
+    groupChildren?: GroupNextFunction,
+  ) => {
+    let result = _(rows)
+      .groupBy((row) => row[columnName])
+      .map((groupItems) => ({
+        props: groupItems[0],
+        items: groupChildren ? groupChildren(groupItems) : undefined,
       }))
       .value();
-  }
+    return result;
+  };
+
+  // type ItemProcessor<T> = {
+  //   items: T[];
+  //   process: (item: T) => void;
+  //   childItemProcessor?: ItemProcessor<any>[];
+  // };
+
+  // type Item =  {name:string, details:Detail[]}
+  // type Detail = {value:number};
+
+  // const items:Item[] = [
+  //   {
+  //     name: 'item1',
+  //     details: [
+  //       {
+  //         value: 1,
+  //       },
+  //       {
+  //         value: 2,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: 'item2',
+  //     details: [
+  //       {
+  //         value: 3,
+  //       },
+  //       {
+  //         value: 4,
+  //       },
+  //     ],
+  //   },
+  // ];
+  // group(rows,"отделение_имя", (rows)=> )
+
+  // function group<T>(rows: T[], columnName: string) {
+  //   return _(rows)
+  //     .groupBy((it) => it[columnName])
+  //     .map((it) => ({
+  //       props: it[0],
+  //       items: it,
+  //     }))
+  //     .value();
+  // }
+
+  let grouped1 = group(rows, 'отделение_имя', (rows) =>
+    group(rows, 'ику_рсо_имя'),
+  );
 
   let grouped = _(rows)
     .groupBy((it) => it.отделение_имя)
     .map((it) => ({
       props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-      subItems: _(it)
+      items: _(it)
         .groupBy((it) => it.ику_рсо_имя)
         .map((it) => ({
-          props:  { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-          subItems: it,
+          props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
+          items: it,
         }))
         .value(),
     }))
@@ -92,7 +160,7 @@ export default async function (context: Context, data: DataSet) {
               .filter((it) => it.месяц_имя)
               .value(),
           apply: async (range, item) => {
-            range.setValue(0, 2, `${item.месяц_имя} ${item.год} года`);
+            range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
         },
       ],
@@ -115,23 +183,23 @@ export default async function (context: Context, data: DataSet) {
         {
           from: 4,
           length: 5,
-          items: async () => grouped,
+          items: async () => grouped1,
           apply: async (range, item) => {
             range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
-            range.setValue(0, 3, item.props.долг);
+            // range.setValue(0, 3, item.props.долг);
           },
           loops: [
             {
               from: 1,
               length: 4,
-              items: async (parentItem) => parentItem.subItems,
+              items: async (parentItem) => parentItem.items,
               apply: async (range, item) => {
                 range.setValue(
                   0,
                   2,
                   `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
                 );
-                range.setValue(0, 3, item.props.долг);
+                // range.setValue(0, 3, item.props.долг);
               },
             },
           ],
