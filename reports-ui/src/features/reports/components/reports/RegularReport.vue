@@ -2,7 +2,7 @@
     <div class="main">
         <Splitpanes class="default-theme">
             <Pane v-if="paramsFormConfig" size="20">
-                
+
                 <ParamsForm :formConfig="paramsFormConfig" v-model:values="formValues" />
 
                 <DxToolbar class="toolbar">
@@ -39,6 +39,7 @@ import type { ReportViewComponent } from '../ReportView';
 import { Form } from '@/features/reports/types/Form';
 import { Splitpanes, Pane } from 'Splitpanes'
 import 'Splitpanes/dist/Splitpanes.css'
+import { FileViewer as FileViewerConfig } from '../../types/views/FileViewer';
 const props = defineProps({
     reportConfig: {
         type: Object as () => RegularReport,
@@ -71,6 +72,14 @@ const onSubmit = () => {
         reportViewConfig.value = execResult.view;
         executing.value = false;
         ready.value = true;
+
+        if (execResult.view instanceof FileViewerConfig) {
+            const link = document.createElement('a');
+            link.href = `http://localhost:4000/file/${execResult.view.fileId}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     }
     action();
 }
@@ -91,5 +100,4 @@ const onSubmit = () => {
     position: absolute;
     inset: 0;
 }
-
 </style>

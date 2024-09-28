@@ -71,15 +71,14 @@ export class AppController {
     return nav10;
   }
 
-  // "C:\Users\\andre\\Downloads\\test1.xlsx"
   @Get('file/:id')
   async download(@Param('id') id: string, @Res() res: Response) {
-    // let file = await downloadFile(id);
-    let file:StoredFile ={
-       fileData: await fs.readFile("C:\\Users\\andre\\Downloads\\test1.xlsx"),
-       fileName: "test.xlsx",
-       fileId: "test"
-    }
+    let file = await downloadFile(id);
+    // let file:StoredFile ={
+    //    fileData: await fs.readFile("C:\\Users\\andre\\Downloads\\test1.xlsx"),
+    //    fileName: "test.xlsx",
+    //    fileId: "test"
+    // }
     res.setHeader(
       'Content-Disposition',
       `attachment; filename*=UTF-8''${encodeURIComponent(file.fileName)}`,

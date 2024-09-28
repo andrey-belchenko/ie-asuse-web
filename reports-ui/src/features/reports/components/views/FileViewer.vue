@@ -1,15 +1,22 @@
 <template>
     <div class="main">
-        <a :href="`http://localhost:4000/file/${reportViewConfig.fileId}`">Скачать {{ reportViewConfig.fileName }}</a>
-        <div ref="excelViewRef"></div>
+        <!-- <a :href="`http://localhost:4000/file/${reportViewConfig.fileId}`">
+            <DxButton text="Скачать отчет">
+            </DxButton>
+        </a> -->
+        <!-- <div ref="excelViewRef"></div> -->
+        <!-- <div v-html="excelHtml"></div> -->
     </div>
 </template>
 <script setup lang="ts">
+// import { DxButton } from 'devextreme-vue/button';
 import type { RegularReport } from '@/features/reports/types/reports/RegularReport';
 import type { FileViewer as FileViewerConfig } from '@/features/reports/types/views/FileViewer';
-import { onMounted, ref } from 'vue';
-import axios from "axios";
-import ExcelViewer from "excel-viewer";
+import { onMounted } from 'vue';
+// import { onMounted, ref } from 'vue';
+// import axios from "axios";
+// import ExcelViewer from "excel-viewer";
+// import xlsxPreview from 'xlsx-preview';
 
 const props = defineProps({
     reportConfig: {
@@ -26,23 +33,31 @@ const props = defineProps({
     },
 });
 
-const excelViewRef = ref(null);
-
-onMounted(async () => {
-
-    axios({
-        url: `http://localhost:4000/file/${props.reportViewConfig.fileId}`,
-        method: "GET",
-        responseType: "arraybuffer"
-    }).then(res => {
-        new ExcelViewer(excelViewRef.value, res.data);
-    })
-})
+// const excelViewRef = ref(null);
+// const excelHtml = ref("");
+// onMounted(async () => {
+//     let res = await axios({
+//         url: `http://localhost:4000/file/${props.reportViewConfig.fileId}`,
+//         method: "GET",
+//         responseType: "arraybuffer"
+//     })
+//     excelHtml.value = await xlsxPreview.xlsx2Html(res.data);
+// })
+// onMounted(() => {
+//     const link = document.createElement('a');
+//     link.href = `http://localhost:4000/file/${props.reportViewConfig.fileId}`;
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// })
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .main {
     position: absolute;
     inset: 0;
+    display: grid;
+    justify-content: center;
+    align-content: center;
 }
-</style>
+</style> -->
