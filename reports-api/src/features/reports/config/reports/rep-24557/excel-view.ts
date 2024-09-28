@@ -42,205 +42,130 @@ export default async function (context: Context, data: DataSet) {
     }))
     .value();
 
-  type MyObj = { someField: string };
-
   type GroupingTreeItem<T> = { props: T; items?: GroupingTree<T> };
 
   type GroupingTree<T> = GroupingTreeItem<T>[];
 
-  type GroupNextFunction = <T>(rows: T[]) => GroupingTree<T>;
+  type GroupNextFunction<T> = (rows: T[]) => GroupingTree<T>;
 
-  type GroupingFunction = <T>(
+  type GroupingFunction<T> = (
     rows: T[],
-    columnName: string,
-    groupNext?: GroupNextFunction,
+    keyExpr: (row: T) => any,
+    groupNext?: GroupNextFunction<T>,
   ) => GroupingTree<T>;
 
-  let group: GroupingFunction = (
-    rows,
-    columnName,
-    groupChildren?: GroupNextFunction,
-  ) => {
+  // let group: GroupingFunction = (
+  //   rows,
+  //   keyExpr,
+  //   groupChildren?: GroupNextFunction,
+  // ) => {
+  //   let result = _(rows)
+  //     .groupBy((row) => keyExpr(row))
+  //     .map((groupItems) => ({
+  //       props: groupItems[0],
+  //       items: groupChildren ? groupChildren(groupItems) : undefined,
+  //     }))
+  //     .value();
+  //   return result;
+  // };
+
+  function group<T, TSum>(
+    rows: T[],
+    keyExpr: (row: T) => any,
+    summaryExpr?: (rows: T[]) => TSum,
+    groupNext?: GroupNextFunction<T>,
+  ) {
     let result = _(rows)
-      .groupBy((row) => row[columnName])
-      .map((groupItems) => ({
-        props: groupItems[0],
-        items: groupChildren ? groupChildren(groupItems) : undefined,
+      .groupBy((row) => keyExpr(row))
+      .map((groupRows) => ({
+        props: groupRows[0],
+        summary: summaryExpr ? summaryExpr(groupRows) : ({} as TSum),
+        items: groupNext
+          ? groupNext(groupRows)
+          : groupRows.map((it) => ({ props: it })),
       }))
       .value();
     return result;
-  };
+  }
 
-  // type ItemProcessor<T> = {
-  //   items: T[];
-  //   process: (item: T) => void;
-  //   childItemProcessor?: ItemProcessor<any>[];
-  // };
-
-  // type Item =  {name:string, details:Detail[]}
-  // type Detail = {value:number};
-
-  // const items:Item[] = [
-  //   {
-  //     name: 'item1',
-  //     details: [
-  //       {
-  //         value: 1,
-  //       },
-  //       {
-  //         value: 2,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     name: 'item2',
-  //     details: [
-  //       {
-  //         value: 3,
-  //       },
-  //       {
-  //         value: 4,
-  //       },
-  //     ],
-  //   },
-  // ];
-  // group(rows,"отделение_имя", (rows)=> )
-
-  // function group<T>(rows: T[], columnName: string) {
-  //   return _(rows)
-  //     .groupBy((it) => it[columnName])
-  //     .map((it) => ({
-  //       props: it[0],
-  //       items: it,
-  //     }))
-  //     .value();
-  // }
-
-  let grouped1 = group(rows, 'отделение_имя', (rows) =>
-    group(rows, 'ику_рсо_имя'),
+  let deps = group(
+    rows,
+    (row) => row.отделение_имя,
+    (rows) => ({
+      долг: _(rows).sumBy((it) => it.долг),
+    }),
+    (rows) => group(rows, (row) => row.ику_рсо_имя),
   );
 
-  let grouped = _(rows)
-    .groupBy((it) => it.отделение_имя)
-    .map((it) => ({
-      props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-      items: _(it)
-        .groupBy((it) => it.ику_рсо_имя)
-        .map((it) => ({
-          props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
-          items: it,
-        }))
-        .value(),
-    }))
-    .value();
+  // let grouped = _(rows)
+  //   .groupBy((it) => it.отделение_имя)
+  //   .map((it) => ({
+  //     props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
+  //     items: _(it)
+  //       .groupBy((it) => it.ику_рсо_имя)
+  //       .map((it) => ({
+  //         props: { ...it[0], долг: _(it).sumBy((sit) => sit.долг) },
+  //         items: it,
+  //       }))
+  //       .value(),
+  //   }))
+  //   .value();
 
   let template = new ExcelTemplate();
   await template.loadFile(path.join(path.dirname(__filename), 'template.xlsx'));
-  await template.mapColumns([
-    {
-      from: 4,
-      length: 2,
-      items: async () => groupedColumns,
-      apply: async (range, item) => {
-        let it = item[0];
+  await template.mapColumns((range) => {
+    range.loop(
+      4,
+      2,
+      () => groupedColumns,
+      (range, colsInGroup) => {
+        let first = colsInGroup[0];
         range.setValue(
           0,
           2,
-          it.год
-            ? `Просроченная задолженность за ${it.год} год, в т.ч. 111`
-            : it.период_имя,
+          first.год
+            ? `Просроченная задолженность за ${first.год} год, в т.ч.`
+            : first.период_имя,
         );
         range.loop(
           1,
           1,
-          async (parentItem: any) =>
-            _(parentItem)
+          () =>
+            _(colsInGroup)
               .filter((it) => it.месяц_имя)
               .value(),
-          async (range, item) => {
+          (range, item) => {
             range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
         );
       },
-      // loops: [
-      //   {
-      //     from: 1,
-      //     length: 1,
-      //     items: async (parentItem) =>
-      //       _(parentItem)
-      //         .filter((it) => it.месяц_имя)
-      //         .value(),
-      //     apply: async (range, item) => {
-      //       range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
-      //     },
-      //   },
-      // ],
-    },
-  ]);
+    );
+  });
 
-  await template.mapRows([
-    {
-      from: 0,
-      length: 10,
-      items: async () => [{}],
-      apply: async (range) => {
-        range.setValue(
-          2,
-          3,
-          `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`,
-        );
-
-        range.loop(
-          4,
-          5,
-          async () => grouped1,
-          async (range, item) => {
-            range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
-            // range.setValue(0, 3, item.props.долг);
-            range.loop(
-              1,
-              4,
-              async (parentItem: any) => parentItem.items,
-              async (range, item) => {
-                range.setValue(
-                  0,
-                  2,
-                  `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
-                );
-                // range.setValue(0, 3, item.props.долг);
-              },
-            );
-          },
-        );
+  await template.mapRows((range) => {
+    range.setValue(
+      2,
+      3,
+      `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`,
+    );
+    range.loop(
+      4,
+      5,
+      () => deps,
+      (range, dep) => {
+        range.setValue(0, 2, `Итого по ${dep.props.отделение_имя}`);
+        range.setValue(0, 3, dep.summary.долг);
+        range.loop(1, 4, dep.items, (range, item) => {
+          range.setValue(
+            0,
+            2,
+            `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
+          );
+          // range.setValue(0, 3, item.props.долг);
+        });
       },
-      // loops: [
-      //   {
-      //     from: 4,
-      //     length: 5,
-      //     items: async () => grouped1,
-      //     apply: async (range, item) => {
-      //       range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
-      //       // range.setValue(0, 3, item.props.долг);
-      //     },
-      //     loops: [
-      //       {
-      //         from: 1,
-      //         length: 4,
-      //         items: async (parentItem) => parentItem.items,
-      //         apply: async (range, item) => {
-      //           range.setValue(
-      //             0,
-      //             2,
-      //             `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
-      //           );
-      //           // range.setValue(0, 3, item.props.долг);
-      //         },
-      //       },
-      //     ],
-      //   },
-      // ],
-    },
-  ]);
+    );
+  });
 
   let fileId = 'test';
   let fileName = 'Отчет.xlsx';

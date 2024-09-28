@@ -1,10 +1,6 @@
 import { convertPath } from '@/features/reports/services/path';
 import * as ExcelJS from 'exceljs';
 
-// export interface ExcelTemplateProps {
-//   templatePath: string;
-// }
-
 export class ExcelTemplate {
   private workbook?: ExcelJS.Workbook;
   private currentSheet?: ExcelJS.Worksheet;
@@ -16,13 +12,7 @@ export class ExcelTemplate {
     this.sheetName = this.currentSheet.name;
   }
 
-  async mapRows<T>(loops: Loop[]) {
-    const newSheet = this.workbook.addWorksheet();
-    await processRows(this.currentSheet, newSheet, loops);
-    this.currentSheet = newSheet;
-  }
-
-  async mapRows1<T>(apply: ApplyRootFunc<T>) {
+  async mapRows<T>(apply: ApplyRootFunc) {
     const range = new Range();
     range.loop(0, this.currentSheet.lastRow.number, async () => [{}], apply);
     const newSheet = this.workbook.addWorksheet();
@@ -30,9 +20,11 @@ export class ExcelTemplate {
     this.currentSheet = newSheet;
   }
 
-  async mapColumns(loops: Loop[]) {
+  async mapColumns<T>(apply: ApplyRootFunc) {
+    const range = new Range();
+    range.loop(0, this.currentSheet.lastColumn.number, async () => [{}], apply);
     const newSheet = this.workbook.addWorksheet();
-    await processColumns(this.currentSheet, newSheet, loops);
+    await processColumns(this.currentSheet, newSheet, range.loops);
     this.currentSheet = newSheet;
   }
 
@@ -43,51 +35,35 @@ export class ExcelTemplate {
       }
     });
     this.currentSheet.name = this.sheetName;
-    // let workbook = new ExcelJS.Workbook();
-    // let sheet = workbook.addWorksheet(this.sheetName);
-    // await processRows(this.currentSheet, sheet, []);
-    // sheet.model = this.currentSheet.model;
-    // let excelBuffer = await workbook.xlsx.writeBuffer();
     let excelBuffer = await this.workbook.xlsx.writeBuffer();
     return Buffer.from(excelBuffer);
   }
 }
 
-type ItemsFunc<T> = (parentItem?: T, parentIndex?: number) => Promise<T[]>;
-type ApplyItemFunc<T> = (range: Range, item: T, index: any) => Promise<void>;
-type ApplyRootFunc<T> = (range: Range) => Promise<void>;
+type ItemsFuncAsync<T> = () => Promise<T[]>;
+type ItemsFuncSync<T> = () => T[];
+type ItemsFunc<T> = ItemsFuncSync<T> | ItemsFuncAsync<T>;
+type ApplyItemFuncAsync<T> = (
+  range: Range,
+  item: T,
+  index: any,
+) => Promise<void>;
+type ApplyItemFuncSync<T> = (range: Range, item: T, index: any) => void;
+type ApplyItemFunc<T> = ApplyItemFuncAsync<T> | ApplyItemFuncSync<T>;
+
+type ApplyRootFuncAsync = (range: Range) => Promise<void>;
+type ApplyRootFuncSync = (range: Range) => void;
+type ApplyRootFunc = ApplyRootFuncAsync | ApplyRootFuncSync;
 
 type Loop = {
   from: number;
   length: number;
   items: ItemsFunc<any>;
   apply?: ApplyItemFunc<any>;
-  // loops?: Loop[];
-};
-
-type LoopProps<T> = {
-  from: number;
-  length: number;
-  items: ItemsFunc<T>;
-  apply?: ApplyItemFunc<T>;
 };
 
 type CellsValues = { [key: number]: any };
 type RangeValues = { [key: number]: CellsValues };
-
-// export interface RangeSettingProps {
-//   start: number;
-//   size: number;
-// }
-// export class RangeSetting {
-//   values: RangeValues = {};
-//   start: number;
-//   size: number;
-//   constructor(props: RangeSettingProps) {
-//     this.start = props.start;
-//     this.size = props.size;
-//   }
-// }
 
 export class Range {
   values: RangeValues = {};
@@ -102,13 +78,13 @@ export class Range {
   loop<T>(
     from: number,
     length: number,
-    items: ItemsFunc<T>,
+    items: ItemsFunc<T> | T[],
     apply?: ApplyItemFunc<T>,
   ) {
     this.loops.push({
       from: from,
       length: length,
-      items: items,
+      items: Array.isArray(items) ? () => items : items,
       apply: apply,
     });
   }
@@ -143,12 +119,18 @@ async function createMapLevel(
   while (sourceIndex < sourceCount) {
     let loop: Loop = loopsDict[sourceIndex];
     if (loop) {
-      let childItems = await loop.items(item);
+      let childItems = loop.items();
+      if (childItems instanceof Promise) {
+        childItems = await childItems;
+      }
       let childIndex = 0;
       for (let childItem of childItems) {
         let range = new Range();
         if (loop.apply) {
-          await loop.apply(range, childItem, childIndex);
+          let result = loop.apply(range, childItem, childIndex);
+          if (result instanceof Promise) {
+            await result;
+          }
         }
         targetIndex = await createMapLevel(
           // loop.loops || [],
