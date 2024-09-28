@@ -22,9 +22,11 @@ export class ExcelTemplate {
     this.currentSheet = newSheet;
   }
 
-  async mapRows1<T>(items: ItemsFunc<T>, apply?: ApplyItemFunc<T>) {
+  async mapRows1<T>(apply: ApplyRootFunc<T>) {
+    const range = new Range();
+    range.loop(0, this.currentSheet.lastRow.number, async () => [{}], apply);
     const newSheet = this.workbook.addWorksheet();
-    // await processRows(this.currentSheet, newSheet, loops);
+    await processRows(this.currentSheet, newSheet, range.loops);
     this.currentSheet = newSheet;
   }
 
@@ -53,14 +55,14 @@ export class ExcelTemplate {
 
 type ItemsFunc<T> = (parentItem?: T, parentIndex?: number) => Promise<T[]>;
 type ApplyItemFunc<T> = (range: Range, item: T, index: any) => Promise<void>;
+type ApplyRootFunc<T> = (range: Range) => Promise<void>;
 
 type Loop = {
   from: number;
   length: number;
   items: ItemsFunc<any>;
   apply?: ApplyItemFunc<any>;
-  loops?: Loop[];
-  values?: RangeValues;
+  // loops?: Loop[];
 };
 
 type LoopProps<T> = {
@@ -89,6 +91,7 @@ type RangeValues = { [key: number]: CellsValues };
 
 export class Range {
   values: RangeValues = {};
+  loops: Loop[] = [];
   constructor() {}
   setValue(directIndex: number, crossIndex: number, value: any) {
     if (!this.values[directIndex]) {
@@ -96,13 +99,19 @@ export class Range {
     }
     this.values[directIndex][crossIndex] = value;
   }
-
   loop<T>(
     from: number,
     length: number,
     items: ItemsFunc<T>,
     apply?: ApplyItemFunc<T>,
-  ) {}
+  ) {
+    this.loops.push({
+      from: from,
+      length: length,
+      items: items,
+      apply: apply,
+    });
+  }
 }
 
 interface MapItem {
@@ -142,7 +151,8 @@ async function createMapLevel(
           await loop.apply(range, childItem, childIndex);
         }
         targetIndex = await createMapLevel(
-          loop.loops || [],
+          // loop.loops || [],
+          range.loops,
           loop.length,
           map,
           targetIndex,

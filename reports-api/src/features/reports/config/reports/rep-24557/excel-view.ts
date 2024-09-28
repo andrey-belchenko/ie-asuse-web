@@ -147,23 +147,34 @@ export default async function (context: Context, data: DataSet) {
           0,
           2,
           it.год
-            ? `Просроченная задолженность за ${it.год} год, в т.ч. `
+            ? `Просроченная задолженность за ${it.год} год, в т.ч. 111`
             : it.период_имя,
         );
-      },
-      loops: [
-        {
-          from: 1,
-          length: 1,
-          items: async (parentItem) =>
+        range.loop(
+          1,
+          1,
+          async (parentItem: any) =>
             _(parentItem)
               .filter((it) => it.месяц_имя)
               .value(),
-          apply: async (range, item) => {
+          async (range, item) => {
             range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
-        },
-      ],
+        );
+      },
+      // loops: [
+      //   {
+      //     from: 1,
+      //     length: 1,
+      //     items: async (parentItem) =>
+      //       _(parentItem)
+      //         .filter((it) => it.месяц_имя)
+      //         .value(),
+      //     apply: async (range, item) => {
+      //       range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
+      //     },
+      //   },
+      // ],
     },
   ]);
 
@@ -178,22 +189,19 @@ export default async function (context: Context, data: DataSet) {
           3,
           `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`,
         );
-      },
-      loops: [
-        {
-          from: 4,
-          length: 5,
-          items: async () => grouped1,
-          apply: async (range, item) => {
+
+        range.loop(
+          4,
+          5,
+          async () => grouped1,
+          async (range, item) => {
             range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
             // range.setValue(0, 3, item.props.долг);
-          },
-          loops: [
-            {
-              from: 1,
-              length: 4,
-              items: async (parentItem) => parentItem.items,
-              apply: async (range, item) => {
+            range.loop(
+              1,
+              4,
+              async (parentItem: any) => parentItem.items,
+              async (range, item) => {
                 range.setValue(
                   0,
                   2,
@@ -201,10 +209,36 @@ export default async function (context: Context, data: DataSet) {
                 );
                 // range.setValue(0, 3, item.props.долг);
               },
-            },
-          ],
-        },
-      ],
+            );
+          },
+        );
+      },
+      // loops: [
+      //   {
+      //     from: 4,
+      //     length: 5,
+      //     items: async () => grouped1,
+      //     apply: async (range, item) => {
+      //       range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
+      //       // range.setValue(0, 3, item.props.долг);
+      //     },
+      //     loops: [
+      //       {
+      //         from: 1,
+      //         length: 4,
+      //         items: async (parentItem) => parentItem.items,
+      //         apply: async (range, item) => {
+      //           range.setValue(
+      //             0,
+      //             2,
+      //             `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`,
+      //           );
+      //           // range.setValue(0, 3, item.props.долг);
+      //         },
+      //       },
+      //     ],
+      //   },
+      // ],
     },
   ]);
 
