@@ -3,10 +3,10 @@ import { Folder } from '../../types/Folder';
 import { Navigator } from '../../types/Navigator';
 import { RegularReport } from '../../types/reports/RegularReport';
 import { repBezuchet } from '../reports';
-import oborVed from '../reports/obor-ved';
-import rep_25316 from '../reports/rep-25316';
-import rep_25316_dog from '../reports/rep-25316-dog';
-import oborVedFr from '../reports/obor-ved-fr';
+import oborVed from '../reports/other/obor-ved';
+import rep_25316 from '../reports/other/rep-25316';
+import rep_25316_dog from '../reports/other/rep-25316-dog';
+import oborVedFr from '../reports/other/obor-ved-fr';
 import { getGeneratorReports } from '../reports/external-reports';
 import rep_24557 from '../reports/rep-24557';
 

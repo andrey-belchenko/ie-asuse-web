@@ -1,9 +1,9 @@
-import { DateEditor } from "../../types/editors/DateEditor";
-import { Field } from "../../types/Field";
-import { Form } from "../../types/Form";
-import { RegularReport } from "../../types/reports/RegularReport";
+import { DateEditor } from "../../../types/editors/DateEditor";
+import { Field } from "../../../types/Field";
+import { Form } from "../../../types/Form";
+import { RegularReport } from "../../../types/reports/RegularReport";
 import { ReportTable } from "@/features/reports/types/views/ReportTable";
-import depSelect from "../fields/dep-select";
+import depSelect from "../../fields/dep-select";
 import { execFunction } from "@/features/reports/services/pgsql";
 
 export default new RegularReport({
