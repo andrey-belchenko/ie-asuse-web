@@ -1,8 +1,5 @@
 import { saveFile } from '@/features/reports/services/pgsql';
-import {
-  ExcelTemplate,
-  TemplateRange,
-} from '@/features/reports/services/ExcelTemplate';
+import { ExcelTemplate, TemplateRange } from '@/features/reports/services/ExcelTemplate';
 import { DataSet } from '@/features/reports/types/DataSet';
 import { Context } from '@/features/reports/types/reports/RegularReport';
 import { FileViewer } from '@/features/reports/types/views/FileViewer';
@@ -44,26 +41,28 @@ export default async function (context: Context, data: DataSet) {
     долг: any;
   }[];
 
-  let groupedData = grouping(rows, (row) => [
-    null,
-    row.отделение_имя,
-    row.ику_рсо_имя,
-    row.участок_имя,
-    row.гр_потр_нас_имя,
-    row.договор_id,
-  ]);
+  let groupedData = grouping(rows, (row) => [null, row.отделение_имя, row.ику_рсо_имя, row.участок_имя, row.гр_потр_нас_имя, row.договор_id]);
 
   let template = new ExcelTemplate();
   await template.loadFile(path.join(path.dirname(__filename), 'template.xlsx'));
 
   let dynamicColNames: string[] = [];
   await template.mapColumns((range) => {
-    range.loop(4,2, () => groupedColumns, (range, colsInGroup) => {
+    range.loop(
+      4,
+      2,
+      () => groupedColumns,
+      (range, colsInGroup) => {
         let first = colsInGroup[0];
-        range.setValue(0,2,first.год ? `Просроченная задолженность за ${first.год} год, в т.ч.`: first.период_имя);
+        range.setValue(0, 2, first.год ? `Просроченная задолженность за ${first.год} год, в т.ч.` : first.период_имя);
         dynamicColNames.push(first.name);
-        range.loop(1,1,() => _(colsInGroup).filter((it) => it.месяц_имя).value(), 
-        (range, item) => {
+        range.loop(
+          1,
+          1,
+          _(colsInGroup)
+            .filter((it) => it.месяц_имя)
+            .value(),
+          (range, item) => {
             dynamicColNames.push(item.name);
             range.setValue(0, 2, `${item.месяц_имя} \r ${item.год} года`);
           },
@@ -85,25 +84,29 @@ export default async function (context: Context, data: DataSet) {
     // ИТОГ
     range.setValue(2, 3, `Просроченная задолженность на ${moment(context.formValues.date).format('DD.MM.YYYY')} года , в т.ч.`);
     setRowValues(range, groupedData[0], 3);
-    range.loop(4,5,() => groupedData[0].items, (range, item) => {
+    range.loop(
+      4,
+      5,
+      () => groupedData[0].items,
+      (range, item) => {
         // ОТДЕЛЕНИЕ
         range.setValue(0, 2, `Итого по ${item.props.отделение_имя}`);
         setRowValues(range, item);
         range.loop(1, 4, item.items, (range, item) => {
           // ИКУ/РСО
-          range.setValue(0,2,`Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`);
+          range.setValue(0, 2, `Итого ${item.props.ику_рсо_имя} по ${item.props.отделение_имя}`);
           setRowValues(range, item);
           range.loop(1, 3, item.items, (range, item) => {
             // УЧАСТОК
-            range.setValue(0,2,`Итого ${item.props.ику_рсо_имя} по ${item.props.участок_имя}, в т.ч.`,);
+            range.setValue(0, 2, `Итого ${item.props.ику_рсо_имя} по ${item.props.участок_имя}, в т.ч.`);
             setRowValues(range, item);
             range.loop(1, 2, item.items, (range, item) => {
               // ГР. ПОТР
-              range.setValue(0,2, item.props.гр_потр_нас_имя);
+              range.setValue(0, 2, item.props.гр_потр_нас_имя);
               setRowValues(range, item);
               range.loop(1, 1, item.items, (range, item) => {
                 // ДОГОВОР
-                range.setValue( 0,2, item.props.абонент_имя);
+                range.setValue(0, 2, item.props.абонент_имя);
                 setRowValues(range, item);
               });
             });

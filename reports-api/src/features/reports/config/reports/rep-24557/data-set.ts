@@ -94,11 +94,7 @@ function prepare(data: any[]) {
 
       for (let column of allColumns) {
         let value = _(items)
-          .filter(
-            (it) =>
-              it.период_id == column.период_id &&
-              it.месяц == (column.месяц || it.месяц),
-          )
+          .filter((it) => it.период_id == column.период_id && it.месяц == (column.месяц || it.месяц))
           .sumBy((it) => it.долг);
         let columnName = `долг_${column.column_id}`;
         row[columnName] = value || 0;
