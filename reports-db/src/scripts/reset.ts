@@ -38,6 +38,8 @@ import dim_дата from "../ddl/report_dm/tables/dim_дата";
 import fill_dim_дата from "../ddl/report_dm/procedures/fill_dim_дата";
 import get_month_name from "../ddl/report_stg/functions/get_month_name";
 import report_sys from "../ddl/report_sys";
+import dim_вид_реал from "../ddl/report_dm/views/dim_вид_реал";
+import примеры from "../ddl/report_util/примеры";
 
 declaration;
 const run = async () => {
@@ -78,7 +80,9 @@ const run = async () => {
     // get_month_name,
     // dim_дата,
     // fill_dim_дата,
-    ...report_sys
+    // ...report_sys
+    // dim_вид_реал
+    ...примеры
     
   ]);
   console.log("done");

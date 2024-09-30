@@ -1,4 +1,5 @@
 import dim_абонент from "./dim_абонент";
+import dim_вид_реал from "./dim_вид_реал";
 import dim_вид_тов from "./dim_вид_тов";
 import dim_гр_потр_нас from "./dim_гр_потр_нас";
 import dim_договор from "./dim_договор";
@@ -16,5 +17,6 @@ export default [
    dim_гр_потр_нас,
    dim_участок,
    dim_абонент,
-   dim_док_нач
+   dim_док_нач,
+   dim_вид_реал
 ];
