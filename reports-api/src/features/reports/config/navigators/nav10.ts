@@ -9,10 +9,16 @@ import rep_25316_dog from '../reports/other/rep-25316-dog';
 import oborVedFr from '../reports/other/obor-ved-fr';
 import { getGeneratorReports } from '../reports/external-reports';
 import rep_24557 from '../reports/rep-24557';
+import example1 from '../reports/examples/example-1';
 
 export default new Navigator({
   name: 'nav10',
   items: [
+    new Folder({
+      title: 'Примеры',
+      items: [example1],
+    }),
+
     new Folder({
       title: 'Отчеты по задолженности',
       items: [

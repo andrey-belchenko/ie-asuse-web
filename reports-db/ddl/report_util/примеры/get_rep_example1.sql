@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION report_util.get_rep_example1(
-        p_дата_c date,
+        p_дата_с date,
         p_дата_по date
     ) RETURNS TABLE (
         отделение_аббр text,
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION report_util.get_rep_example1(
             a.начисл,
             null::numeric погаш
         from report_dm.msr_фин_начисл a
-        where a.дата between p_дата_c and p_дата_по
+        where a.дата between p_дата_с and p_дата_по
         union all
         select a.договор_id,
             a.вид_реал_id,
@@ -25,14 +25,14 @@ CREATE OR REPLACE FUNCTION report_util.get_rep_example1(
             null начисл,
             a.погаш
         from report_dm.msr_фин_опл_погаш a
-        where a.дата between p_дата_c and p_дата_по
+        where a.дата between p_дата_с and p_дата_по
     )
-select o.аббр отделение_аббр,
-    dt.год,
-    dt.месяц_имя,
-    vr.имя вид_реал_имя,
-    sum(a.начисл) начисл,
-    sum(a.погаш) погаш
+select o.аббр::text отделение_аббр,
+    dt.год::numeric,
+    dt.месяц_имя::text,
+    vr.имя::text вид_реал_имя,
+    sum(a.начисл)::numeric начисл,
+    sum(a.погаш)::numeric погаш
 from x a
     left join report_dm.dim_договор d on d.договор_id = a.договор_id
     left join report_dm.dim_отделение o on o.отделение_id = d.отделение_id
