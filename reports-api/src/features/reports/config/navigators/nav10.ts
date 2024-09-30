@@ -10,13 +10,17 @@ import oborVedFr from '../reports/other/obor-ved-fr';
 import { getGeneratorReports } from '../reports/external-reports';
 import rep_24557 from '../reports/rep-24557';
 import example1 from '../reports/examples/example-1';
+import example2 from '../reports/examples/example-2';
+import example3 from '../reports/examples/example-3';
+import example4 from '../reports/examples/example-4';
+import example5 from '../reports/examples/example-5';
 
 export default new Navigator({
   name: 'nav10',
   items: [
     new Folder({
       title: 'Примеры',
-      items: [example1],
+      items: [example1, example2, example3, example4, example5],
     }),
 
     new Folder({

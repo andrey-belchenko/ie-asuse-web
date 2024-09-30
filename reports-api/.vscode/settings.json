@@ -1,4 +1,9 @@
 {
   "cSpell.language": "en, ru",
-  "prettier.printWidth": 600
+  "prettier.printWidth": 600,
+  "cSpell.words": [
+    "аббр",
+    "начисл",
+    "погаш"
+  ]
 }
